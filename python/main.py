@@ -1,22 +1,22 @@
 import schedule
 import csv
 import time
-import os
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from coin import Coin
-
+from file import CoinFile
+import json
 
 # pridobi html kodo iz spletne strani
 def get_html(url, waitForClass = None):
     service = Service('./driver/chromedriver.exe')
-    browser = webdriver.Chrome(service=service)
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    browser = webdriver.Chrome(service=service, options=options)
     browser.get(url)
+
     time.sleep(7)
     browser.find_element_by_id('cookiescript_accept').click()
     time.sleep(7)
@@ -94,21 +94,14 @@ def get_csv_data(csv_file):
     return csv_data
 
 
-def create_folder(folder_path):
-    if not os.path.exists(folder_path):
-        os.mkdir(folder_path)
-        return True
-    return False
-
-
-def create_coin_csv(file_name, file_folder, column_names, coins, attributes):
-    file_exists = not create_folder(file_folder)
-    file_location = f'{file_folder}/{file_name}'
+def create_coin_csv(coin_file, column_names, coins, attributes):
+    file_exists = not coin_file.create_folder();
+    file_location = coin_file.file_location();
     date_string = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+
     date_array = [""]
     for i in range(len(column_names) - 1):  # -1 --> skip name
         date_array.append(date_string)
-
 
     if not file_exists:
         with open(file_location, "w", newline='') as file:
@@ -135,24 +128,46 @@ def create_coin_csv(file_name, file_folder, column_names, coins, attributes):
             for data in old_data:
                 writer.writerow(data)
 
+
 def write_trading_volumes():
     coins = get_coin_data()
+    price = CoinFile(file='price-data.csv', folder='./files/price')
+    market_cap = CoinFile(file='market-cap-data.csv', folder='./files/market-cap')
+    volume_24 = CoinFile(file='volume.csv', folder='./files/24h')
 
-    price_folder_path = f'./files/price'
-    market_cap_folder_path = f'./files/market-cap'
-    volume_in_24_folder_path = f'./files/24h'
-
-    price_f = 'price-data.csv'
-    market_cap_f = 'market-cap-data.csv'
-    volume_24_f = 'volume.csv'
-
-    create_coin_csv(price_f, price_folder_path, ["Ime", "Cena"], coins, [Coin.name_attr, Coin.price_attr])
-    create_coin_csv(market_cap_f, market_cap_folder_path, ['Ime', "Trzna kapaciteta"], coins, [Coin.name_attr, Coin.market_cap_attr])
-    create_coin_csv(volume_24_f, volume_in_24_folder_path, ['Ime', "Obseg v 24ur"], coins, [Coin.name_attr, Coin.volume_24_attr])
+    create_coin_csv(price, ["Ime", "Cena"], coins, [Coin.name_attr, Coin.price_attr])
+    create_coin_csv(market_cap, ['Ime', "Trzna kapaciteta"], coins, [Coin.name_attr, Coin.market_cap_attr])
+    create_coin_csv(volume_24, ['Ime', "Obseg v 24ur"], coins, [Coin.name_attr, Coin.volume_24_attr])
 
 
+def create_json():
+    csvData = get_csv_data('price-data21122021.csv')
+    dates = []
+    for i in range(len(csvData[0])):
+        if i > 0:  # First row containing dates
+            dates.append(csvData[0][i])
+
+    coinJsonDataList = []
+
+    for i in range(2, len(csvData)):
+        coinJsonData = {
+            'name': csvData[i][0],
+            'days': []
+        }
+        for j in range(1, len(csvData[i])):
+            coinJsonData['days'].append({
+                'date': dates[j - 1],
+                'price': float(csvData[i][j].replace(',', '.'))
+            })
+        coinJsonDataList.append(coinJsonData)
+
+    with open('web-data.json', 'w') as file:
+        file.write(json.dumps(coinJsonDataList))
+
+
+# write_trading_volumes()
+create_json()
 schedule.every(5).minutes.do(write_trading_volumes)
-
 
 print("Waiting for execution")
 while 1:

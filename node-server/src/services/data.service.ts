@@ -1,9 +1,6 @@
 import csv from 'csv-parser';
 import fs from 'fs';
 import path from 'path';
-import util from 'util';
-
-const readFile = util.promisify(fs.readFile);
 
 export class DataService {
     private static _instance: DataService;
@@ -16,12 +13,17 @@ export class DataService {
         return DataService._instance;
     }
 
-    async getData(): Promise<string> {
-        const datra
-        return new Promise(resolve => fs.createReadStream(path.join(__dirname, '..', DataService._file)).pipe(csv())
-            .on('data', row => {
+    async getData(): Promise<any[]> {
+        const csvData: any[] = [];
+        return new Promise(resolve => fs.createReadStream(path.join(__dirname, '..', DataService._file))
+            .pipe(csv({
+                separator: ';',
+
+            }))
+            .on('data', (row)=> {
+                csvData.push(row);
             }).on('end', () => {
-                resolve('AAAAAAAAAAA');
+                resolve(csvData);
         }));
     }
 
