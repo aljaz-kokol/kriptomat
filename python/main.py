@@ -157,7 +157,7 @@ def create_json():
         for j in range(1, len(csvData[i])):
             coinJsonData['days'].append({
                 'date': dates[j - 1],
-                'price': float(csvData[i][j].replace(',', '.'))
+                'price': csvData[i][j].replace(',', '.')
             })
         coinJsonDataList.append(coinJsonData)
 
