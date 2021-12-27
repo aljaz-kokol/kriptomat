@@ -1,6 +1,6 @@
-import csv from 'csv-parser';
-import fs from 'fs';
-import path from 'path';
+import {Coin} from "../models/coin.model";
+
+const data = require('../data/web-data.json')
 
 export class DataService {
     private static _instance: DataService;
@@ -13,18 +13,18 @@ export class DataService {
         return DataService._instance;
     }
 
-    async getData(): Promise<any[]> {
-        const csvData: any[] = [];
-        return new Promise(resolve => fs.createReadStream(path.join(__dirname, '..', DataService._file))
-            .pipe(csv({
-                separator: ';',
-
-            }))
-            .on('data', (row)=> {
-                csvData.push(row);
-            }).on('end', () => {
-                resolve(csvData);
-        }));
+    get  coins(): Coin[] {
+        return Coin.fromJsonList(data['coins']);
     }
 
+    getCoinByName(name: string): Coin {
+        const coins = this.coins;
+        let index = coins.findIndex(el => el.name.toLowerCase() === name.toLowerCase());
+        if (index < 0) throw new Error('Coin with this name does not exist')
+        return coins[index];
+    }
+
+    get dates() {
+        return data['dates'];
+    }
 }

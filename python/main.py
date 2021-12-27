@@ -95,8 +95,8 @@ def get_csv_data(csv_file):
 
 
 def create_coin_csv(coin_file, column_names, coins, attributes):
-    file_exists = not coin_file.create_folder();
-    file_location = coin_file.file_location();
+    file_exists = not coin_file.create_folder()
+    file_location = coin_file.file_location()
     date_string = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
     date_array = [""]
@@ -129,6 +129,76 @@ def create_coin_csv(coin_file, column_names, coins, attributes):
                 writer.writerow(data)
 
 
+def coins_from_csv(csvData):
+    data = {
+        'coins': [],
+        'dates': []
+    }
+
+    for i in range(len(csvData[0])):
+        if i > 0:  # First row containing dates
+            data['dates'].append(csvData[0][i])
+
+    for i in range(2, len(csvData)):
+        coin = Coin(csvData[i][0], [], -1, -1)
+        for j in range(1, len(csvData[i])):
+            coin.price.append(csvData[i][j])
+        data['coins'].append(coin)
+    return data
+
+
+def create_percentage_change_table(newFile, dataFile):
+    csvData = get_csv_data(dataFile)
+    coins = coins_from_csv(csvData)
+    pricePercentageChange = {
+        'dates': coins['dates'],
+        'coins': []
+    }
+    for coin in coins['coins']:
+        lastVal = float(coin.price[-1].replace(',', '.'))
+        coinVal = Coin(coin.name, [], -1, -1)
+        for price in coin.price:
+            priceVal = float(price.replace(',', '.'))
+            percentChange = (priceVal * 100 / lastVal) - 100
+            coinVal.price.append(str(percentChange).replace('.', ','))
+        pricePercentageChange['coins'].append(coinVal)
+    print(pricePercentageChange['coins'][0])
+
+    with open(newFile, "w", newline='') as file:
+        writer = csv.writer(file, delimiter=";")
+        pricePercentageChange['dates'].insert(0, '')
+        writer.writerow(pricePercentageChange['dates'])
+        for coin in pricePercentageChange['coins']:
+            coin.price.insert(0, coin.name)
+            writer.writerow(coin.price)
+
+
+def create_daily_change_table(newFile, dataFile):
+    csvData = get_csv_data(dataFile)
+    coins = coins_from_csv(csvData)
+    pricePercentageChange = {
+        'dates': coins['dates'],
+        'coins': []
+    }
+    for coin in coins['coins']:
+        lastVal = float(coin.price[-1].replace(',', '.'))
+        coinVal = Coin(coin.name, [], -1, -1)
+        for price in coin.price:
+            priceVal = float(price.replace(',', '.'))
+            daily_change = (priceVal * 100 / lastVal) - 100
+            coinVal.price.append(str(daily_change).replace('.', ','))
+        pricePercentageChange['coins'].append(coinVal)
+    print(pricePercentageChange['coins'][0])
+
+    with open(newFile, "w", newline='') as file:
+        writer = csv.writer(file, delimiter=";")
+        pricePercentageChange['dates'].insert(0, '')
+        writer.writerow(pricePercentageChange['dates'])
+        for coin in pricePercentageChange['coins']:
+            coin.price.insert(0, coin.name)
+            writer.writerow(coin.price)
+
+
 def write_trading_volumes():
     coins = get_coin_data()
     price = CoinFile(file='price-data.csv', folder='./files/price')
@@ -140,33 +210,24 @@ def write_trading_volumes():
     create_coin_csv(volume_24, ['Ime', "Obseg v 24ur"], coins, [Coin.name_attr, Coin.volume_24_attr])
 
 
-def create_json():
-    csvData = get_csv_data('price-data21122021.csv')
-    dates = []
-    for i in range(len(csvData[0])):
-        if i > 0:  # First row containing dates
-            dates.append(csvData[0][i])
+def coins_to_JSON(coins):
+    coinsAsJson = []
+    for coin in coins['coins']:
+        coinsAsJson.append(coin.to_json())
+    return coinsAsJson
 
-    coinJsonDataList = []
 
-    for i in range(2, len(csvData)):
-        coinJsonData = {
-            'name': csvData[i][0],
-            'days': []
-        }
-        for j in range(1, len(csvData[i])):
-            coinJsonData['days'].append({
-                'date': dates[j - 1],
-                'price': csvData[i][j].replace(',', '.')
-            })
-        coinJsonDataList.append(coinJsonData)
-
-    with open('web-data.json', 'w') as file:
-        file.write(json.dumps(coinJsonDataList))
+def create_json(filename, datafile):
+    csvData = get_csv_data(datafile)
+    coins = coins_from_csv(csvData)
+    coins['coins'] = coins_to_JSON(coins)
+    with open(filename, 'w') as file:
+        file.write(json.dumps(coins))
 
 
 # write_trading_volumes()
-create_json()
+create_percentage_change_table('sprememba_v_odstotkih.csv', 'price-data21122021.csv')
+create_json('../node-server/src/data/web-data.json', 'price-data21122021.csv')
 schedule.every(5).minutes.do(write_trading_volumes)
 
 print("Waiting for execution")

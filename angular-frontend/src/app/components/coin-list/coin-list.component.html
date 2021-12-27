@@ -1,0 +1,8 @@
+<mat-form-field>
+  <mat-label>Ime kriptovalute</mat-label>
+  <input (input)="onSearch()" type="text" matInput #searchInput/>
+</mat-form-field>
+<div *ngFor="let name of coinsNames" class="coin-container">
+  <button (click)="onCoinSelected(name)" mat-raised-button>{{ name }}</button>
+</div>
+

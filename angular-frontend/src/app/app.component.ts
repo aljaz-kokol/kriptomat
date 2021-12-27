@@ -1,16 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {DataService} from "./services/data.service";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {CoinService} from "./services/coin.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  coins: {name: string; days: {date: string; price: string}[]}[] = [];
-  constructor(private _dataService: DataService) {}
-
-  ngOnInit(): void {
-    this.coins = this._dataService.getCoins();
-  }
-}
+export class AppComponent {}

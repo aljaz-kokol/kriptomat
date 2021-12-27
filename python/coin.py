@@ -1,3 +1,6 @@
+import json
+
+
 class Coin:
     name_attr = 'name'
     price_attr = 'price'
@@ -16,3 +19,8 @@ class Coin:
     def __repr__(self):
         return str(self)
 
+    def to_json(self):
+        return {
+            'name': self.name,
+            'price': self.price
+        }

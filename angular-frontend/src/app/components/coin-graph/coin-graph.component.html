@@ -1,0 +1,10 @@
+<mat-spinner *ngIf="showSpinner"></mat-spinner>
+<div class="container" *ngIf="!showSpinner">
+  <h1  class="mat-display-2">{{ coin?.name }}</h1>
+  <div class="chart-container">
+    <canvas id="percentage_change"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="daily_change"></canvas>
+  </div>
+</div>
