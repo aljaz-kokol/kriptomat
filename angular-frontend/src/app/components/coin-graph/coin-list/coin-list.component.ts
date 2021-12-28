@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {CoinService} from "../../services/coin.service";
+import {CoinService} from "../../../services/coin.service";
 import {Router} from "@angular/router";
 
 @Component({
