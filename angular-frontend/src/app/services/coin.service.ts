@@ -6,6 +6,8 @@ import {Coin} from "../models/coin.model";
 
 @Injectable({providedIn: 'root'})
 export class CoinService {
+
+
   constructor(private _http: HttpClient) {}
 
   getCoins(): Observable<{names: string[]}> {
@@ -18,5 +20,11 @@ export class CoinService {
 
   getDates(): Observable<{dates: string[]}> {
     return this._http.get<{dates: string[]}>('http://localhost:3000/api/coins/dates');
+  }
+
+  buyCoin(name: string): Observable<{message: string}> {
+    return this._http.post<{ message: string }>('http://localhost:3000/api/coins/', {
+      name: name
+    });
   }
 }

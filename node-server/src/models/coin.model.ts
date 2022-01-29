@@ -7,7 +7,12 @@ export class Coin {
         this._name = name;
         this._price = price;
         this._priceNum = [];
-        this._price.forEach(item => this._priceNum.push(parseFloat(item.replace(',', '.'))))
+        this._price.forEach(item => {
+            let num = parseFloat(item.replace(',', '.'));
+            if (isNaN(num))
+                num = -1;
+            this._priceNum.push(num)
+        })
     }
 
     get name(): string {
@@ -15,7 +20,18 @@ export class Coin {
     }
 
     get price(): number[] {
-        return  [...this._priceNum];
+        return  [...this._priceNum].map((price, index) => {
+            if (price < 0) {
+                let counter = 0;
+                while (true) {
+                    if (this._priceNum[index - counter] >= 0) {
+                        return this._priceNum[index - counter];
+                    }
+                    counter++;
+                }
+            }
+            return price;
+        });
     }
 
     public static fromJsonList(json: any[]): Coin[] {

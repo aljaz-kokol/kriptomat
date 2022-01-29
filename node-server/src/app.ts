@@ -1,8 +1,10 @@
 import express, {Request, Response, NextFunction} from 'express';
-import {DataService} from "./services/data.service";
+
+import coinRoutes from "./routes/coin.routes";
 
 const app = express();
-import coinRoutes from "./routes/coin.routes";
+
+app.use(express.json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,6 +16,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use('/api/coins', coinRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(err);
    res.status(500).json({
         message: err.message,
    })
