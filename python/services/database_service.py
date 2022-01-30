@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from models.coin import Coin
-
+import requests
 
 class DatabaseService:
     __db_name = 'kriptomat'
@@ -22,7 +22,13 @@ class DatabaseService:
         for coin in coins:
             coin_document = coin_collection.find_one({'name': coin.name})
             if not coin_document:
-                result = coin_collection.insert_one({'name': coin.name, 'connection': coin.connection})
+                coin.download_svg()
+                short_name = coin.name.split(' ')[0]
+                result = coin_collection.insert_one({
+                    'name': coin.name,
+                    'connection': coin.connection,
+                    'image': f'{short_name}.svg'
+                })
                 coin_id = result.inserted_id
                 new_coin_counter = new_coin_counter + 1
             else:

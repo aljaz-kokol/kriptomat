@@ -32,12 +32,13 @@ class KriptomatService:
         url_conn_container = single_coin_html.find('div', 'col-pricebtn')
 
         name = single_coin_html.find('div', {'class': 'coin-name'})
+        svg_link = single_coin_html.find('img', {'class': 'coin-icon'})
         price = price_container.find('span', {'class', 'pr'})
         market_cap = market_cap_container.find('span', {'class', 'pr'})
         volume24 = volume_container.find('span', {'class', 'pr'})  # Obseg v 24h
         url_conn = url_conn_container.find('a')
 
-        if name and price and market_cap and volume24 and url_conn:
+        if name and price and market_cap and volume24 and url_conn and svg_link:
             price_val = self.__format_price(price.text)
 
             if price_val >= 0:
@@ -47,7 +48,7 @@ class KriptomatService:
                     market_cap=market_cap.text,
                     volume_24h=volume24.text,
                     connection=url_conn['href'],
-                    date=datetime.now().utcnow()
+                    svg_link=f'https://kriptomat.io{svg_link["src"]}'
                 )
         return None
 

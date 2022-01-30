@@ -1,6 +1,5 @@
 import express, {Request, Response, NextFunction} from 'express';
 
-import coinRoutes from "./routes/coin.routes";
 
 const app = express();
 
@@ -13,7 +12,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 })
 
-app.use('/api/coins', coinRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log(err);
