@@ -16,18 +16,15 @@ class DatabaseService:
 
         coin_collection = self.__database[coin_table_name]
         price_collection = self.__database[price_table_name]
-        market_cap_collection = self.__database[market_cap_table_name]
-        volume_collection = self.__database[volumes_table_name]
 
         for coin in coins:
             coin_document = coin_collection.find_one({'name': coin.name})
             if not coin_document:
                 coin.download_svg()
-                short_name = coin.name.split(' ')[0]
                 result = coin_collection.insert_one({
                     'name': coin.name,
                     'connection': coin.connection,
-                    'image': f'{short_name}.svg'
+                    'image': f'{coin.get_svg_name()}.svg'
                 })
                 coin_id = result.inserted_id
                 new_coin_counter = new_coin_counter + 1
@@ -35,7 +32,5 @@ class DatabaseService:
                 coin_id = coin_document['_id']
 
             price_collection.insert_one({'price': coin.price, 'date': coin.date, 'coin_id': coin_id})
-            # market_cap_collection.insert_one({'price': coin.market_cap, 'date': coin.date, 'coin_id': coin_id})
-            # volume_collection.insert_one({'price': coin.volume_24h, 'date': coin.date, 'coin_id': coin_id})
             print(f'"{coin.name}" data inserted')
         print(f'Number of new coins: {new_coin_counter}')

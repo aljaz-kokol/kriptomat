@@ -1,6 +1,8 @@
-import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
+import re
+import time
+from models.html_reader import HTMLReader
+
 
 class Coin:
     name_attr = 'name'
@@ -45,10 +47,15 @@ class Coin:
             self.date_attr: self.date
         }
 
+    def get_svg_name(self):
+        short_name = re.sub(r'[#%&{}<>*?/$!\'"@+`|=:\\]', '_', self.name)
+        short_name = short_name.replace(' ', '_')
+        return short_name;
+
     def download_svg(self):
         try:
-            short_name = self.name.split(' ')[0]
-            response = requests.get(self.svg_link, allow_redirects=True)
-            open(f'../node-server/files/images/{short_name}.svg', 'wb').write(response.content)
+            reader = HTMLReader(self.svg_link, cookie_button_wait=0, html_wait=1)
+            open(f'../node-server/files/images/{self.get_svg_name()}.svg', 'w').write(reader.get_html())
+            time.sleep(1)
         except:
             print(f'Error while trying to fetch svg for "{self.name}"')

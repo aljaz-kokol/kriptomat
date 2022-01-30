@@ -6,9 +6,11 @@ import time
 class HTMLReader:
     __chrome_driver_path = './driver/chromedriver.exe'
 
-    def __init__(self, page_url: str, cookie_button_id: str = None):
+    def __init__(self, page_url: str, cookie_button_id: str = None, cookie_button_wait=2, html_wait=7):
         self.__page_url = page_url
         self.__cookie_button_id = cookie_button_id
+        self.cookie_button_wait = cookie_button_wait
+        self.html_wait = html_wait
         self.__html = self.__html = self.fetch_html()
 
     def get_html(self):
@@ -24,14 +26,13 @@ class HTMLReader:
             options.add_experimental_option('excludeSwitches', ['enable-logging'])
             browser = webdriver.Chrome(executable_path=self.__chrome_driver_path, options=options)
             browser.get(self.__page_url)
-            time.sleep(2)
+            time.sleep(self.cookie_button_wait)
 
             try:
                 browser.find_element('id', self.__cookie_button_id).click()
             except:
-                print(f'Button with id: "{self.__cookie_button_id}" does not exist')
-
-            time.sleep(7)
+                print()
+            time.sleep(self.html_wait)
             self.__html = browser.page_source
             browser.close()
             browser.quit()

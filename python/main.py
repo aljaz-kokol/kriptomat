@@ -228,11 +228,10 @@
 #
 #
 #
-import requests
 
-from models.coin import Coin
 from services.database_service import DatabaseService
 from services.kriptomat_service import KriptomatService
+
 
 kriptomat_service = KriptomatService()
 db_service = DatabaseService()
@@ -245,7 +244,6 @@ def main():
 
 
 main()
-
 
 # create_percentage_change_table('sprememba_v_odstotkih.csv', 'price-data21122021.csv')
 # create_json('../node-server/src/data/web-data.json', 'price-data21122021.csv')
