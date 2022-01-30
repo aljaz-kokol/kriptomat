@@ -1,6 +1,7 @@
 from datetime import datetime
 from models.coin import Coin
 from models.html_reader import HTMLReader
+import csv
 
 
 class KriptomatService:
@@ -11,6 +12,14 @@ class KriptomatService:
         self.readers = [baseReader]
         for pageBtn in baseReader.get_element_list_by_tag(tag_name='a', attributes={'class': 'page-numbers'}):
             self.readers.append(HTMLReader(page_url=pageBtn['href'], cookie_button_id='cookiescript_accept'))
+
+    def __get_csv_data(self, csv_file):
+        csv_data = []
+        with open(csv_file, 'r') as file:
+            reader = csv.reader(file, delimiter=';')
+            for row in reader:
+                csv_data.append(row)
+        return csv_data
 
     def __format_price(self, price_str):
         try:
@@ -27,26 +36,20 @@ class KriptomatService:
 
     def __get_coin(self, single_coin_html):
         price_container = single_coin_html.find('div', 'col-price')
-        market_cap_container = single_coin_html.find('div', 'col-marcap')
-        volume_container = single_coin_html.find('div', 'col-col24')  # Obseg v 24h container
         url_conn_container = single_coin_html.find('div', 'col-pricebtn')
 
         name = single_coin_html.find('div', {'class': 'coin-name'})
         svg_link = single_coin_html.find('img', {'class': 'coin-icon'})
         price = price_container.find('span', {'class', 'pr'})
-        market_cap = market_cap_container.find('span', {'class', 'pr'})
-        volume24 = volume_container.find('span', {'class', 'pr'})  # Obseg v 24h
         url_conn = url_conn_container.find('a')
 
-        if name and price and market_cap and volume24 and url_conn and svg_link:
+        if name and price and url_conn and svg_link:
             price_val = self.__format_price(price.text)
 
             if price_val >= 0:
                 return Coin(
                     name=name.text,
                     price=price_val,
-                    market_cap=market_cap.text,
-                    volume_24h=volume24.text,
                     connection=url_conn['href'],
                     svg_link=f'https://kriptomat.io{svg_link["src"]}'
                 )
@@ -61,4 +64,21 @@ class KriptomatService:
                 coin = self.__get_coin(coin_html)
                 if coin:
                     coins.append(coin)
+        return coins
+
+    def get_coins_from_csv(self, csv_file):
+        csv_data = self.__get_csv_data(csv_file=csv_file)
+        dates = []
+        coins = []
+        for i in range(len(csv_data[0])):
+            if i > 0:
+                timestamp = datetime.strptime(csv_data[0][i], "%d.%m.%Y %H:%M:%S")
+                dates.append(timestamp)
+
+        for i in range(2, len(csv_data)):
+            coinName = csv_data[i][0]
+            for j in range(1, len(csv_data[i])):
+                price_val = self.__format_price(csv_data[i][j])
+                if csv_data[i][j] != '-1' and csv_data[i][j] != 'NaN' and price_val and price_val >= 0:
+                    coins.append(Coin(name=coinName, price=price_val, connection='', svg_link='', date=dates[j - 1]))
         return coins

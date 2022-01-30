@@ -1,1 +1,1 @@
-export const COINS_ENDPOINT = '/api/coins'
+export const COIN_ENDPOINT = '/api/coins'

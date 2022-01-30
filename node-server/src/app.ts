@@ -2,8 +2,8 @@ import path from 'path'
 
 import express, { Request, Response, NextFunction } from 'express';
 import { APIError } from './errors/api.error';
-import { COINS_ENDPOINT } from './utils/endpoints.util';
-import coinsRoutes from './routes/coins.routes';
+import { COIN_ENDPOINT } from './utils/endpoints.util';
+import coinsRoutes from './routes/coin.routes';
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use(COINS_ENDPOINT, coinsRoutes);
+app.use(COIN_ENDPOINT, coinsRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof APIError) {

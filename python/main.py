@@ -231,11 +231,11 @@
 
 from services.database_service import DatabaseService
 from services.kriptomat_service import KriptomatService
-
+import schedule
+import time
 
 kriptomat_service = KriptomatService()
 db_service = DatabaseService()
-
 
 def main():
     coins = kriptomat_service.get_coins()
@@ -245,11 +245,9 @@ def main():
 
 main()
 
-# create_percentage_change_table('sprememba_v_odstotkih.csv', 'price-data21122021.csv')
-# create_json('../node-server/src/data/web-data.json', 'price-data21122021.csv')
-# schedule.every(5).minutes.do(write_trading_volumes)
-# print("Waiting for execution")
-# while 1:
-#     schedule.run_pending()
-#     time.sleep(1)
+schedule.every(2).hours.do(main)
+print("Waiting for execution")
+while 1:
+    schedule.run_pending()
+    time.sleep(1)
 #
