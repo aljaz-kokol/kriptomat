@@ -1,0 +1,25 @@
+header {
+  display: flex;
+  background-color: white;
+  box-shadow: -2px 5px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+nav {
+  margin-left: 10px;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+}
+
+.link-item {
+  margin-right: 5px;
+  font-weight: normal;
+}

@@ -1,4 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
-
+* {
+  box-sizing: border-box;
+}
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f8f8f8
+}
+/* Added custom scroll bar */
+::-webkit-scrollbar {
+  width: 7px;
+  border-radius: 5px;
+  background-color: rgba(224, 224, 224, 0.67);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: gray;
+}

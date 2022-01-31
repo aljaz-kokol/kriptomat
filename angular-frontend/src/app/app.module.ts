@@ -5,14 +5,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {CoinChartComponent} from "./components/coin-graph/coin-chart/coin-chart.component";
-import {CoinListComponent} from "./components/coin-list/coin-list.component";
 import {SharedModule} from "./modules/shared.module";
 import {AppRoutingModule} from "./modules/routes/app.routing.module";
+import {HeaderComponent} from "./components/header/header.component";
 
 @NgModule({
   declarations: [
-    AppComponent,
+    HeaderComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
