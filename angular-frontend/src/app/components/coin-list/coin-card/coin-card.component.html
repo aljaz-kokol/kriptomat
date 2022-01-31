@@ -1,0 +1,4 @@
+<div class="coin-container" *ngIf="coin">
+  <h3 class="coin-name">{{ coin.name }}</h3>
+  <img class="coin-img" [alt]="coin.name + ' logo'" [src]="coin.image" />
+</div>

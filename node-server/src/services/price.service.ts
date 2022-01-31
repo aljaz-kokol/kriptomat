@@ -13,6 +13,6 @@ export class PriceService {
     }
 
     public async coinPriceList(coin: CoinDocument): Promise<PriceDocument[]> {
-        return await Price.find({coin_id: coin._id});
+        return await Price.find({coin_id: coin._id}).sort({date: -1});
     }
 }

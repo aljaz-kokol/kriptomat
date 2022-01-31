@@ -2,9 +2,9 @@ import {NgModule} from "@angular/core";
 import {PreloadAllModules, RouterModule, Routes} from "@angular/router";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'trading', pathMatch: 'full' },
+  { path: '', redirectTo: 'coin-list', pathMatch: 'full' },
+  { path: 'coin-list', loadChildren: () => import('../coin-list.module').then(module => module.CoinListModule) },
   { path: 'coin-graph', loadChildren: () => import('../coin-graph.module').then(module => module.CoinGraphModule) },
-  { path: 'trading', loadChildren: () => import('../trading.module').then(module => module.TradingModule) }
 ];
 
 @NgModule({
