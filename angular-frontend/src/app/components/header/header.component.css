@@ -17,6 +17,7 @@ nav {
 .title {
   margin: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .link-item {

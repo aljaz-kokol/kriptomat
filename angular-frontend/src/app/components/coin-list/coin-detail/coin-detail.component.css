@@ -1,0 +1,24 @@
+.error-container {
+  background-color: rgba(238, 170, 170, 0.69);
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  border: 2px solid #fd7070;
+}
+
+.coin-name {
+  text-align: center;
+  margin: 0;
+}
+
+.coin-name-container hr {
+  border: 1px solid #585858;
+  background-color: #585858;
+  border-radius: 5px;
+}
+
+

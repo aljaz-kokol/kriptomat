@@ -9,7 +9,8 @@ export interface ApiCoin {
 }
 
 export class Coin {
-  constructor(public name: string,
+  constructor(public id: string,
+              public name: string,
               public connection: string,
               private _image: string) {}
 
@@ -19,7 +20,7 @@ export class Coin {
   }
 
   public static fromApiCoin(apiCoin: ApiCoin): Coin {
-    return new Coin(apiCoin.name, apiCoin.connection, apiCoin.image);
+    return new Coin(apiCoin._id, apiCoin.name, apiCoin.connection, apiCoin.image);
   }
 
   public static fromApiCoinList(apiCoins: ApiCoin[]): Coin[] {

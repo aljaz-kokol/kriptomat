@@ -78,7 +78,7 @@ class KriptomatService:
         for i in range(2, len(csv_data)):
             coinName = csv_data[i][0]
             for j in range(1, len(csv_data[i])):
-                price_val = self.__format_price(csv_data[i][j])
+                price_val = self.__format_price(csv_data[i][j].replace(',', '.'))
                 if csv_data[i][j] != '-1' and csv_data[i][j] != 'NaN' and price_val and price_val >= 0:
                     coins.append(Coin(name=coinName, price=price_val, connection='', svg_link='', date=dates[j - 1]))
         return coins

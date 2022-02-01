@@ -1,4 +1,4 @@
-<div class="coin-container" *ngIf="coin">
+<div class="coin-container" *ngIf="coin" (click)="onClick()">
   <h3 class="coin-name">{{ coin.name }}</h3>
   <img class="coin-img" [alt]="coin.name + ' logo'" [src]="coin.image" />
 </div>

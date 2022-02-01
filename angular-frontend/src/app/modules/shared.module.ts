@@ -3,10 +3,12 @@ import {MaterialModule} from "./material.module";
 import {CommonModule} from "@angular/common";
 import {NgChartsModule} from "ng2-charts";
 import {SearchBarComponent} from "../components/shared/search-bar/search-bar.component";
+import {SpinnerComponent} from "../components/shared/spinner/spinner.component";
 
 @NgModule({
   declarations: [
-    SearchBarComponent
+    SearchBarComponent,
+    SpinnerComponent
   ],
   imports: [
     MaterialModule,
@@ -14,7 +16,8 @@ import {SearchBarComponent} from "../components/shared/search-bar/search-bar.com
   exports: [
     MaterialModule,
     CommonModule,
-    SearchBarComponent
+    SearchBarComponent,
+    SpinnerComponent
   ]
 })
 export class SharedModule {}

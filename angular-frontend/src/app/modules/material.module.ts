@@ -12,10 +12,8 @@ import {MatIconModule} from "@angular/material/icon";
     MatProgressSpinnerModule,
     MatButtonModule,
     MatInputModule,
-    MatTableModule,
-    MatTabsModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
   ]
 })
 export class MaterialModule {}

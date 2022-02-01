@@ -9,7 +9,7 @@ import {Coin} from "../../models/coin.model";
   styleUrls: [ 'coin-list.component.css' ]
 })
 export class CoinListComponent implements OnInit {
-  private _coins: Coin[] = [];
+  private _coins: Coin[] | null = null;
   private _searchString = '';
 
   constructor(private _coinService: CoinService, private _router: Router) {}
@@ -21,10 +21,16 @@ export class CoinListComponent implements OnInit {
   }
 
   get coins(): Coin[] {
-    return [...this._coins].filter(coin => coin.name.trim().toLocaleLowerCase().indexOf(this._searchString) >= 0);
+    if (this._coins)
+      return [...this._coins].filter(coin => coin.name.trim().toLocaleLowerCase().indexOf(this._searchString) >= 0);
+    return []
   }
 
   filterList(search: string): void {
     this._searchString = search;
+  }
+
+  get showSpinner(): boolean {
+    return this._coins === null;
   }
 }

@@ -6,9 +6,27 @@ export interface ApiPrice {
 }
 
 export class Price {
-  constructor(public price: number,
-              public date: Date,
+  constructor(private _price: number,
+              private _date: Date,
               public coin: string) {}
+
+  public get price(): string {
+    const priceParts = this._price.toString().replace('.', ',').split(',');
+    // Add '.' on every thousand place
+    for (let i = priceParts[0].length - 1; i >= 0; i--) {
+      if ((i + 1) % 3 == 0) {
+        priceParts[0] = priceParts[0].substring(0, i) + '.' + priceParts[0].substring(i);
+      }
+    }
+    return priceParts.join(',');
+  }
+
+  public get date(): string {
+    const date = new Date(this._date);
+    const timeStr = date.toLocaleTimeString();
+    const dateStr = date.toLocaleDateString().split('.').map(datePart => datePart.trim().padStart(2, '0')).join ('.');
+    return `${dateStr} ${timeStr}`;
+  }
 
   public static fromApiPrice(apiPrice: ApiPrice): Price {
     return new Price(apiPrice.price, apiPrice.date, apiPrice.coin_id);

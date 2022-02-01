@@ -8,6 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./modules/shared.module";
 import {AppRoutingModule} from "./modules/routes/app.routing.module";
 import {HeaderComponent} from "./components/header/header.component";
+import {CoreModule} from "./modules/core.module";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {HeaderComponent} from "./components/header/header.component";
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

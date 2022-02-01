@@ -1,8 +1,7 @@
-<div class="container">
+<div class="container" *ngIf="!showSpinner">
   <app-search-bar (onSearch)="filterList($event)"></app-search-bar>
   <div class="grid-container">
     <app-coin-card *ngFor="let coin of coins" [coin]="coin"></app-coin-card>
   </div>
 </div>
-
-
+<app-spinner *ngIf="showSpinner" ></app-spinner>

@@ -6,8 +6,8 @@ import {
   ViewChild,
 } from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {Coin} from "../../../models/coin.model";
-import {CoinService} from "../../../services/coin.service";
+import {Coin} from "../../models/coin.model";
+import {CoinService} from "../../services/coin.service";
 import {Chart, ChartTypeRegistry, registerables} from "chart.js";
 
 @Component({
