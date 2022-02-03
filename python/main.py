@@ -240,7 +240,7 @@ db_service = DatabaseService()
 
 
 def main():
-    coins = kriptomat_service.get_coins_from_csv('price-data30012022on2h.csv')
+    coins = kriptomat_service.get_coins()
     db_service.insert_coins(coins)
     print(f'Number of coins: {len(coins)}')
     print(f'{datetime.now()} Finished\n')
@@ -248,9 +248,9 @@ def main():
 
 main()
 
-# schedule.every(2).hours.do(main)
-# print("Waiting for execution")
-# while 1:
-#     schedule.run_pending()
-#     time.sleep(1)
-#
+schedule.every(2).hours.do(main)
+print("Waiting for execution")
+while 1:
+    schedule.run_pending()
+    time.sleep(1)
+

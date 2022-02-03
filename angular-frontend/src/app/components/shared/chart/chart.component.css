@@ -1,0 +1,5 @@
+.chart {
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: white;
+}

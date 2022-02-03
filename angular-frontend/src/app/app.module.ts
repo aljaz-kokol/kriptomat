@@ -9,6 +9,7 @@ import {SharedModule} from "./modules/shared.module";
 import {AppRoutingModule} from "./modules/routes/app.routing.module";
 import {HeaderComponent} from "./components/header/header.component";
 import {CoreModule} from "./modules/core.module";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -18,8 +19,8 @@ import {CoreModule} from "./modules/core.module";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
     AppRoutingModule,
+    FormsModule,
     HttpClientModule,
     SharedModule,
     CoreModule

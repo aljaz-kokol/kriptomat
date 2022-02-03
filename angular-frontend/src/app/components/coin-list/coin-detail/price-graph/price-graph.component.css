@@ -1,0 +1,8 @@
+mat-tab-group {
+  background: white;
+  display: block;
+}
+
+.tab-label-icon {
+  margin-left: 10px;
+}

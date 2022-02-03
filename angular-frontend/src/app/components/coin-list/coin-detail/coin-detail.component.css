@@ -1,5 +1,11 @@
+.container {
+  margin-top: 70px;
+  width: 100%;
+  background: white;
+}
+
 .error-container {
-  background-color: rgba(238, 170, 170, 0.69);
+  background-color: rgba(255, 228, 228, 0.89);
   padding: 10px;
   border-radius: 5px;
   position: absolute;
@@ -10,15 +16,27 @@
   border: 2px solid #fd7070;
 }
 
+.coin-name-container {
+  display: flex;
+  background-color: white;
+  align-items: center;
+  position: fixed;
+  top: 55px;
+  left: 0;
+  width: 100%;
+  padding :10px 5px  5px;
+  z-index: 2;
+}
+
 .coin-name {
   text-align: center;
   margin: 0;
+  font-size: 2rem;
 }
 
-.coin-name-container hr {
-  border: 1px solid #585858;
-  background-color: #585858;
-  border-radius: 5px;
+.coin-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
-
 

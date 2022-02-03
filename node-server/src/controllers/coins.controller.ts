@@ -15,12 +15,18 @@ export const getCoins = async (req: Request, res: Response, next: NextFunction) 
 export const getCoinById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const coin = await CoinService.get.coinById(req.params.id);
-        const prices = await PriceService.get.coinPriceList(coin);
-        res.status(StatusCode.OK).json({
-            'coin': coin,
-            'prices': prices
-        })
+        res.status(StatusCode.OK).json(coin)
     } catch(err) {
+        next(err);
+    }
+}
+
+export const getCoinPrices = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const coin = await CoinService.get.coinById(req.params.id);
+        const prices = await PriceService.get.coinPriceList(coin);
+        res.status(StatusCode.OK).json(prices);
+    } catch (err) {
         next(err);
     }
 }

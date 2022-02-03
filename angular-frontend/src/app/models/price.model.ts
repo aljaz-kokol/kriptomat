@@ -10,7 +10,7 @@ export class Price {
               private _date: Date,
               public coin: string) {}
 
-  public get price(): string {
+  public get priceStr(): string {
     const priceParts = this._price.toString().replace('.', ',').split(',');
     // Add '.' on every thousand place
     for (let i = priceParts[0].length - 1; i >= 0; i--) {
@@ -21,11 +21,23 @@ export class Price {
     return priceParts.join(',');
   }
 
+  public get price(): number {
+    return this._price;
+  }
+
   public get date(): string {
     const date = new Date(this._date);
-    const timeStr = date.toLocaleTimeString();
     const dateStr = date.toLocaleDateString().split('.').map(datePart => datePart.trim().padStart(2, '0')).join ('.');
-    return `${dateStr} ${timeStr}`;
+    return `${dateStr}`;
+  }
+
+  public get dateMonth(): string {
+    return this.date.split('.').slice(1).join('.');
+  }
+
+  public get dateYear(): string {
+    const date = new Date(this._date);
+    return `${date.getFullYear()}`
   }
 
   public static fromApiPrice(apiPrice: ApiPrice): Price {

@@ -17,4 +17,8 @@ export class ApiEndpointService {
   public getCoinByIdEndpoint(coinId: string) {
     return this._createUrl(['coins', coinId]);
   }
+
+  public getCoinPricesEndpoint(coinId: string) {
+    return this._createUrl(['coins', coinId, 'prices']);
+  }
 }

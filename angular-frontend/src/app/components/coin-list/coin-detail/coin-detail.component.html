@@ -1,14 +1,17 @@
-<div class="container" *ngIf="coin">
-  <div class="coin-name-container">
-    <h1 class="coin-name mat-display-1">{{ coin.name }}</h1>
-    <hr />
-  </div>
-  <app-price-list [prices]="prices"></app-price-list>
+<div class="coin-name-container" *ngIf="coin">
+  <img [src]="coin.image" [alt]="coin.name" class="coin-image">
+  <h1 class="coin-name">{{ coin.name }}</h1>
+</div>
+
+<div class="container" *ngIf="showContent">
+  <app-price-graph></app-price-graph>
+  <app-date-selector></app-date-selector>
 </div>
 
 <div class="error-container" *ngIf="error">
   <h1>There was an error</h1>
   <p>An error has occurred while trying to fetch coin data</p>
+  <a mat-button color="accent" routerLink="/coin-list">Go Back</a>
 </div>
 
 <app-spinner *ngIf="showSpinner"></app-spinner>

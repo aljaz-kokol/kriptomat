@@ -14,7 +14,7 @@ export class CoinCardComponent {
 
   onClick(): void {
     if (this.coin) {
-      this._router.navigate(['coin-list', this.coin.id]);
+      this._router.navigate(['coin', this.coin.id]);
     }
   }
 }
