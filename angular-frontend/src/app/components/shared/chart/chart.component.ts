@@ -4,7 +4,7 @@ import {
   OnDestroy,
   OnInit
 } from "@angular/core";
-import { EChartsOption, ECharts } from 'echarts'
+import { EChartsOption } from 'echarts'
 import {Observable, Subscription} from "rxjs";
 
 @Component({
@@ -13,31 +13,38 @@ import {Observable, Subscription} from "rxjs";
   styleUrls: ['chart.component.css']
 })
 export class ChartComponent implements OnInit, OnDestroy {
-  @Input() data!: Observable<{data: any[], labels: any[]}>;
+  @Input() data!: Observable<{dataset: {data: any[]; name?: string}[]; labels: string[]}>;
 
   private _updateSubscription!: Subscription;
 
-  chartOptions: EChartsOption = {}
   updateOptions: EChartsOption = {}
+  chartOptions: EChartsOption = {}
 
   ngOnInit() {
+
       this._updateSubscription = this.data
         .subscribe(newData => {
-          this.chartOptions = {
-            xAxis: {
-              type: 'category',
-              data: newData.labels,
-            },
-            yAxis: {
-              type: 'value',
-            },
-            series: [
-              {
-                data: newData.data,
-                type: 'line',
+            const dataSeries: any[] = [];
+            newData.dataset.forEach(set => {
+              dataSeries.push({
+                data: set.data,
+                name: set.name ?? '',
+                type: 'line'
+              })
+            })
+
+            this.chartOptions = {
+              xAxis: {
+                type: 'category',
+                data: newData.labels,
               },
-            ],
-          }
+              yAxis: {
+                type: 'value',
+              },
+              tooltip: {},
+              series: dataSeries,
+            }
+
         });
   }
 

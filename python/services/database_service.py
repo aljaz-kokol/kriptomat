@@ -24,12 +24,14 @@ class DatabaseService:
                 result = coin_collection.insert_one({
                     'name': coin.name,
                     'connection': coin.connection,
+                    'lastPrice': coin.price,
                     'image': f'{coin.get_svg_name()}.svg'
                 })
                 coin_id = result.inserted_id
                 new_coin_counter = new_coin_counter + 1
             else:
                 coin_id = coin_document['_id']
+                coin_collection.update_one({'_id': coin_id}, {'$set': {'lastPrice': coin.price}})
 
             price_collection.insert_one({'price': coin.price, 'date': coin.date, 'coin_id': coin_id})
             print(f'"{coin.name}" data inserted')

@@ -6,6 +6,8 @@ import {MatListModule} from "@angular/material/list";
 import {MatIconModule} from "@angular/material/icon";
 import {NgxEchartsModule} from "ngx-echarts";
 import {MatTabsModule} from "@angular/material/tabs";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import {MatTabsModule} from "@angular/material/tabs";
     MatListModule,
     MatIconModule,
     NgxEchartsModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCheckboxModule,
+    MatButtonToggleModule
   ]
 })
 export class MaterialModule {}

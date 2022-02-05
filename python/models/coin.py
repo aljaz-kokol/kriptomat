@@ -11,7 +11,7 @@ class Coin:
     svg_link_attr = 'svg_link'
     date_attr = 'date'
 
-    def __init__(self, name, price, connection, svg_link, date=datetime.now().utcnow()):
+    def __init__(self, name, price, connection, svg_link, date=datetime.now()):
         self.name = name
         self.price = price
         self.connection = connection

@@ -1,0 +1,8 @@
+<mat-button-toggle-group multiple (change)="onToggle($event)" [value]="toggleOptions[0]">
+  <mat-button-toggle
+    *ngFor="let option of toggleOptions"
+    [value]="option">
+    <span class="option-name">{{ option }}</span>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<app-chart [data]="percentageChangeObserver"></app-chart>

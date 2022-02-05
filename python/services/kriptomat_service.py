@@ -51,7 +51,8 @@ class KriptomatService:
                     name=name.text,
                     price=price_val,
                     connection=url_conn['href'],
-                    svg_link=f'https://kriptomat.io{svg_link["src"]}'
+                    svg_link=f'https://kriptomat.io{svg_link["src"]}',
+                    date=datetime.now()
                 )
         return None
 

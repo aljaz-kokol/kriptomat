@@ -5,6 +5,7 @@ export interface CoinDocument extends Document {
     name: string;
     connection: string;
     image: string;
+    lastPrice: number;
 }
 
 const coinSchema = new Schema({
@@ -14,11 +15,16 @@ const coinSchema = new Schema({
    },
     connection: {
        type: String,
-        required: true
+       required: true
     },
     image: {
        type: String,
-        required: true
+       required: true
+    },
+    lastPrice: {
+       type: Number,
+       required: true,
+       default: 0
     }
 });
 

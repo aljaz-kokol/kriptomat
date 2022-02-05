@@ -7,7 +7,7 @@ export interface ApiPrice {
 
 export class Price {
   constructor(private _price: number,
-              private _date: Date,
+              public _date: Date,
               public coin: string) {}
 
   public get priceStr(): string {

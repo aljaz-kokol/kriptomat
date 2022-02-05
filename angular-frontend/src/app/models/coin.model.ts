@@ -1,5 +1,6 @@
 import {UrlBuilder} from "../shared/url-builder";
 import {API_ENDPOINT} from "../utils/constants.util";
+import {Price} from "./price.model";
 
 export interface ApiCoin {
   _id: string;
@@ -12,7 +13,8 @@ export class Coin {
   constructor(public id: string,
               public name: string,
               public connection: string,
-              private _image: string) {}
+              private _image: string,
+              public prices?: Price[]) {}
 
   public get image(): string {
     const urlBuilder = new UrlBuilder(API_ENDPOINT, ['images', this._image]);

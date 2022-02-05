@@ -1,0 +1,20 @@
+mat-button-toggle-group {
+  margin-top: 5px;
+  overflow: auto;
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+}
+
+mat-button-toggle {
+}
+
+.mat-button-toggle-checked {
+  background: #3f50b5;
+  color: white;
+  font-weight: bold;
+}
+
+.option-name {
+  text-transform: capitalize;
+}

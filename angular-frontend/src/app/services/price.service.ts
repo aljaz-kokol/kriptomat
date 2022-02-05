@@ -1,7 +1,7 @@
 import {ApiPrice, Price} from "../models/price.model";
 import {ApiHttpService} from "./core/api-http.service";
 import {ApiEndpointService} from "./core/api-endpoint.service";
-import {map, Subject} from "rxjs";
+import {map, Observable, Subject} from "rxjs";
 import {Injectable} from "@angular/core";
 
 @Injectable({providedIn: 'root'})
@@ -18,6 +18,11 @@ export class PriceService {
         this._prices = prices;
         this._priceChangeListener.next(this._prices);
     });
+  }
+
+  fetchPricesSub(coinId: string): Observable<Price[]> {
+    return this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint(coinId))
+      .pipe(map(Price.fromApiPriceList));
   }
 
   clear(): void {
@@ -47,7 +52,7 @@ export class PriceService {
       for (const date of dates) {
         prices.push(...this._prices.filter(prices => prices.date == date || prices.dateMonth == date || prices.dateYear == date));
       }
-      this._priceChangeListener.next(prices);
+      this._priceChangeListener.next(prices.sort((p1, p2) => new Date(p2._date).getTime() - new Date(p1._date).getTime()));
     } else {
       this._priceChangeListener.next(this._prices);
     }

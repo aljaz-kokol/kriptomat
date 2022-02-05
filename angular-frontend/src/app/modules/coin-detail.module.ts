@@ -2,16 +2,18 @@ import {NgModule} from "@angular/core";
 import {SharedModule} from "./shared.module";
 import {CoinListRoutingModule} from "./routes/coin-list.routing.module";
 import {CoinDetailComponent} from "../components/coin-list/coin-detail/coin-detail.component";
-import {PriceListComponent} from "../components/coin-list/coin-detail/price-list/price-list.component";
-import {PriceGraphComponent} from "../components/coin-list/coin-detail/price-graph/price-graph.component";
+import {CoinGraphComponent} from "../components/coin-list/coin-detail/coin-graph/coin-graph.component";
 import {DateSelectorComponent} from "../components/coin-list/coin-detail/date-selector/date-selector.component";
+import {
+  PercentageGraphComponent
+} from "../components/coin-list/coin-detail/coin-graph/percentage-graph/percentage-graph/percentage-graph.component";
 
 @NgModule({
   declarations: [
     CoinDetailComponent,
-    PriceListComponent,
-    PriceGraphComponent,
-    DateSelectorComponent
+    CoinGraphComponent,
+    DateSelectorComponent,
+    PercentageGraphComponent
   ],
   imports: [
     SharedModule,

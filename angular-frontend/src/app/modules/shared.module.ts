@@ -11,7 +11,7 @@ import {FormsModule} from "@angular/forms";
   declarations: [
     SearchBarComponent,
     SpinnerComponent,
-    ChartComponent
+    ChartComponent,
   ],
   imports: [
     MaterialModule,
@@ -22,7 +22,8 @@ import {FormsModule} from "@angular/forms";
     DragDropModule,
     SearchBarComponent,
     SpinnerComponent,
-    ChartComponent
+    FormsModule,
+    ChartComponent,
   ]
 })
 export class SharedModule {}

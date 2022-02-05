@@ -1,10 +1,10 @@
-<mat-tab-group *ngIf="showContent">
+<mat-tab-group>
   <mat-tab label="Percentage Chart">
     <ng-template mat-tab-label>
       Percentage Chart
       <mat-icon class="tab-label-icon">percentage</mat-icon>
     </ng-template>
-    <app-chart [data]="percentageChangeObserver"></app-chart>
+    <app-percentage-graph></app-percentage-graph>
   </mat-tab>
 
   <mat-tab>
@@ -15,4 +15,4 @@
     <app-chart [data]="priceChangeObserver"></app-chart>
   </mat-tab>
 </mat-tab-group>
-<app-spinner *ngIf="!showContent"></app-spinner>
+
