@@ -7,27 +7,31 @@ import {Injectable} from "@angular/core";
 @Injectable({providedIn: 'root'})
 export class PriceService {
   private _priceChangeListener = new Subject<Price[]>()
-  private _prices: Price[] = [];
+  private _allPrices: Price[] = [];
+  private _coinPrices: Price[] = [];
 
   constructor(private _apiHttp: ApiHttpService,
               private _apiEndpoint: ApiEndpointService) {}
 
-  fetchPrices(coinId: string): void {
+  fetchCoinPrices(coinId: string): void {
     this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint(coinId))
       .pipe(map(Price.fromApiPriceList)).subscribe(prices => {
-        this._prices = prices;
-        this._priceChangeListener.next(this._prices);
+        this._coinPrices = prices;
+        this._priceChangeListener.next(this._coinPrices);
     });
   }
 
-  fetchPricesSub(coinId: string): Observable<Price[]> {
-    return this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint(coinId))
-      .pipe(map(Price.fromApiPriceList));
+  fetchAllPrices(): void {
+    this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getPriceListEndpoint())
+      .pipe(map(Price.fromApiPriceList)).subscribe(prices => {
+        this._allPrices = prices;
+        console.log(this._allPrices);
+      });
   }
 
   clear(): void {
-    this._prices = [];
-    this._priceChangeListener.next(this._prices);
+    this._coinPrices = [];
+    this._priceChangeListener.next(this._coinPrices);
   }
 
   get priceChangeListener() {
@@ -35,26 +39,30 @@ export class PriceService {
   }
 
   get days(): string[] {
-    return [...new Set(this._prices.map(price => price.date))];
+    return [...new Set(this._coinPrices.map(price => price.date))];
   }
 
   get months(): string[] {
-    return [...new Set(this._prices.map(price => price.dateMonth))];
+    return [...new Set(this._coinPrices.map(price => price.dateMonth))];
   }
 
   get years(): string[] {
-    return [...new Set(this._prices.map(price => price.dateYear))];
+    return [...new Set(this._coinPrices.map(price => price.dateYear))];
+  }
+
+  get sortReady(): boolean {
+    return this._allPrices.length > 0;
   }
 
   filterByDate(dates: string[]) {
     if (dates.length > 0) {
       const prices: Price[] = [];
       for (const date of dates) {
-        prices.push(...this._prices.filter(prices => prices.date == date || prices.dateMonth == date || prices.dateYear == date));
+        prices.push(...this._coinPrices.filter(prices => prices.date == date || prices.dateMonth == date || prices.dateYear == date));
       }
       this._priceChangeListener.next(prices.sort((p1, p2) => new Date(p2._date).getTime() - new Date(p1._date).getTime()));
     } else {
-      this._priceChangeListener.next(this._prices);
+      this._priceChangeListener.next(this._coinPrices);
     }
   }
 }

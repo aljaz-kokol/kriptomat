@@ -13,8 +13,7 @@ export class Coin {
   constructor(public id: string,
               public name: string,
               public connection: string,
-              private _image: string,
-              public prices?: Price[]) {}
+              private _image: string) {}
 
   public get image(): string {
     const urlBuilder = new UrlBuilder(API_ENDPOINT, ['images', this._image]);

@@ -1,9 +1,10 @@
-import path from 'path'
+import path from 'path';
 
 import express, { Request, Response, NextFunction } from 'express';
 import { APIError } from './errors/api.error';
-import { COIN_ENDPOINT } from './utils/endpoints.util';
+import { COIN_ENDPOINT, PRICE_ENDPOINT } from './utils/endpoints.util';
 import coinsRoutes from './routes/coin.routes';
+import priceRoutes from './routes/price.routes';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(COIN_ENDPOINT, coinsRoutes);
+app.use(PRICE_ENDPOINT, priceRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof APIError) {

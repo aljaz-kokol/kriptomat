@@ -1,6 +1,6 @@
 <div class="coin-name-container" *ngIf="coin">
   <img [src]="coin.image" [alt]="coin.name" class="coin-image">
-  <h1 class="coin-name">{{ coin.name }}</h1>
+  <a [href]="coin.connection" target="_blank"><h1 class="coin-name">{{ coin.name }}</h1></a>
 </div>
 
 <div class="container" *ngIf="showContent">

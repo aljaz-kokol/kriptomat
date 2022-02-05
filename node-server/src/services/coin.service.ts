@@ -1,8 +1,8 @@
 import { Types } from 'mongoose'
 
 import Coin, { CoinDocument } from '../models/coin.model'
-import { InvalidParameterError } from "../errors/invalid-par.error";
-import { NotFoundError } from "../errors/not-found.error";
+import { InvalidParameterError } from "../errors/invalid-par.error"
+import { NotFoundError } from "../errors/not-found.error"
 
 export class CoinService {
     private static _instance: CoinService | null =  null;

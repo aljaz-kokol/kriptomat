@@ -25,7 +25,7 @@ export class CoinDetailComponent implements OnInit, OnDestroy {
       this._coinService.getCoinById(coinId).subscribe({
         next: coin => {
           this.coin = coin;
-          this._priceService.fetchPrices(this.coin.id);
+          this._priceService.fetchCoinPrices(this.coin.id);
         },
         error: err => this.error = err
       });

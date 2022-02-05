@@ -28,8 +28,13 @@
   z-index: 2;
 }
 
+a {
+  text-decoration: none;
+}
+
 .coin-name {
   text-align: center;
+  color: black;
   margin: 0;
   font-size: 2rem;
 }

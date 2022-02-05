@@ -18,6 +18,13 @@ app-search-bar {
   z-index: 1;
 }
 
+.popup-btn {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+  right: 5px;
+}
+
 @media only screen and (max-width: 1024px) {
   .grid-container {
     grid-template-columns: 1fr 1fr;

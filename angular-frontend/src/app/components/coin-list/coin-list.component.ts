@@ -21,14 +21,6 @@ export class CoinListComponent implements OnInit {
   ngOnInit(): void {
     this._coinService.getCoinList().subscribe((coins:  Coin[]) => {
       this._coins = coins;
-      // for (let i = 0; i < this._coins.length; i++) {
-      //   this._priceService.fetchPricesSub(this._coins[i].id)
-      //     .subscribe(prices => {
-      //       if (this._coins) {
-      //         this._coins[i].prices = prices;
-      //       }
-      //     })
-      // }
     });
   }
 
@@ -40,6 +32,10 @@ export class CoinListComponent implements OnInit {
 
   filterList(search: string): void {
     this._searchString = search;
+  }
+
+  get sortDisabled(): boolean {
+    return !this._priceService.sortReady;
   }
 
   get showSpinner(): boolean {

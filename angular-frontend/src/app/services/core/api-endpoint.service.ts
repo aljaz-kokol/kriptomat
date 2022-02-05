@@ -22,7 +22,8 @@ export class ApiEndpointService {
     return this._createUrl(['coins', coinId, 'prices']);
   }
 
-  public getCoinPriceByIndexEndpoint(coinId: string, index: number) {
-    return this._createUrl(['coins', coinId, 'prices', `${index}`]);
+  // == PRICE ENDPOITNS ==
+  public getPriceListEndpoint(): string {
+    return this._createUrl(['prices']);
   }
 }

@@ -3,5 +3,6 @@
   <div class="grid-container">
     <app-coin-card *ngFor="let coin of coins" [coin]="coin"></app-coin-card>
   </div>
+  <button mat-flat-button class="popup-btn" color="white" [disabled]="sortDisabled">Sort</button>
 </div>
 <app-spinner *ngIf="showSpinner" ></app-spinner>
