@@ -9,8 +9,6 @@ import {Router} from "@angular/router";
 })
 export class CoinCardComponent {
   constructor(private _router: Router) {}
-  @Input() showSelect: boolean = false;
-  @Input() selected: boolean = false;
   @Input()  coin: Coin | null = null;
 
   @Output() onShowSelection = new EventEmitter<Coin>();
@@ -18,12 +16,6 @@ export class CoinCardComponent {
   onClick(): void {
     if (this.coin) {
       this._router.navigate(['coin', this.coin.id]);
-    }
-  }
-
-  onLongClick(): void {
-    if (this.coin) {
-      this.onShowSelection.emit(this.coin);
     }
   }
 }

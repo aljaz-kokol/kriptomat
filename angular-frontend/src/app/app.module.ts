@@ -9,8 +9,6 @@ import {SharedModule} from "./modules/shared.module";
 import {AppRoutingModule} from "./modules/routes/app.routing.module";
 import {HeaderComponent} from "./components/header/header.component";
 import {CoreModule} from "./modules/core.module";
-import {DragDropModule} from "@angular/cdk/drag-drop";
-import {LongClickDirective} from "./directives/long-click.directive";
 
 @NgModule({
   declarations: [

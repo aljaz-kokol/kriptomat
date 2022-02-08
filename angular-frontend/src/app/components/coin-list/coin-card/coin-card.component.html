@@ -1,6 +1,5 @@
-<div class="coin-container" *ngIf="coin" (click)="onClick()" (longClick)="onLongClick()">
+<div class="coin-container" *ngIf="coin" (click)="onClick()">
   <div class="name-container">
-    <mat-checkbox *ngIf="showSelect" [ngModel]="selected"></mat-checkbox>
     <h3 class="coin-name">{{ coin.name }}</h3>
   </div>
   <img class="coin-img" [alt]="coin.name + ' logo'" [src]="coin.image" />

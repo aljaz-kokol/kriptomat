@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Price} from "../../../../models/price.model";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {PriceService} from "../../../../services/price.service";
-import {MatButtonToggleChange} from "@angular/material/button-toggle";
 
 @Component({
   selector: 'app-coin-graph',

@@ -3,6 +3,10 @@
   <div class="grid-container">
     <app-coin-card *ngFor="let coin of coins" [coin]="coin"></app-coin-card>
   </div>
-  <button mat-flat-button class="popup-btn" color="white" [disabled]="sortDisabled">Sort</button>
+  <button mat-flat-button class="popup-btn" color="white" (click)="toggleSortPopup()" [disabled]="sortDisabled">Sort</button>
+  <app-sort-popup
+    [(percentageOption)]="percentageOption"
+    [(periodOption)]="periodOption">
+  </app-sort-popup>
 </div>
 <app-spinner *ngIf="showSpinner" ></app-spinner>

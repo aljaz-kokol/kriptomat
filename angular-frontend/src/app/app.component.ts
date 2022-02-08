@@ -1,5 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CoinService} from "./services/coin.service";
+import {Component, OnInit} from '@angular/core';
 import {PriceService} from "./services/price.service";
 
 @Component({

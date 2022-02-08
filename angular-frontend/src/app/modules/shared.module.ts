@@ -6,15 +6,20 @@ import {SpinnerComponent} from "../components/shared/spinner/spinner.component";
 import {ChartComponent} from "../components/shared/chart/chart.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {FormsModule} from "@angular/forms";
+import {OverlayComponent} from "../components/shared/overlay/overlay.component";
+import {PopupComponent} from "../components/shared/popup/popup.component";
 
 @NgModule({
   declarations: [
     SearchBarComponent,
     SpinnerComponent,
     ChartComponent,
+    OverlayComponent,
+    PopupComponent
   ],
   imports: [
     MaterialModule,
+    CommonModule
   ],
   exports: [
     MaterialModule,
@@ -24,6 +29,8 @@ import {FormsModule} from "@angular/forms";
     SpinnerComponent,
     FormsModule,
     ChartComponent,
+    OverlayComponent,
+    PopupComponent
   ]
 })
 export class SharedModule {}
