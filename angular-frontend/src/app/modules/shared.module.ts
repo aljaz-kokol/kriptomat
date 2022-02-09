@@ -8,6 +8,8 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {FormsModule} from "@angular/forms";
 import {OverlayComponent} from "../components/shared/overlay/overlay.component";
 import {PopupComponent} from "../components/shared/popup/popup.component";
+import {ChoiceDialogComponent} from "../components/shared/dialog/choice-dialog/choice-dialog.component";
+import {LayoutModule} from "@angular/cdk/layout";
 
 @NgModule({
   declarations: [
@@ -15,22 +17,25 @@ import {PopupComponent} from "../components/shared/popup/popup.component";
     SpinnerComponent,
     ChartComponent,
     OverlayComponent,
-    PopupComponent
+    PopupComponent,
+    ChoiceDialogComponent
   ],
   imports: [
     MaterialModule,
-    CommonModule
+    CommonModule,
   ],
   exports: [
     MaterialModule,
     CommonModule,
     DragDropModule,
+    LayoutModule,
     SearchBarComponent,
     SpinnerComponent,
     FormsModule,
     ChartComponent,
     OverlayComponent,
-    PopupComponent
+    PopupComponent,
+    ChoiceDialogComponent
   ]
 })
 export class SharedModule {}

@@ -1,0 +1,16 @@
+mat-button-toggle-group {
+  margin-top: 5px;
+  overflow: auto;
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+}
+
+img {
+  width: 25px;
+  height: 25px;
+}
+
+.mat-button-toggle-checked {
+  background: #d4d4d4;
+}

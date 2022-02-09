@@ -2,10 +2,7 @@
   <div class="container">
     <section class="percent-calc">
       <h2>Calculate Percentage for</h2>
-      <mat-button-toggle-group (change)="onPercentageChange($event)" value="none" >
-        <mat-button-toggle value="none">
-          <span class="option-name">None</span>
-        </mat-button-toggle>
+      <mat-button-toggle-group (change)="onPercentageChange($event)" [value]="defaultPercentPeriod" >
         <mat-button-toggle value="now">
           <span class="option-name">Now</span>
         </mat-button-toggle>
@@ -18,7 +15,7 @@
     </section>
     <section class="period">
       <h2>Period of time</h2>
-      <mat-button-toggle-group (change)="onPeriodChange($event)" [disabled]="!canSelectPeriod">
+      <mat-button-toggle-group (change)="onPeriodChange($event)" [value]="defaultTimePeriod">
         <mat-button-toggle
           *ngFor="let option of options"
           [value]="option">

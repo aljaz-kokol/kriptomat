@@ -3,6 +3,7 @@ import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {Price} from "../../../../../../models/price.model";
 import {PriceService} from "../../../../../../services/price.service";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
+import {ChartData} from "../../../../../../shared/chart-data.model";
 
 @Component({
   selector: 'app-percentage-graph',
@@ -11,7 +12,7 @@ import {MatButtonToggleChange} from "@angular/material/button-toggle";
 })
 export class PercentageGraphComponent implements OnInit, OnDestroy {
   private _percentageSubscription!: Subscription;
-  private _percentageChartListener!: BehaviorSubject<{dataset: {data: any[]; name?: string}[]; labels: string[]}>;
+  private _percentageChartListener!: BehaviorSubject<ChartData>;
   private _selectedOptions: string[] = [];
   private _toggleOptions = new Map<string, number>([
     ['original', 0],
@@ -86,7 +87,7 @@ export class PercentageGraphComponent implements OnInit, OnDestroy {
     return values;
   }
 
-  get percentageChangeObserver(): Observable<{dataset: {data: any[], name?: string}[], labels: string[]}>  {
+  get percentageChangeObserver(): Observable<ChartData>  {
     return this._percentageChartListener.asObservable();
   }
 
@@ -100,7 +101,7 @@ export class PercentageGraphComponent implements OnInit, OnDestroy {
 
 
   private _initListeners() {
-    this._percentageChartListener = new BehaviorSubject<{ dataset: { data: any[]; name?: string }[]; labels: string[] }>({
+    this._percentageChartListener = new BehaviorSubject<ChartData>({
       dataset: this.percentageValues,
       labels: this.dates
     });

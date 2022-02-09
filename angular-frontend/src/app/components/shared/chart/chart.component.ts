@@ -6,6 +6,7 @@ import {
 } from "@angular/core";
 import { EChartsOption } from 'echarts'
 import {Observable, Subscription} from "rxjs";
+import {ChartData} from "../../../shared/chart-data.model";
 
 @Component({
   selector: 'app-chart[data]',
@@ -13,7 +14,7 @@ import {Observable, Subscription} from "rxjs";
   styleUrls: ['chart.component.css']
 })
 export class ChartComponent implements OnInit, OnDestroy {
-  @Input() data!: Observable<{dataset: {data: any[]; name?: string}[]; labels: string[]}>;
+  @Input() data!: Observable<ChartData>;
 
   private _updateSubscription!: Subscription;
 
@@ -21,7 +22,6 @@ export class ChartComponent implements OnInit, OnDestroy {
   chartOptions: EChartsOption = {}
 
   ngOnInit() {
-
       this._updateSubscription = this.data
         .subscribe(newData => {
             const dataSeries: any[] = [];
@@ -34,6 +34,9 @@ export class ChartComponent implements OnInit, OnDestroy {
             })
 
             this.chartOptions = {
+              legend: {
+                data: dataSeries.map(el => el.name),
+              },
               xAxis: {
                 type: 'category',
                 data: newData.labels,
@@ -43,6 +46,24 @@ export class ChartComponent implements OnInit, OnDestroy {
               },
               tooltip: {},
               series: dataSeries,
+              dataZoom: [
+                {
+                  type: 'slider',
+                  xAxisIndex: 0,
+                },
+                {
+                  type: 'slider',
+                  yAxisIndex: 0,
+                },
+                {
+                  type: 'inside',
+                  xAxisIndex: 0,
+                },
+                {
+                  type: 'inside',
+                  yAxisIndex: 0,
+                },
+              ],
             }
 
         });

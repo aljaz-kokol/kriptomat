@@ -23,3 +23,9 @@ mat-tab-group {
   background: royalblue;
   color: white;
 }
+
+@media only screen and (max-width: 480px) {
+  .date {
+    font-size: initial;
+  }
+}

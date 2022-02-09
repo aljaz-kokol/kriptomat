@@ -16,7 +16,7 @@
   border: 2px solid #fd7070;
 }
 
-.coin-name-container {
+.coin-nav-bar {
   display: flex;
   background-color: white;
   align-items: center;
@@ -25,7 +25,21 @@
   left: 0;
   width: 100%;
   padding :10px 5px  5px;
+  justify-content: space-between;
   z-index: 2;
+}
+
+.name-container {
+  display: flex;
+}
+
+.action-container {
+  position: relative;
+}
+
+.action-spinner {
+  position: relative;
+  right: 30px;
 }
 
 a {

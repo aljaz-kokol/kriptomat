@@ -52,7 +52,7 @@ export class PriceService {
         else
           percentValues.push(percent);
       });
-      const sorted = this._quickSort(percentValues, 0, percentValues.length - 1);
+      const sorted = percentValues.sort((n1, n2) => n2 - n1);
       percentageList.push({coin: coin.coin, values: sorted});
     });
     return percentageList;
@@ -60,7 +60,7 @@ export class PriceService {
 
   getPercentageMaxForCoin(coinId: string, percentPeriod: number, period: number): number {
     const values = this.getPercentageList(percentPeriod, period).filter(el => el.coin === coinId)[0].values;
-    return values[values.length - 1];
+    return values[0];
   }
 
   clear(): void {

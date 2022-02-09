@@ -8,6 +8,10 @@ import {NgxEchartsModule} from "ngx-echarts";
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatCardModule} from "@angular/material/card";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   imports: [
@@ -24,7 +28,11 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     NgxEchartsModule,
     MatTabsModule,
     MatCheckboxModule,
-    MatButtonToggleModule
+    MatCardModule,
+    MatButtonToggleModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule
   ]
 })
 export class MaterialModule {}

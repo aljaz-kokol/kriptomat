@@ -1,17 +1,19 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
+import {PriceService} from "../../../services/price.service";
+import {CoinService} from "../../../services/coin.service";
 
 @Component({
   selector: 'app-sort-popup',
   templateUrl: 'sort-popup.component.html',
   styleUrls: ['sort-popup.component.css']
 })
-export class SortPopupComponent {
-  @Input() percentageOption: number = -1;
-  @Output() percentageOptionChange = new EventEmitter<number>();
+export class SortPopupComponent implements OnInit {
+  defaultPercentPeriod: string = '';
+  @Output() percentagePeriodChange = new EventEmitter<number>();
 
-  @Input() periodOption: number = 1;
-  @Output() periodOptionChange = new EventEmitter<number>();
+  defaultTimePeriod: string = '2h';
+  @Output() timePeriodChange = new EventEmitter<number>();
 
   private _toggleOptions = new Map<string, number>([
     ['2h', 1],
@@ -29,25 +31,27 @@ export class SortPopupComponent {
     ['4 weeks', 336],
   ]);
 
+  constructor(private _coinService: CoinService) {}
+
+  ngOnInit() {
+    this._toggleOptions.forEach((value: number, key: string) => {
+      if (this._coinService.sortPeriods.percent == value)
+        this.defaultPercentPeriod = key;
+      if (this._coinService.sortPeriods.time == value)
+        this.defaultTimePeriod = key;
+    })
+  }
 
   get options(): string[] {
     return Array.from(this._toggleOptions.keys());
   }
 
-  get canSelectPeriod(): boolean {
-    return this.percentageOption !== -1;
-  }
 
   onPercentageChange(change: MatButtonToggleChange): void {
-    if (change.value == 'now')
-      this.percentageOption = 0;
-    else
-      this.percentageOption = this._toggleOptions.get(change.value) ?? -1;
-    this.percentageOptionChange.emit(this.percentageOption);
+    this.percentagePeriodChange.emit(this._toggleOptions.get(change.value) ?? 0);
   }
 
   onPeriodChange(change: MatButtonToggleChange): void {
-    this.periodOption = this._toggleOptions.get(change.value) ?? 0;
-    this.periodOptionChange.emit(this.periodOption);
+    this.timePeriodChange.emit(this._toggleOptions.get(change.value) ?? 0);
   }
 }

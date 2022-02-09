@@ -1,0 +1,61 @@
+.spinner-container {
+  padding: revert;
+  height: 500px;
+}
+
+table {
+  width: 100%;
+}
+
+td, th {
+  color: #29434e;
+  max-width: 100%;
+}
+
+.container{
+  width: 100%;
+  min-height: 250px;
+  overflow-x: auto;
+  margin-top: 10px;
+}
+
+.coin-logo {
+  width: 35px;
+  height: 35px;
+}
+
+.active-sort {
+  font-weight: 500;
+}
+
+.sell-btn {
+  margin: auto;
+}
+
+.action-col {
+  text-align: center;
+  position: relative;
+}
+
+.action-col app-spinner {
+  position: relative;
+  right: 31px;
+}
+
+.zero-items {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  color: #29434e;
+  width: 100%;
+  text-align: center;
+}
+
+@media only screen and (max-width: 480px) {
+  .coin-logo {
+    width: 22px;
+    height: 22px;
+  }
+}

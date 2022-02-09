@@ -1,0 +1,70 @@
+<div class="container" *ngIf="!fetchingData" >
+  <app-search-bar (onSearch)="onSearch($event)"></app-search-bar>
+  <section class="table-container" *ngIf="purchases.length > 0" >
+    <table mat-table [dataSource]="purchases" matSort (matSortChange)="onSortChange($event)" matSortStart="desc" #purchaseTable>
+      <!-- LOGO CONTAINER -->
+      <ng-container matColumnDef="logo" *ngIf="!mobileView">
+        <th mat-header-cell *matHeaderCellDef>Logo</th>
+        <td mat-cell *matCellDef="let element">
+          <img class="coin-logo" [src]="element.coin.image" [alt]="element.coin.name" />
+        </td>
+      </ng-container>
+
+      <!-- NAME CONTAINER -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Name</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="{'active-sort': isActiveSortHeader('name')}">{{ element.coin.name }}</td>
+      </ng-container>
+
+      <!-- DATE CONTAINER -->
+      <ng-container matColumnDef="date" *ngIf="!mobileView">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="date">Purchased date</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="{'active-sort': isActiveSortHeader('date')}">{{ element.dateStr }}</td>
+      </ng-container>
+
+      <!-- PRICE CONTAINER -->
+      <ng-container matColumnDef="price" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="start-price">Start price</th>
+        <td mat-cell *matCellDef="let element" [ngClass]="{'active-sort': isActiveSortHeader('start-price')}">
+          {{ boughtPrice(element) }} &euro;
+        </td>
+      </ng-container>
+
+      <!-- PERCENT CONTAINER -->
+      <ng-container matColumnDef="percent">
+        <th mat-header-cell *matHeaderCellDef  mat-sort-header="percent-change">{{ mobileView ? '&percnt; chg.' : '&percnt; change'}}</th>
+        <td mat-cell
+            *matCellDef="let element"
+            [ngClass]="{'active-sort': isActiveSortHeader('percent-change')}"
+            [ngStyle]="{'color': element.percentChangeColor}"
+        >{{ percentChange(element) }}&percnt;</td>
+      </ng-container>
+
+      <!-- MAX-PERCENT CONTAINER -->
+      <ng-container matColumnDef="max-percent" >
+        <th mat-header-cell *matHeaderCellDef  mat-sort-header="max-percent-change">{{ mobileView ? '&percnt; max chg.' : '&percnt; change from Max'}}</th>
+        <td mat-cell
+            *matCellDef="let element"
+            [ngClass]="{'active-sort': isActiveSortHeader('max-percent-change')}"
+            [ngStyle]="{'color': element.maxPercentChangeColor}"
+        >{{ maxPercentChange(element) }}&percnt;</td>
+      </ng-container>
+
+      <!-- ACTION CONTAINER -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="action-col">Action</th>
+        <td mat-cell *matCellDef="let element" class="action-col">
+          <button *ngIf="!showDeleteSpinner(element)" mat-stroked-button color="accent" (click)="onSell(element)">Sell</button>
+          <app-spinner *ngIf="showDeleteSpinner(element)" color="accent" [diameter]="35"></app-spinner>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+    </table>
+  </section>
+  <p *ngIf="purchases.length <= 0" class="zero-items">There are no purchased elements to be shown</p>
+</div>
+<div class="spinner-container" *ngIf="fetchingData">
+  <app-spinner [diameter]="50"></app-spinner>
+</div>

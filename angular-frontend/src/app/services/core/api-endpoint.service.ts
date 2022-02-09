@@ -26,4 +26,13 @@ export class ApiEndpointService {
   public getPriceListEndpoint(): string {
     return this._createUrl(['prices']);
   }
+
+  // == PURCHASE ENDPOITNS ==
+  public getPurchasesEndpoint() {
+    return this._createUrl(['purchases']);
+  }
+
+  public getPurchaseByCoinIdEndpoint(coinId: string) {
+    return this._createUrl(['purchases', coinId]);
+  }
 }

@@ -1,0 +1,7 @@
+<mat-button-toggle-group multiple (change)="onToggleChange($event)">
+  <mat-button-toggle *ngFor="let purchase of purchases" [value]="purchase.coin.name">
+    <img [src]="purchase.coin.image" [alt]="purchase.coin.name + ' logo'">
+    {{ purchase.coin.name }}
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<app-chart [data]="purchaseChangeListener"></app-chart>

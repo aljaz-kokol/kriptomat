@@ -19,4 +19,8 @@ export class PriceService {
     public async coinPriceList(coin: CoinDocument): Promise<PriceDocument[]> {
         return await Price.find({coin_id: coin._id}).sort({date: -1});
     }
+
+    public async coinPriceFromDate(coin: CoinDocument, date: Date): Promise<PriceDocument[]> {
+        return await Price.find({coin_id: coin._id, date: {$gte: date}}).sort({date: -1});
+    }
 }
