@@ -11,7 +11,6 @@
 </div>
 <div class="container" *ngIf="showContent">
   <app-coin-graph></app-coin-graph>
-<!--  <app-date-selector></app-date-selector>-->
 </div>
 
 <div class="error-container" *ngIf="error">
@@ -19,5 +18,4 @@
   <p>An error has occurred while trying to fetch coin data</p>
   <a mat-button color="accent" routerLink="/coin-list">Go Back</a>
 </div>
-
 <app-spinner *ngIf="showSpinner"></app-spinner>

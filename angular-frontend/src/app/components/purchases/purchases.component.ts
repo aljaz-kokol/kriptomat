@@ -1,12 +1,7 @@
-import {Component, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {PurchaseService} from "../../services/purchase.service";
 import {Subscription} from "rxjs";
-import {Purchase} from "../../models/purchase.model";
-import {Coin} from "../../models/coin.model";
-import {CoinService} from "../../services/coin.service";
-import {Sort} from "@angular/material/sort";
-import {MatTable} from "@angular/material/table";
-import {DialogService} from "../../services/dialog.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-purchases',
@@ -15,10 +10,12 @@ import {DialogService} from "../../services/dialog.service";
 })
 export class PurchasesComponent implements OnInit, OnDestroy {
   private _purchasesSubscription!: Subscription;
-  constructor(private _purchaseService: PurchaseService) {}
+  constructor(private _purchaseService: PurchaseService,
+              private _title: Title) {}
   fetchingData = true;
 
   ngOnInit() {
+    this._title.setTitle('Purchases')
     this.fetchingData = this._purchaseService.fetchingData;
     this._purchasesSubscription = this._purchaseService.purchasesListener
       .subscribe(purchases => {

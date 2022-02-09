@@ -3,8 +3,9 @@ import {ActivatedRoute} from "@angular/router";
 import {Coin} from "../../../models/coin.model";
 import {CoinService} from "../../../services/coin.service";
 import {PriceService} from "../../../services/price.service";
-import {Observable, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {PurchaseService} from "../../../services/purchase.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-coin-detail',
@@ -13,6 +14,7 @@ import {PurchaseService} from "../../../services/purchase.service";
 })
 export class CoinDetailComponent implements OnInit, OnDestroy {
   private _priceListenerSubscription: Subscription | null = null;
+  addedCoins: Coin[] = [];
   error: Error | null = null;
   coin: Coin | null = null;
   bought: boolean | null = false;
@@ -20,7 +22,8 @@ export class CoinDetailComponent implements OnInit, OnDestroy {
   constructor(private _route: ActivatedRoute,
               private _coinService: CoinService,
               private _priceService: PriceService,
-              private _purchaseService: PurchaseService) {}
+              private _purchaseService: PurchaseService,
+              private _title: Title) {}
 
   ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
@@ -28,6 +31,7 @@ export class CoinDetailComponent implements OnInit, OnDestroy {
       this._coinService.getCoinById(coinId).subscribe({
         next: coin => {
           this.coin = coin;
+          this._title.setTitle(this.coin.name);
           this._priceService.fetchCoinPrices(this.coin.id);
           this.bought = this._purchaseService.coinIsBought(this.coin.id);
         },

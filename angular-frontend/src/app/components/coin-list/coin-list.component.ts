@@ -5,6 +5,7 @@ import {Coin} from "../../models/coin.model";
 import {PriceService} from "../../services/price.service";
 import {PopupService} from "../../services/popup.service";
 import {Subscription} from "rxjs";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-coin-list',
@@ -21,9 +22,11 @@ export class CoinListComponent implements OnInit, OnDestroy {
   constructor(private _coinService: CoinService,
               private _priceService: PriceService,
               private _router: Router,
-              private _popupService: PopupService) {}
+              private _popupService: PopupService,
+              private _title: Title) {}
 
   ngOnInit(): void {
+    this._title.setTitle('Coin List');
     this.coins = this._coinService.coins;
     this._coinsSubscription = this._coinService.coinChangeListener
       .subscribe(coins => {

@@ -43,7 +43,7 @@ export class PurchaseListComponent {
     this._breakPointObserver.observe(['(max-width: 480px)'])
       .subscribe(state => {
         if (state.matches) {
-          this.columnNames = ['name', 'price', 'percent', 'max-percent', 'action'];
+           this.columnNames = ['name', 'price', 'percent', 'max-percent', 'action'];
           this.mobileView = true;
         }
         else {

@@ -1,6 +1,6 @@
-<div class="coin-container" *ngIf="coin" (click)="onClick()">
+<a [routerLink]="'/coin/'+coin.id" class="coin-container" *ngIf="coin" (click)="onClick()">
   <div class="name-container">
     <h3 class="coin-name">{{ coin.name }}</h3>
   </div>
   <img class="coin-img" [alt]="coin.name + ' logo'" [src]="coin.image" />
-</div>
+</a>
