@@ -23,6 +23,6 @@ const priceSchema = new Schema({
     }
 });
 
-const Price = model<PriceDocument>('Price', priceSchema);
+const Price = model('Price', priceSchema);
 
 export default Price;

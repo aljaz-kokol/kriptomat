@@ -3,7 +3,8 @@
   <div class="grid-container">
     <app-coin-card *ngFor="let coin of coins" [coin]="coin"></app-coin-card>
   </div>
-  <button mat-flat-button class="popup-btn" color="white" (click)="toggleSortPopup()" [disabled]="sortDisabled">Sort</button>
+  <button mat-stroked-button class="popup-btn" color="white" *ngIf="!showSortBtn" (click)="onFetchSortData()">Fetch sort data</button>
+  <button mat-stroked-button class="popup-btn" color="white" *ngIf="showSortBtn" [disabled]="sortDisabled" (click)="toggleSortPopup()">Sort</button>
   <app-sort-popup
     (percentagePeriodChange)="onPercentChange($event)"
     (timePeriodChange)="onPeriodChange($event)"

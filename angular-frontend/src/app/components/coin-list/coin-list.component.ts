@@ -18,6 +18,7 @@ export class CoinListComponent implements OnInit, OnDestroy {
   coins: Coin[] = [];
   percentPeriod = -1; // For sorting
   timePeriod = 1; // For sorting
+  showSortBtn = false;
 
   constructor(private _coinService: CoinService,
               private _priceService: PriceService,
@@ -32,6 +33,11 @@ export class CoinListComponent implements OnInit, OnDestroy {
       .subscribe(coins => {
         this.coins = coins;
       })
+  }
+
+  onFetchSortData() {
+    this.showSortBtn = true;
+    this._priceService.fetchAllPrices();
   }
 
   ngOnDestroy() {

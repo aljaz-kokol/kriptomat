@@ -7,11 +7,6 @@ import {PriceService} from "./services/price.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private _priceService: PriceService) {}
-
-  ngOnInit() {
-    this._priceService.fetchAllPrices();
-  }
-
+    ngOnInit() {}
 }
 

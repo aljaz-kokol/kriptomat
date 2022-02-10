@@ -20,7 +20,7 @@ export class CoinGraphComponent implements OnInit, OnDestroy {
     this._initListeners();
     this._priceSubscription = this._priceService.priceChangeListener
       .subscribe(prices => {
-        this.prices = prices;
+        this.prices = prices.coin;
         this._priceChartListener.next({
           dataset: [{data: this.priceValues}],
           labels: this.dates

@@ -14,6 +14,7 @@ export class PercentageGraphComponent implements OnInit, OnDestroy {
   private _percentageSubscription!: Subscription;
   private _percentageChartListener!: BehaviorSubject<ChartData>;
   private _selectedOptions: string[] = [];
+  private _btcPercents: number[] = [];
   private _toggleOptions = new Map<string, number>([
     ['original', 0],
     ['2h', 1],
@@ -40,7 +41,8 @@ export class PercentageGraphComponent implements OnInit, OnDestroy {
     this._initListeners();
     this._percentageSubscription = this._priceService.priceChangeListener
       .subscribe(prices => {
-        this.prices = prices;
+        this.prices = prices.coin;
+        this._btcPercents = prices.btc;
         this._percentageChartListener.next({
           dataset: this.percentageValues,
           labels: this.dates
@@ -70,16 +72,20 @@ export class PercentageGraphComponent implements OnInit, OnDestroy {
 
     if (this._selectedOptions.length > 0) {
       for (const option of this._selectedOptions) {
-        const diff = this._toggleOptions.get(option) ?? 0;
-        const data: number[] = [];
-        percentages.forEach((percent: number, index: number) => {
-          if (index + diff < percentages.length && diff !== 0)
-            data.push(percent - percentages[index + diff]);
-          else if (diff == 0) {
-            data.push(percent);
-          }
-        });
-        values.push({data: data, name: option});
+        if (option === 'bitcoin') {
+          values.push({data: this._btcPercents, name: 'Bitcoin'});
+        } else {
+          const diff = this._toggleOptions.get(option) ?? 0;
+          const data: number[] = [];
+          percentages.forEach((percent: number, index: number) => {
+            if (index + diff < percentages.length && diff !== 0)
+              data.push(percent - percentages[index + diff]);
+            else if (diff == 0) {
+              data.push(percent);
+            }
+          });
+          values.push({data: data, name: option});
+        }
       }
     } else {
       values.push({data: percentages, name: this.toggleOptions[0]})
@@ -92,6 +98,7 @@ export class PercentageGraphComponent implements OnInit, OnDestroy {
   }
 
   onToggle(change: MatButtonToggleChange) {
+    console.log(change.value)
     this._selectedOptions = change.value;
     this._percentageChartListener.next({
       dataset: this.percentageValues,

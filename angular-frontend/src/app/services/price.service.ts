@@ -6,9 +6,10 @@ import {Injectable} from "@angular/core";
 
 @Injectable({providedIn: 'root'})
 export class PriceService {
-  private _priceChangeListener = new Subject<Price[]>()
+  private _priceChangeListener = new Subject<{btc: number[]; coin: Price[]}>()
   private _allPercentages: {coin: string; values: number[]}[] = [];
   private _coinPrices: Price[] = [];
+  private _btcPercents: number[] = [];
 
   constructor(private _apiHttp: ApiHttpService,
               private _apiEndpoint: ApiEndpointService) {}
@@ -17,7 +18,15 @@ export class PriceService {
     this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint(coinId))
       .pipe(map(Price.fromApiPriceList)).subscribe(prices => {
         this._coinPrices = prices;
-        this._priceChangeListener.next(this._coinPrices);
+        this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint('61f6a692e9b8e64c7e87db2e'))
+          .subscribe(btcPrices => {
+            const lastIndex = btcPrices.length - 1;
+            this._btcPercents = btcPrices.map(price => (100 * price.price / btcPrices[lastIndex].price) - 100);
+            this._priceChangeListener.next({
+              coin: this._coinPrices,
+              btc: this._btcPercents
+            });
+          });
     });
   }
 
@@ -65,7 +74,10 @@ export class PriceService {
 
   clear(): void {
     this._coinPrices = [];
-    this._priceChangeListener.next(this._coinPrices);
+    this._priceChangeListener.next({
+      coin: [],
+      btc: []
+    });
   }
 
   get priceChangeListener() {
@@ -94,9 +106,16 @@ export class PriceService {
       for (const date of dates) {
         prices.push(...this._coinPrices.filter(prices => prices.date == date || prices.dateMonth == date || prices.dateYear == date));
       }
-      this._priceChangeListener.next(prices.sort((p1, p2) => new Date(p2._date).getTime() - new Date(p1._date).getTime()));
+      this._priceChangeListener.next({
+        coin: prices
+        .sort((p1, p2) => new Date(p2._date).getTime() - new Date(p1._date).getTime()),
+        btc: this._btcPercents
+      });
     } else {
-      this._priceChangeListener.next(this._coinPrices);
+      this._priceChangeListener.next({
+        coin: this._coinPrices,
+        btc: this._btcPercents
+      });
     }
   }
 
