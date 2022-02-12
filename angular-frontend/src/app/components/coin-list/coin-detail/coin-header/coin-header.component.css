@@ -1,0 +1,72 @@
+a {
+  text-decoration: none;
+}
+
+.coin-nav-bar {
+  display: flex;
+  background-color: white;
+  align-items: center;
+  position: fixed;
+  top: 55px;
+  left: 0;
+  width: 100%;
+  padding :10px 5px  5px;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.name-container {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+}
+
+.action-container {
+  position: relative;
+}
+
+.action-spinner {
+  position: relative;
+  right: 30px;
+}
+
+.coin-name {
+  text-align: center;
+  color: black;
+  margin: 0;
+}
+
+.coin-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.added-coins-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  overflow-x: auto;
+  margin-left: 25px;
+  flex: 2;
+  max-width: 100%;
+  margin-right: 25px;
+}
+
+.add-coin-btn {
+  width: 40px;
+  height: 40px;
+  line-height: 5px;
+  margin-left: 5px;
+}
+
+.add-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.save-group-btn {
+margin-right: 5px;
+}

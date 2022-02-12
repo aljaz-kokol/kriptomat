@@ -2,16 +2,40 @@ from datetime import datetime
 from models.coin import Coin
 from models.html_reader import HTMLReader
 import csv
-
+import requests
 
 class KriptomatService:
     __base_url = 'https://kriptomat.io/sl/vrednost-kriptovalut/'
 
     def __get_html(self):
-        baseReader = HTMLReader(page_url=self.__base_url, cookie_button_id='cookiescript_accept')
-        self.readers = [baseReader]
+        baseReader = HTMLReader(page_url=self.__base_url, cookie_button_id='cookiescript_accept', html_wait=15)
+        self.readers = []
         for pageBtn in baseReader.get_element_list_by_tag(tag_name='a', attributes={'class': 'page-numbers'}):
-            self.readers.append(HTMLReader(page_url=pageBtn['href'], cookie_button_id='cookiescript_accept'))
+            self.readers.append(HTMLReader(page_url=self.__base_url, cookie_button_id='cookiescript_accept', extra_button=pageBtn['id'], html_wait=15))
+
+    def __get_coin_api(self, coin):
+        name = coin['name']
+        format_name = name.replace(' ', '-').lower()
+        short_name = coin['code'].lower()
+        if name.lower() == short_name:
+            conn = f'https://kriptomat.io/sl/vrednost-kriptovalut/{format_name}-cena/'
+        else:
+            conn = f'https://kriptomat.io/sl/vrednost-kriptovalut/{format_name}-{short_name}-cena/'
+
+        return Coin(
+            name=name,
+            price=self.__format_price(coin['price']),
+            connection=conn,
+            svg_link=f'https://kriptomat.io/wp-content/uploads/icons/{short_name}.svg',
+            date=datetime.now()
+        )
+
+    def fetch_coins_api(self):
+        coins = []
+        r = requests.get(url='https://appapi.kriptomat.io/public/prices')
+        for coin in r.json()['data']:
+            coins.append(self.__get_coin_api(r.json()['data'][coin]))
+        return coins
 
     def __get_csv_data(self, csv_file):
         csv_data = []
@@ -45,7 +69,6 @@ class KriptomatService:
 
         if name and price and url_conn and svg_link:
             price_val = self.__format_price(price.text)
-
             if price_val >= 0:
                 return Coin(
                     name=name.text,
@@ -56,15 +79,21 @@ class KriptomatService:
                 )
         return None
 
+    def __coin_exists(self, newCoin, list):
+        for coin in list:
+            if coin.name == newCoin.name:
+                return True
+        return False
+
     def get_coins(self):
         self.__get_html()
         coins = []
         for reader in self.readers:
             coin_html_list = reader.get_element_list_by_tag('div', {'class': 'single_coin'})
             for coin_html in coin_html_list:
-                coin = self.__get_coin(coin_html)
-                if coin:
-                    coins.append(coin)
+                newCoin = self.__get_coin(coin_html)
+                if newCoin and not self.__coin_exists(newCoin, coins):
+                    coins.append(newCoin)
         return coins
 
     def get_coins_from_csv(self, csv_file):

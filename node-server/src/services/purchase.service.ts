@@ -36,7 +36,9 @@ export class PurchaseService {
     }
 
     public async purchaseList(): Promise<PurchaseDocument[]> {
-        return await Purchase.find();
+        return await Purchase.find().populate({
+            path: 'coin_id'
+        });
     }
 
     public async purchaseByCoinId(coinId: string): Promise<PurchaseDocument> {

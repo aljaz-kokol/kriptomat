@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import {Price} from "../../../../models/price.model";
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {PriceService} from "../../../../services/price.service";
+import {CoinDetailService} from "../../../../services/coin-detail.service";
 
 @Component({
   selector: 'app-coin-graph',
@@ -9,45 +10,37 @@ import {PriceService} from "../../../../services/price.service";
   styleUrls: ['coin-graph.component.html'],
 })
 export class CoinGraphComponent implements OnInit, OnDestroy {
-  private _priceSubscription!: Subscription;
+  private _coinSubscription: Subscription | null = null;
   prices: Price[] = [];
 
   private _priceChartListener!: BehaviorSubject<{dataset: {data: any[]; name?: string}[]; labels: string[]}>;
 
-  constructor(private _priceService: PriceService) {}
+  constructor(private _coinDetailService: CoinDetailService) {}
 
   ngOnInit() {
     this._initListeners();
-    this._priceSubscription = this._priceService.priceChangeListener
-      .subscribe(prices => {
-        this.prices = prices.coin;
+    this._coinSubscription = this._coinDetailService.coinChangeListener
+      .subscribe(coin => {
         this._priceChartListener.next({
-          dataset: [{data: this.priceValues}],
-          labels: this.dates
+          dataset: [{data: this._coinDetailService.prices}],
+          labels: this._coinDetailService.dates
         });
       });
   }
 
-  get priceValues(): number[] {
-    return this.prices.map(price => price.price);
-  }
-
   ngOnDestroy() {
-    this._priceSubscription.unsubscribe();
+    if (this._coinSubscription)
+      this._coinSubscription.unsubscribe();
   }
 
   get priceChangeObserver(): Observable<{dataset: {data: any[], name?: string}[], labels: string[]}> {
     return this._priceChartListener.asObservable();
   }
 
-  get dates(): string[] {
-    return this.prices.map(price => price.date);
-  }
-
   private _initListeners() {
     this._priceChartListener = new BehaviorSubject<{dataset: {data: any[]; name?: string}[]; labels: string[]}>({
-      dataset: [{data: this.priceValues}],
-      labels: this.dates
+      dataset: [{data: this._coinDetailService.prices}],
+      labels: this._coinDetailService.dates
     });
   }
 }

@@ -1,76 +1,58 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Coin} from "../../../models/coin.model";
-import {CoinService} from "../../../services/coin.service";
-import {PriceService} from "../../../services/price.service";
 import {Subscription} from "rxjs";
-import {PurchaseService} from "../../../services/purchase.service";
 import {Title} from "@angular/platform-browser";
+import {PopupService} from "../../../services/popup.service";
+import {CoinDetailService} from "../../../services/coin-detail.service";
 
 @Component({
   selector: 'app-coin-detail',
   templateUrl: 'coin-detail.component.html',
   styleUrls: ['coin-detail.component.css'],
+  providers: [
+    CoinDetailService
+  ]
 })
 export class CoinDetailComponent implements OnInit, OnDestroy {
-  private _priceListenerSubscription: Subscription | null = null;
-  addedCoins: Coin[] = [];
+  private _coinSubscription: Subscription | null = null;
+  tabCoins: Coin[] = [];
   error: Error | null = null;
   coin: Coin | null = null;
-  bought: boolean | null = false;
 
   constructor(private _route: ActivatedRoute,
-              private _coinService: CoinService,
-              private _priceService: PriceService,
-              private _purchaseService: PurchaseService,
-              private _title: Title) {}
+              private _title: Title,
+              private _router: Router,
+              private _popupService: PopupService,
+              private _coinDetailService: CoinDetailService) {}
 
   ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
       const coinId: string = params.get('id') ?? '';
-      this._coinService.getCoinById(coinId).subscribe({
-        next: coin => {
+      this._coinDetailService.setCoin(coinId);
+      this._coinSubscription = this._coinDetailService.coinChangeListener
+        .subscribe(coin => {
           this.coin = coin;
-          this._title.setTitle(this.coin.name);
-          this._priceService.fetchCoinPrices(this.coin.id);
-          this.bought = this._purchaseService.coinIsBought(this.coin.id);
-        },
-        error: err => this.error = err
-      });
+        })
     });
 
   }
 
   ngOnDestroy() {
-    this._priceListenerSubscription?.unsubscribe();
+    if (this._coinSubscription)
+      this._coinSubscription.unsubscribe();
   }
 
   get showSpinner(): boolean {
-    return !this.error && !this.coin;
+    return this._coinDetailService.fetchingData;
   }
 
   get showContent(): boolean {
     return !this.error && this.coin !== null;
   }
 
-  onBuyCoin(): void {
-    if (this.coin) {
-      this.bought = null;
-      this._coinService.buyCoin(this.coin.id).subscribe(res => {
-        this._purchaseService.addPurchase(res.purchase);
-        this.bought = true;
-      });
-    }
+  onCoinsAdded(coins: Coin[]): void {
+    this.tabCoins.push(...coins);
+    this._popupService.toggleShow();
   }
-
-  onSellCoin(): void {
-    if (this.coin) {
-      this.bought = null;
-      this._coinService.sellCoin(this.coin.id).subscribe(() => {
-        this._purchaseService.removePurchase(this.coin!.id);
-        this.bought = false;
-      });
-    }
-  }
-
 }

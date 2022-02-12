@@ -9,6 +9,7 @@
   bottom: 0;
   transition: height 250ms;
   padding: 15px 25px;
+  overflow: auto;
 }
 
 @media only screen and (max-width: 1024px)  {

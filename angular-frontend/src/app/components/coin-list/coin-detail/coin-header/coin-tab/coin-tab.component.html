@@ -1,0 +1,9 @@
+<button mat-stroked-button class="added-coin-btn" (click)="onTabCoinClick()">
+  <mat-button-toggle class="toggle-coin-graph" (click)="onShowTabCoinInGraph($event)" [checked]="isGraphCoin">
+    <mat-icon class="show-chart-icon">show_chart</mat-icon>
+  </mat-button-toggle>
+  {{ coin.name }}
+  <button mat-icon-button class="close-btn" color="accent" (click)="onRemoveTabCoin($event)">
+    <mat-icon class="close-icon">close</mat-icon>
+  </button>
+</button>

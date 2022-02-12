@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Coin} from '../../../models/coin.model';
 import {Router} from "@angular/router";
+import {CoinDetailService} from "../../../services/coin-detail.service";
 
 @Component({
   selector: 'app-coin-card[coin]',

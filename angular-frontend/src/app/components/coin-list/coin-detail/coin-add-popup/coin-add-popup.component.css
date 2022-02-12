@@ -1,0 +1,35 @@
+.coin-list {
+  max-height: 80%;
+  overflow: auto;
+}
+
+.coin-item {
+  border-bottom: 1px solid grey;
+}
+
+.coin-logo {
+  height: 35px;
+  width: 35px;
+  margin-right: 20px;
+}
+
+.selected {
+  background-color: #e0e0e0;
+}
+
+.selected:hover {
+  background-color: #e0e0e0;
+}
+
+.action-bar {
+  display: flex;
+}
+
+button {
+  height: fit-content;
+  margin-left: 20px;
+}
+
+.coin-search {
+  flex: 2;
+}

@@ -1,7 +1,8 @@
 <mat-button-toggle-group multiple (change)="onToggle($event)" [value]="toggleOptions[0]">
   <mat-button-toggle
     *ngFor="let option of toggleOptions"
-    [value]="option">
+    [value]="option"
+    [checked]="selectedToggleOptions.indexOf(option) >= 0">
     <span class="option-name">{{ option }}</span>
   </mat-button-toggle>
   <mat-button-toggle value="bitcoin">

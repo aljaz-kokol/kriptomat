@@ -10,6 +10,7 @@ import {OverlayComponent} from "../components/shared/overlay/overlay.component";
 import {PopupComponent} from "../components/shared/popup/popup.component";
 import {ChoiceDialogComponent} from "../components/shared/dialog/choice-dialog/choice-dialog.component";
 import {LayoutModule} from "@angular/cdk/layout";
+import {InputDialogComponent} from "../components/shared/dialog/input-dialog/input-dialog.component";
 
 @NgModule({
   declarations: [
@@ -18,11 +19,13 @@ import {LayoutModule} from "@angular/cdk/layout";
     ChartComponent,
     OverlayComponent,
     PopupComponent,
-    ChoiceDialogComponent
+    ChoiceDialogComponent,
+    InputDialogComponent
   ],
   imports: [
     MaterialModule,
     CommonModule,
+    FormsModule
   ],
   exports: [
     MaterialModule,
@@ -35,7 +38,8 @@ import {LayoutModule} from "@angular/cdk/layout";
     ChartComponent,
     OverlayComponent,
     PopupComponent,
-    ChoiceDialogComponent
+    ChoiceDialogComponent,
+    InputDialogComponent
   ]
 })
 export class SharedModule {}

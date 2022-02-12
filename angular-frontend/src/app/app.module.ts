@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./modules/shared.module";
 import {AppRoutingModule} from "./modules/routes/app.routing.module";
@@ -19,7 +18,6 @@ import {CoreModule} from "./modules/core.module";
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule,
     HttpClientModule,
     SharedModule,
     CoreModule

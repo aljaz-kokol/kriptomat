@@ -1,16 +1,7 @@
-<div class="coin-nav-bar" *ngIf="coin">
-  <div class="name-container">
-    <img [src]="coin.image" [alt]="coin.name" class="coin-image">
-    <a [href]="coin.connection" target="_blank"><h1 class="coin-name">{{ coin.name }}</h1></a>
-  </div>
-  <div class="action-container">
-    <button mat-flat-button color="primary" (click)="onBuyCoin()"  *ngIf="bought === false">Buy</button>
-    <button mat-flat-button color="accent" (click)="onSellCoin()" *ngIf="bought === true">Sell</button>
-    <app-spinner *ngIf="bought === null" class="action-spinner" [diameter]="35"></app-spinner>
-  </div>
-</div>
-<div class="container" *ngIf="showContent">
+<app-coin-header></app-coin-header>
+<div class="container" *ngIf="!showSpinner">
   <app-coin-graph></app-coin-graph>
+  <app-add-coin-popup></app-add-coin-popup>
 </div>
 
 <div class="error-container" *ngIf="error">
@@ -18,4 +9,5 @@
   <p>An error has occurred while trying to fetch coin data</p>
   <a mat-button color="accent" routerLink="/coin-list">Go Back</a>
 </div>
+
 <app-spinner *ngIf="showSpinner"></app-spinner>

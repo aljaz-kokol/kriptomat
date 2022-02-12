@@ -1,0 +1,18 @@
+<div class="coin-nav-bar" *ngIf="coin">
+  <div class="name-container">
+    <img [src]="coin.image" [alt]="coin.name" class="coin-image">
+    <a [href]="coin.connection" target="_blank"><h1 class="coin-name">{{ coin.name }}</h1></a>
+    <button mat-icon-button class="add-coin-btn" (click)="onShowPopup()">
+      <mat-icon class="add-icon">add</mat-icon>
+    </button>
+  </div>
+  <div class="added-coins-container" >
+    <app-coin-tab *ngFor="let tabCoin of tabCoins" [coin]="tabCoin" ></app-coin-tab>
+  </div>
+  <div class="action-container">
+    <button mat-stroked-button color="accent" class="save-group-btn" *ngIf="tabCoins.length > 0" (click)="onSaveGroup()">Save group</button>
+    <button mat-flat-button color="primary" (click)="onBuyCoin()"  *ngIf="bought === false">Buy</button>
+    <button mat-flat-button color="accent" (click)="onSellCoin()" *ngIf="bought === true">Sell</button>
+    <app-spinner *ngIf="bought === null" class="action-spinner" [diameter]="35"></app-spinner>
+  </div>
+</div>

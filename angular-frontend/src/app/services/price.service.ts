@@ -1,8 +1,9 @@
 import {ApiPrice, Price} from "../models/price.model";
 import {ApiHttpService} from "./core/api-http.service";
 import {ApiEndpointService} from "./core/api-endpoint.service";
-import {map, Subject} from "rxjs";
+import {map, Observable, Subject} from "rxjs";
 import {Injectable} from "@angular/core";
+import {Coin} from "../models/coin.model";
 
 @Injectable({providedIn: 'root'})
 export class PriceService {
@@ -11,31 +12,40 @@ export class PriceService {
   private _coinPrices: Price[] = [];
   private _btcPercents: number[] = [];
 
+  private _savedPrices: {id: string; prices: Price[]}[] = [];
+
   constructor(private _apiHttp: ApiHttpService,
               private _apiEndpoint: ApiEndpointService) {}
 
-  fetchCoinPrices(coinId: string): void {
-    this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint(coinId))
-      .pipe(map(Price.fromApiPriceList)).subscribe(prices => {
-        this._coinPrices = prices;
-        this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint('61f6a692e9b8e64c7e87db2e'))
-          .subscribe(btcPrices => {
-            const lastIndex = btcPrices.length - 1;
-            this._btcPercents = btcPrices.map(price => (100 * price.price / btcPrices[lastIndex].price) - 100);
-            this._priceChangeListener.next({
-              coin: this._coinPrices,
-              btc: this._btcPercents
-            });
-          });
-    });
+  fetchCoinPrices(coinId: string): Observable<Price[]> {
+    return this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getCoinPricesEndpoint(coinId))
+      .pipe(map(apiPrices => {
+        const prices = Price.fromApiPriceList(apiPrices);
+        const index = this._savedPrices.findIndex(price => price.id == coinId);
+        if (index >= 0) {
+          this._savedPrices[index].prices = prices;
+        } else {
+          this._savedPrices.push({id: coinId, prices: prices});
+        }
+        return prices;
+      }));
+  }
+
+  getCoinPrices(coinId: string): Price[] {
+    const index = this._savedPrices.findIndex(price => price.id == coinId);
+    if (index >= 0)
+      return [...this._savedPrices[index].prices];
+    return [];
   }
 
   fetchAllPrices(): void {
     this._apiHttp.get<ApiPrice[]>(this._apiEndpoint.getPriceListEndpoint())
       .pipe(map(Price.fromApiPriceList)).subscribe(prices => {
         const coinIDList = [...new Set(prices.map(price => price.coin))];
+        this._savedPrices = [];
         for (const coinID of coinIDList) {
           const coinPrices = prices.filter(price => price.coin === coinID);
+          this._savedPrices.push({id: coinID, prices: prices});
           const lastIndex = coinPrices.length - 1;
           if (lastIndex < 0) {
             this._allPercentages.push({coin: coinID, values: []});

@@ -7,6 +7,7 @@ from models.html_reader import HTMLReader
 class Coin:
     name_attr = 'name'
     price_attr = 'price'
+    short_name_attr = 'short_name'
     connection_attr = 'connection'
     svg_link_attr = 'svg_link'
     date_attr = 'date'

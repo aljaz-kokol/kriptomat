@@ -3,10 +3,11 @@ from services.kriptomat_service import KriptomatService
 import schedule
 import time
 from datetime import datetime
+import requests
+
 
 kriptomat_service = KriptomatService()
 db_service = DatabaseService()
-
 
 def main():
     coins = kriptomat_service.get_coins()

@@ -1,20 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import {PurchaseService} from "../services/purchase.service";
 import {StatusCode} from "../utils/status.util";
-import {CoinService} from "../services/coin.service";
 import {PriceService} from "../services/price.service";
+import {CoinDocument} from "../models/coin.model";
 
 export const getPurchases = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const purchases = await PurchaseService.get.purchaseList();
         const purchasedCoins = [];
         for (const purchase of purchases) {
-            const coin = await CoinService.get.coinById(purchase.coin_id);
             purchasedCoins.push({
-                coin: coin,
+                coin: purchase.coin_id,
                 boughtPrice: purchase.price,
                 date: purchase.date,
-                prices: await PriceService.get.coinPriceFromDate(coin, purchase.date)
+                prices: await PriceService.get.coinPriceFromDate((purchase.coin_id as unknown as CoinDocument), purchase.date)
             });
         }
         res.status(StatusCode.OK).json(purchasedCoins);
