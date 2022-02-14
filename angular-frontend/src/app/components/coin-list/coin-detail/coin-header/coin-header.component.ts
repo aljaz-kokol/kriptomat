@@ -4,6 +4,8 @@ import {CoinDetailService} from "../../../../services/coin-detail.service";
 import {PopupService} from "../../../../services/popup.service";
 import {Subscription} from "rxjs";
 import {DialogService} from "../../../../services/dialog.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {GroupService} from "../../../../services/group.service";
 
 @Component({
   selector: 'app-coin-header',
@@ -16,7 +18,9 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
 
   constructor(private _coinDetailService: CoinDetailService,
               private _popupService: PopupService,
-              public _dialogService: DialogService) {}
+              public _dialogService: DialogService,
+              private _snackBar: MatSnackBar,
+              private _groupService: GroupService) {}
 
   ngOnInit() {
     this._coinSubscription = this._coinDetailService.coinChangeListener
@@ -48,9 +52,13 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
         text: 'Please input the name of the group you wish to create',
         placeholder: 'Group name...'
       }
-    }).subscribe(result => {
+    }).subscribe((result: boolean | string) => {
       if (result) {
-
+        this._groupService.createGroup(result as string, this._coinDetailService.addedCoins)
+          .subscribe({
+            next: data => this._groupService.addGroup(data.group),
+            error: err => this._snackBar.open(err.message, 'Close', { duration: 3000 })
+          })
       }
     })
   }

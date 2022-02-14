@@ -1,9 +1,12 @@
 import {RouterModule, Routes} from "@angular/router";
 import {NgModule} from "@angular/core";
-import {CoinListComponent} from "../../components/coin-list/coin-list.component";
+import {CoinDetailComponent} from "../../components/coin-list/coin-detail/coin-detail.component";
+import {DeactivateGuard} from "../../services/guards/deactivate/deactivate.guard";
 
 const routes: Routes = [
-  { path: '', component: CoinListComponent},
+  { path: '', children: [
+      { path: ':id', component: CoinDetailComponent, canDeactivate: [DeactivateGuard] }
+  ]},
 ]
 
 @NgModule({

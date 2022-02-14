@@ -6,6 +6,7 @@ const routes: Routes = [
   { path: 'coin-list', loadChildren: () => import('../coin-list.module').then(module => module.CoinListModule) },
   { path: 'purchases', loadChildren: () => import('../purchases.module').then(module => module.PurchasesModule) },
   { path: 'coin', loadChildren: () => import('../coin-detail.module').then(module => module.CoinDetailModule) },
+  { path: 'groups', loadChildren: () => import('../group-list.module').then(module => module.GroupListModule) }
 ];
 
 @NgModule({

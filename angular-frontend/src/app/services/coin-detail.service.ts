@@ -5,6 +5,7 @@ import {Observable, Subject} from "rxjs";
 import {CoinService} from "./coin.service";
 import {PriceService} from "./price.service";
 import {PurchaseService} from "./purchase.service";
+import {GroupService} from "./group.service";
 
 @Injectable()
 export class CoinDetailService {
@@ -36,9 +37,9 @@ export class CoinDetailService {
     ['3 weeks', 252],
     ['4 weeks', 336],
   ]);
-
   bought: boolean | null = false;
   fetchingData: boolean = true;
+  shouldSave: boolean = false;
 
   buyCoin() {
     if (this._activeCoin && this.bought === false) {
@@ -62,12 +63,15 @@ export class CoinDetailService {
 
   addCoins(coins: Coin[]): void {
     this._addedCoins.push(...coins);
+    this.shouldSave = true;
   }
 
   removeCoin(removeCoin: Coin): void {
     const index = this._addedCoins.findIndex(coin => coin.name == removeCoin.name);
-    if (index >= 0)
+    if (index >= 0) {
       this._addedCoins.splice(index, 1);
+      this.shouldSave = true;
+    }
   }
 
   toggleGraphCoin(coin: Coin): void {

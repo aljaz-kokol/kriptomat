@@ -32,7 +32,7 @@ export class GroupService {
         return group;
     }
 
-    public async createGroup(name: string, coins: string[]): Promise<GroupDocument> {
+    public async createGroup(name: string, coins: string[], note?: string): Promise<GroupDocument> {
         coins = Array.from(new Set(coins));
         const group = await Group.findOne({name: name.trim().toLowerCase()});
         if (group)
@@ -51,8 +51,9 @@ export class GroupService {
 
         return await Group.create({
             name: name.trim().toLowerCase(),
+            note: note,
             coins: coins
-        });
+        }).then(group => group.populate('coins'));
     }
 
     public async deleteGroup(groupId: string): Promise<void> {

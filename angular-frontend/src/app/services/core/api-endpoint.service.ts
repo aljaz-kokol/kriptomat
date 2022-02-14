@@ -28,11 +28,16 @@ export class ApiEndpointService {
   }
 
   // == PURCHASE ENDPOITNS ==
-  public getPurchasesEndpoint() {
+  public getPurchasesEndpoint(): string {
     return this._createUrl(['purchases']);
   }
 
-  public getPurchaseByCoinIdEndpoint(coinId: string) {
+  public getPurchaseByCoinIdEndpoint(coinId: string): string {
     return this._createUrl(['purchases', coinId]);
+  }
+
+  // == GROUP ENDPOINTS ==
+  public getGroupListEndpoint(): string {
+    return this._createUrl(['groups']);
   }
 }

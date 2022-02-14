@@ -1,10 +1,12 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
 import {Coin} from "../../../models/coin.model";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
 import {PopupService} from "../../../services/popup.service";
 import {CoinDetailService} from "../../../services/coin-detail.service";
+import {DeactivateComponent} from "../../../services/guards/deactivate/deactivate.guard";
+import {DialogService} from "../../../services/dialog.service";
 
 @Component({
   selector: 'app-coin-detail',
@@ -14,7 +16,7 @@ import {CoinDetailService} from "../../../services/coin-detail.service";
     CoinDetailService
   ]
 })
-export class CoinDetailComponent implements OnInit, OnDestroy {
+export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateComponent {
   private _coinSubscription: Subscription | null = null;
   tabCoins: Coin[] = [];
   error: Error | null = null;
@@ -24,6 +26,7 @@ export class CoinDetailComponent implements OnInit, OnDestroy {
               private _title: Title,
               private _router: Router,
               private _popupService: PopupService,
+              private _dialogService: DialogService,
               private _coinDetailService: CoinDetailService) {}
 
   ngOnInit(): void {
@@ -41,6 +44,19 @@ export class CoinDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._coinSubscription)
       this._coinSubscription.unsubscribe();
+  }
+
+  canDeactivate(nextState?: RouterStateSnapshot): Observable<boolean> | boolean {
+    if (nextState) {
+      const goingOutsideCoinDetail =  nextState?.url.split('/').indexOf('coin') < 0;
+      if (this._coinDetailService.addedCoins.length > 1 && goingOutsideCoinDetail) {
+        return this._dialogService.operChoiceDialog({
+          title: 'Exit without saving',
+          body: 'Are you sure you want to exit without saving'
+        });
+      }
+    }
+    return true;
   }
 
   get showSpinner(): boolean {

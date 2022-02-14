@@ -26,9 +26,6 @@ app-search-bar {
   right: 5px;
 }
 
-.sort-spinner {
-}
-
 @media only screen and (max-width: 1024px) {
   .grid-container {
     grid-template-columns: 1fr 1fr;

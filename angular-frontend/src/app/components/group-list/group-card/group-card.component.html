@@ -1,0 +1,16 @@
+<mat-card class="group-card">
+  <button mat-icon-button class="settings-btn">
+    <mat-icon>settings</mat-icon>
+  </button>
+  <mat-card-title class="group-name">{{ group.name }}</mat-card-title>
+  <mat-card-content class="group-content">
+    <p class="group-note">{{ group.note }}</p>
+    <div class="coin-images">
+      <img class="coin-image"
+           *ngFor="let coin of group.coins"
+           [src]="coin.image"
+           [alt]="coin.name + 'logo'"
+      />
+    </div>
+  </mat-card-content>
+</mat-card>

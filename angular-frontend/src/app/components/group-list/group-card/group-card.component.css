@@ -1,0 +1,71 @@
+:host {
+  display: block;
+  text-align: initial;
+  width: 100%;
+}
+
+.group-card {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 250ms;
+}
+
+.group-card:hover {
+  transform: scale(1.05);
+}
+
+.group-name {
+  margin: 0;
+  padding: 0 10px 15px 0;
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coin-images {
+  display: flex;
+  padding: 5px;
+  background: #f5f5f5;
+  border-radius: 5px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.coin-image {
+  width: 35px;
+  margin-right: 5px;
+  transition: transform 250ms;
+}
+
+.coin-image:hover {
+  transform: scale(1.1);
+}
+
+.group-note {
+  color: #464646;
+  word-break: break-all;
+}
+
+.group-card:hover .settings-btn {
+  opacity: 1;
+}
+
+.settings-btn {
+  position: absolute;
+  opacity: 0;
+  width: 25px;
+  height: 25px;
+  line-height: 5px;
+  right: 2px;
+  top: 2px;
+  transition: opacity 250ms;
+}
+
+.settings-btn mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
+}
+

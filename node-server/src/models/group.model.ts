@@ -12,10 +12,16 @@ const groupSchema = new Schema({
         required: true,
         unique: true
     },
+    note: {
+        type: String,
+        default: ''
+    },
     coins: [{
         type: Types.ObjectId,
         ref: 'Coin',
     }]
+}, {
+    timestamps: true
 });
 
 const Group = model<GroupDocument>('Group', groupSchema);

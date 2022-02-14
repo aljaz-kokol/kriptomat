@@ -10,6 +10,7 @@ import {CoinTabComponent} from "../components/coin-list/coin-detail/coin-header/
 import {
   PercentageGraphComponent
 } from "../components/coin-list/coin-detail/coin-graph/percentage-graph/percentage-graph.component";
+import {CoinDetailRoutingModule} from "./routes/coin-detail.routing.module";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import {
   ],
   imports: [
     SharedModule,
-    CoinListRoutingModule,
+    CoinDetailRoutingModule,
   ]
 })
 export class CoinDetailModule {}

@@ -1,0 +1,5 @@
+<app-search-bar (onSearch)="search($event)"></app-search-bar>
+<div class="group-grid" *ngIf="groups.length > 0">
+  <app-group-card *ngFor="let group of groups" [group]="group"></app-group-card>
+</div>
+<p class="zero-elements" *ngIf="groups.length <= 0">There are no groups to be shown</p>

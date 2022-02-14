@@ -22,7 +22,7 @@ export const getGroupById = async (req: Request, res: Response, next: NextFuncti
 
 export const postCreateGroup = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const group = await GroupService.get.createGroup(req.body.name, req.body.coins);
+        const group = await GroupService.get.createGroup(req.body.name, req.body.coins, req.body.note ?? '');
         res.status(StatusCode.OK).json({
             message: 'Group successfully created',
             group: group
