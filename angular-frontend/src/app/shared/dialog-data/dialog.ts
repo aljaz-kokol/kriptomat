@@ -1,4 +1,4 @@
-export interface DialogContent {
+export interface Dialog {
   title: string;
   body: string;
 }

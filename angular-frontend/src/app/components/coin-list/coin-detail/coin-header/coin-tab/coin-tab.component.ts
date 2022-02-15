@@ -18,7 +18,7 @@ export class CoinTabComponent {
 
   onRemoveTabCoin(event: Event) {
     event.stopPropagation();
-    this._dialogService.operChoiceDialog({
+    this._dialogService.openChoiceDialog({
         title: 'Remove tab',
         body: `Are you sure you want to remove ${this.coin.name} from tabs?`
     }).subscribe(result => {

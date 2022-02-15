@@ -42,6 +42,10 @@ td, th {
   right: 31px;
 }
 
+.coin-row {
+  cursor: pointer;
+}
+
 .zero-items {
   position: absolute;
   top: 50%;

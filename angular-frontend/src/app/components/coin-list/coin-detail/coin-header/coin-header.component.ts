@@ -6,6 +6,7 @@ import {Subscription} from "rxjs";
 import {DialogService} from "../../../../services/dialog.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {GroupService} from "../../../../services/group.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-coin-header',
@@ -20,7 +21,8 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
               private _popupService: PopupService,
               public _dialogService: DialogService,
               private _snackBar: MatSnackBar,
-              private _groupService: GroupService) {}
+              private _groupService: GroupService,
+              private _route: ActivatedRoute) {}
 
   ngOnInit() {
     this._coinSubscription = this._coinDetailService.coinChangeListener
@@ -48,13 +50,14 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
   onSaveGroup() {
     this._dialogService.openInputDialog({
       title: 'Create group',
-      body: {
-        text: 'Please input the name of the group you wish to create',
-        placeholder: 'Group name...'
-      }
-    }).subscribe((result: boolean | string) => {
+      body: 'Please type in the name of the group you wish to create. Optionally you can also create a note for the group',
+      actions: [
+        {action: 'name', type: 'text', required: true, placeholder: 'Group name...'},
+        {action: 'note', type: 'text', required: false, placeholder: 'Some note...'}
+      ]
+    }).subscribe((result: false | {[s: string]: any}) => {
       if (result) {
-        this._groupService.createGroup(result as string, this._coinDetailService.addedCoins)
+        this._groupService.createGroup(result['name'], this._coinDetailService.addedCoins, result['note'])
           .subscribe({
             next: data => this._groupService.addGroup(data.group),
             error: err => this._snackBar.open(err.message, 'Close', { duration: 3000 })

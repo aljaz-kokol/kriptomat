@@ -1,0 +1,50 @@
+<div class="container" *ngIf="group && groupSettingsForm">
+  <h1 class="group-name mat-display-1">
+    {{ group.name }}
+    <hr />
+  </h1>
+  <form [formGroup]="groupSettingsForm" (ngSubmit)="onSave()">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name" />
+      <mat-error>{{ nameControlError }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Note</mat-label>
+      <input matInput type="text" formControlName="note" />
+    </mat-form-field>
+    <div class="coins-container">
+      <div class="coins-header">
+        <h3>Coins</h3>
+        <button mat-icon-button type="button" (click)="onShowCoinsPopup()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="coins" formArrayName="coins" *ngIf="coinsFromFormArray.length > 0">
+        <mat-card class="coin mat-elevation-z0" *ngFor="let coin of coinsFormArray?.controls ?? []; let i = index" [formArrayName]="i">
+          <div class="coin-header">
+            <img class="coin-logo" [src]="coin.get('image')?.value" [alt]="coin.get('name')?.value + ' logo'">
+            <span>{{coin.get('name')?.value}}</span>
+          </div>
+          <button type="button" mat-icon-button color="accent" (click)="onRemoveCoin(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card>
+      </div>
+      <mat-error *ngIf="coinsFromFormArray.length <= 0">Group must not be empty</mat-error>
+    </div>
+    <div class="actions-container">
+        <button mat-raised-button class="save-btn" type="submit"  color="primary" [disabled]="!canSave" *ngIf="!isSaving">Save</button>
+        <button mat-stroked-button color="accent" [disabled]="!canReset" (click)="onReset()" *ngIf="!isSaving">Reset</button>
+        <app-spinner [diameter]="35" *ngIf="isSaving" ></app-spinner>
+    </div>
+  </form>
+  <div class="delete-container">
+    <h2>Delete group</h2>
+    <hr>
+    <button type="button" mat-raised-button color="warn" *ngIf="!isDeleting" (click)="onDelete()">Delete</button>
+    <app-spinner [diameter]="35" color="warn" class="delete-spinner" *ngIf="isDeleting"></app-spinner>
+  </div>
+  <app-group-coin-add [alreadySelectedCoins]="coinsFromFormArray" (onCoinsAdded)="addCoinControls($event)"></app-group-coin-add>
+</div>
+<app-spinner *ngIf="!group || !groupSettingsForm"></app-spinner>

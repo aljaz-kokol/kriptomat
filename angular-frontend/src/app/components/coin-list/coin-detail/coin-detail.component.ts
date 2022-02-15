@@ -38,7 +38,6 @@ export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateCompone
           this.coin = coin;
         })
     });
-
   }
 
   ngOnDestroy() {
@@ -50,7 +49,7 @@ export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateCompone
     if (nextState) {
       const goingOutsideCoinDetail =  nextState?.url.split('/').indexOf('coin') < 0;
       if (this._coinDetailService.addedCoins.length > 1 && goingOutsideCoinDetail) {
-        return this._dialogService.operChoiceDialog({
+        return this._dialogService.openChoiceDialog({
           title: 'Exit without saving',
           body: 'Are you sure you want to exit without saving'
         });

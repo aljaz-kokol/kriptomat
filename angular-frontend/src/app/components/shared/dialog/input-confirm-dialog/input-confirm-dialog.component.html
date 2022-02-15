@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<div mat-dialog-content>
+  <p>{{ data.body }}</p>
+  <p>Type <strong>{{ data.confirmWord }}</strong> to confirm</p>
+  <form [formGroup]="confirmForm" (ngSubmit)="onConfirm()">
+    <mat-form-field appearance="outline">
+      <input matInput type="text" formControlName="confirmWord" placeholder="Confirm word..." autocomplete="off" />
+    </mat-form-field>
+    <button mat-raised-button
+            class="confirm-btn"
+            color="warn"
+            type="submit"
+            [disabled]="confirmForm.invalid">
+      {{ data.confirmButtonText ?? 'Confirm' }}
+    </button>
+  </form>
+</div>

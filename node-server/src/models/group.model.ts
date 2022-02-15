@@ -3,6 +3,7 @@ import  { Schema, Document, model, Types } from 'mongoose';
 export interface GroupDocument extends Document {
     _id: string;
     name: string;
+    note: string;
     coins: string[];
 }
 

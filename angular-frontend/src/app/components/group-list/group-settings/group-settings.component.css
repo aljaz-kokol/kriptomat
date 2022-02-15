@@ -1,0 +1,87 @@
+mat-form-field {
+  width: 100%;
+}
+
+hr {
+  border-radius: 5px;
+  border: 1px solid black;
+  background: black;
+}
+
+.container {
+  max-height: 100%;
+  background: #fcfcfc;
+  padding: 10px;
+}
+
+.group-name {
+  text-align: center;
+  text-transform: capitalize;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+}
+
+.coin-logo {
+  width: 35px;
+  margin-right: 10px;
+}
+
+.coin-header {
+  display: flex;
+  align-items: center;
+}
+
+.coin {
+  padding: 5px;
+  border: 2px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  margin-bottom: 7px;
+  justify-content: space-between;
+}
+
+.save-btn {
+  margin-top: 10px;
+}
+
+.coins {
+  max-height: 250px;
+  overflow: auto;
+}
+
+.delete-container {
+  margin-top: 55px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.coins-header h3 {
+  padding: 0;
+  margin: 0;
+}
+
+.coins-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-container {
+  position: relative;
+}
+
+.save-btn {
+  margin-right: 10px;
+}
+
+app-spinner {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+.delete-spinner {
+  position: absolute;
+  left: 35px;
+  top: 70px;
+}

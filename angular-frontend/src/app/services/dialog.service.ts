@@ -1,16 +1,26 @@
 import {Injectable} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogContent} from "../shared/dialog-data/dialog-content";
+import {Dialog} from "../shared/dialog-data/dialog";
 import {Observable} from "rxjs";
 import {ChoiceDialogComponent} from "../components/shared/dialog/choice-dialog/choice-dialog.component";
-import {InputDialogComponent} from "../components/shared/dialog/input-dialog/input-dialog.component";
-import {ActionDialogContent} from "../shared/dialog-data/action-dialog-contnet";
+import {ActionDialogComponent} from "../components/shared/dialog/action-dialog/action-dialog.component";
+import {ActionDialog} from "../shared/dialog-data/action-dialog";
+import {InputConfirmDialog} from "../shared/dialog-data/input-confirm-dialog";
+import {
+  InputConfirmDialogComponent
+} from "../components/shared/dialog/input-confirm-dialog/input-confirm-dialog.component";
+
+interface DialogConfig {
+  disableClose?: boolean;
+  width?: string;
+  height?: string;
+}
 
 @Injectable({providedIn: 'root'})
 export class DialogService {
   constructor(private _dialog: MatDialog) {}
 
-  public operChoiceDialog(data: DialogContent, config?: {disableClose?: boolean}): Observable<boolean> {
+  public openChoiceDialog(data: Dialog, config?: DialogConfig): Observable<boolean> {
     const dialogRef = this._dialog.open(ChoiceDialogComponent, {
       data: data,
       disableClose: config?.disableClose
@@ -18,10 +28,19 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  public openInputDialog(data: ActionDialogContent, config?: {disableClose?: boolean}): Observable<boolean | string> {
-    const dialogRef = this._dialog.open(InputDialogComponent, {
+  public openInputDialog(data: ActionDialog, config?:  DialogConfig): Observable<false | {[s: string]: any}> {
+    const dialogRef = this._dialog.open(ActionDialogComponent, {
       data: data,
       disableClose: config?.disableClose
+    });
+    return dialogRef.afterClosed();
+  }
+
+  public openInputConfirmDialog(data: InputConfirmDialog, config?:  DialogConfig): Observable<boolean> {
+    const dialogRef = this._dialog.open(InputConfirmDialogComponent, {
+      data: data,
+      disableClose: config?.disableClose,
+      width: config?.width
     });
     return dialogRef.afterClosed();
   }

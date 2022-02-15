@@ -40,4 +40,8 @@ export class ApiEndpointService {
   public getGroupListEndpoint(): string {
     return this._createUrl(['groups']);
   }
+
+  public getGroupByIdEndpoint(groupId: string): string {
+    return this._createUrl(['groups', groupId]);
+  }
 }

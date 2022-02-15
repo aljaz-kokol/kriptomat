@@ -7,6 +7,7 @@ import {DialogService} from "../../../services/dialog.service";
 import {CoinService} from "../../../services/coin.service";
 import {Sort} from "@angular/material/sort";
 import {BreakpointObserver} from "@angular/cdk/layout";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-purchase-list',
@@ -30,7 +31,8 @@ export class PurchaseListComponent {
   constructor(private _purchaseService: PurchaseService,
               private _dialogService: DialogService,
               private _coinServise: CoinService,
-              private _breakPointObserver: BreakpointObserver) {}
+              private _breakPointObserver: BreakpointObserver,
+              private _router: Router) {}
 
   ngOnInit() {
     this.purchases = this._purchaseService.purchases;
@@ -51,6 +53,16 @@ export class PurchaseListComponent {
           this.mobileView = false;
         }
       });
+  }
+
+  navigateToCin(purchase: Purchase) {
+    this._dialogService.openChoiceDialog({
+      title: 'Navigate',
+      body: `Are you sure you want to navigate to "${purchase.coin.name}" detail page?`
+    }).subscribe(result => {
+      if (result)
+        this._router.navigate(['coin', purchase.coin.id]);
+    })
   }
 
   ngOnDestroy() {
@@ -93,8 +105,9 @@ export class PurchaseListComponent {
     this._purchaseTable.renderRows();
   }
 
-  onSell(purchase: Purchase) {
-    this._dialogService.operChoiceDialog({
+  onSell(purchase: Purchase, event: Event) {
+    event.stopPropagation();
+    this._dialogService.openChoiceDialog({
       title: 'Confirm sell',
       body: `Are you sure you want to sell ${purchase.coin.name}`
     }).subscribe(response => {

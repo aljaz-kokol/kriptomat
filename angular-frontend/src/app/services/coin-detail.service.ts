@@ -102,23 +102,28 @@ export class CoinDetailService {
   setCoin(coinId: string) {
     this.fetchingData = true;
     this._coinService.getCoinById(coinId).subscribe(coin => {
-      this._setupAddedCoinsOnSwitch(coin);
-      this._activeCoin = coin;
-      this._coinChange.next(this._activeCoin);
-      this.bought = this._purchaseService.coinIsBought(this._activeCoin.id);
+      this._purchaseService.coinIsBought(coinId).subscribe(isBought => {
+        this.bought = isBought;
+        this._setupAddedCoinsOnSwitch(coin);
+        this._activeCoin = coin;
+        this._coinChange.next(this._activeCoin);
+        this._purchaseService.coinIsBought(this._activeCoin.id);
 
-      this._prices = this._priceService.getCoinPrices(coin.id);
-      this._bitCoinPrices = this._priceService.getCoinPrices('61f6a692e9b8e64c7e87db2e');
-      if (this._prices.length > 0)
-        this.fetchingData = false;
-      this._priceService.fetchCoinPrices(coin.id).subscribe(prices => {
-        this._prices = prices;
-        if (this._bitCoinPrices.length > 0)
+        this._prices = this._priceService.getCoinPrices(coin.id);
+        this._bitCoinPrices = this._priceService.getCoinPrices('61f6a692e9b8e64c7e87db2e');
+        if (this._prices.length > 0) {
           this.fetchingData = false;
-        this._priceService.fetchCoinPrices('61f6a692e9b8e64c7e87db2e').subscribe(prices => {
-          this._bitCoinPrices = prices;
-          if (this._activeCoin)
+        }
+        this._priceService.fetchCoinPrices(coin.id).subscribe(prices => {
+          this._prices = prices;
+          if (this._bitCoinPrices.length > 0) {
             this.fetchingData = false;
+          }
+          this._priceService.fetchCoinPrices('61f6a692e9b8e64c7e87db2e').subscribe(prices => {
+            this._bitCoinPrices = prices;
+            if (this._activeCoin)
+              this.fetchingData = false;
+          });
         });
       });
     })

@@ -16,6 +16,8 @@
 }
 
 .group-name {
+  font-weight: normal;
+  font-size: 1.2rem;
   margin: 0;
   padding: 0 10px 15px 0;
   text-transform: capitalize;

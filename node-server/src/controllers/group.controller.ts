@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import {GroupService} from "../services/group.service";
 import {StatusCode} from "../utils/status.util";
+import Group from "../models/group.model";
 
 export const getGroups = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -25,6 +26,23 @@ export const postCreateGroup = async (req: Request, res: Response, next: NextFun
         const group = await GroupService.get.createGroup(req.body.name, req.body.coins, req.body.note ?? '');
         res.status(StatusCode.OK).json({
             message: 'Group successfully created',
+            group: group
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const putUpdateGroup = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const groupToUpdate = await GroupService.get.groupById(req.params.id);
+        const name = req.body.name ?? groupToUpdate.name;
+        const note = req.body.note ?? groupToUpdate.note;
+        const coins = req.body.coins ?? groupToUpdate.coins;
+
+        const group = await GroupService.get.updateGroup(groupToUpdate, name.trim().toLowerCase(), coins, note);
+        res.status(StatusCode.OK).json({
+            message: 'Successfully updated group',
             group: group
         });
     } catch (err) {

@@ -56,9 +56,37 @@ export class GroupService {
         }).then(group => group.populate('coins'));
     }
 
+    public async updateGroup(groupToUpdate: GroupDocument, name: string, coins: string[], note: string): Promise<GroupDocument> {
+        coins = Array.from(new Set(coins));
+        if (await this._groupWithNameExists(name) && groupToUpdate.name != name.trim().toLowerCase())
+            throw new InvalidParameterError(`Group with name ${name} already exists`);
+        if (coins.length <= 0)
+            throw new InvalidParameterError(`Group cannot be empty`);
+        for (const coinId of coins) {
+            const coin = await CoinService.get.coinById(coinId);
+            if (!coin)
+                throw new NotFoundError(`Coin with id ${coinId} could not be found`)
+        }
+        const updatedGroup =  await Group.findByIdAndUpdate(groupToUpdate.id, {
+            name: name.trim().toLowerCase(),
+            coins: coins,
+            note: note
+        });
+        const group = await Group.findById(groupToUpdate.id);
+        if (updatedGroup && group)
+            return group.populate('coins');
+        throw new NotFoundError(`Group with id ${groupToUpdate.id} was not found`)
+    }
+
     public async deleteGroup(groupId: string): Promise<void> {
         const group = await this.groupById(groupId);
         if (group)
             await Group.findByIdAndDelete(groupId);
+    }
+
+    private async _groupWithNameExists(name: string): Promise<boolean> {
+        const group = await Group.findOne({name: name.trim().toLowerCase()});
+        return !!group;
+
     }
 }

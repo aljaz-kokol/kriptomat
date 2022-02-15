@@ -22,9 +22,15 @@ export class GroupService {
       .pipe(map(Group.fromApiGroupList));
   }
 
-  createGroup(name: string, coins: Coin[]): Observable<{message: string; group: Group}> {
+  fetchGroupById(groupId: string): Observable<Group> {
+    return this._apiHttp.get<ApiGroup>(this._apiEndpoint.getGroupByIdEndpoint(groupId))
+      .pipe(map(Group.fromApiGroup));
+  }
+
+  createGroup(name: string, coins: Coin[], note?: string): Observable<{message: string; group: Group}> {
     return this._apiHttp.post<{message: string; group: ApiGroup}>(this._apiEndpoint.getGroupListEndpoint(), {
       name: name,
+      note: note ?? '',
       coins: coins.map(coin => coin.id)
     })
       .pipe(map(data => {
@@ -41,6 +47,35 @@ export class GroupService {
   addGroup(group: Group) {
     this._groups.push(group);
     this._groupChange.next(this.groups);
+  }
+
+  updateGroup(groupID: string, name: string, note: string, coins: string[]): Observable<Group> {
+    return this._apiHttp.put<{message: string, group: ApiGroup }>(this._apiEndpoint.getGroupByIdEndpoint(groupID), {
+      name: name,
+      note: note,
+      coins: coins
+    })
+      .pipe(map(data => Group.fromApiGroup(data.group)));
+  }
+
+  deleteGroup(groupId: string): Observable<void> {
+    return this._apiHttp.delete(this._apiEndpoint.getGroupByIdEndpoint(groupId));
+  }
+
+  removeGroup(groupId: string) {
+    const index = this._groups.findIndex(group => group.id == groupId);
+    if (index >= 0) {
+      this._groups.splice(index, 1);
+      this._groupChange.next(this._groups)
+    }
+  }
+
+  replaceGroup(groupId: string, group: Group) {
+    const index = this._groups.findIndex(group => group.id == groupId);
+    if (index >= 0) {
+      this._groups[index] = group;
+      this._groupChange.next(this._groups)
+    }
   }
 
   get groups(): Group[] {

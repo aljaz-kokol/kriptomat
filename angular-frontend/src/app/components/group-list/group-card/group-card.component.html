@@ -1,5 +1,5 @@
 <mat-card class="group-card">
-  <button mat-icon-button class="settings-btn">
+  <button mat-icon-button class="settings-btn" (click)="onSettingsClick()">
     <mat-icon>settings</mat-icon>
   </button>
   <mat-card-title class="group-name">{{ group.name }}</mat-card-title>
@@ -10,6 +10,7 @@
            *ngFor="let coin of group.coins"
            [src]="coin.image"
            [alt]="coin.name + 'logo'"
+           [matTooltip]="coin.name"
       />
     </div>
   </mat-card-content>

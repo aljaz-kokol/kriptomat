@@ -55,9 +55,20 @@ export class PurchaseService {
       this._purchasesChange.next(this._purchases);
   }
 
-  coinIsBought(coinId: string) {
+  coinIsBought(coinId: string): Observable<boolean> {
     const index = this._purchases.findIndex(el => el.coin.id == coinId);
-    return index>= 0;
+    return new Observable<boolean>(obs => {
+      if (this.fetchingData) {
+        this._apiHttp.get<ApiPurchase>(this._apiEndpoint.getPurchaseByCoinIdEndpoint(coinId))
+          .subscribe({
+            next: purchase => obs.next(true),
+            error: err => obs.next(false)
+          })
+      } else {
+        obs.next(index >= 0);
+      }
+    });
+
   }
 
   getPurchases(): Observable<Purchase[]> {

@@ -5,12 +5,15 @@ import {SearchBarComponent} from "../components/shared/search-bar/search-bar.com
 import {SpinnerComponent} from "../components/shared/spinner/spinner.component";
 import {ChartComponent} from "../components/shared/chart/chart.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
-import {FormsModule} from "@angular/forms";
+import { ReactiveFormsModule} from "@angular/forms";
 import {OverlayComponent} from "../components/shared/overlay/overlay.component";
 import {PopupComponent} from "../components/shared/popup/popup.component";
 import {ChoiceDialogComponent} from "../components/shared/dialog/choice-dialog/choice-dialog.component";
 import {LayoutModule} from "@angular/cdk/layout";
-import {InputDialogComponent} from "../components/shared/dialog/input-dialog/input-dialog.component";
+import {ActionDialogComponent} from "../components/shared/dialog/action-dialog/action-dialog.component";
+import {
+  InputConfirmDialogComponent
+} from "../components/shared/dialog/input-confirm-dialog/input-confirm-dialog.component";
 
 @NgModule({
   declarations: [
@@ -20,26 +23,28 @@ import {InputDialogComponent} from "../components/shared/dialog/input-dialog/inp
     OverlayComponent,
     PopupComponent,
     ChoiceDialogComponent,
-    InputDialogComponent
+    ActionDialogComponent,
+    InputConfirmDialogComponent
   ],
   imports: [
     MaterialModule,
     CommonModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   exports: [
     MaterialModule,
     CommonModule,
+    ReactiveFormsModule,
     DragDropModule,
     LayoutModule,
     SearchBarComponent,
     SpinnerComponent,
-    FormsModule,
     ChartComponent,
     OverlayComponent,
     PopupComponent,
     ChoiceDialogComponent,
-    InputDialogComponent
+    ActionDialogComponent,
+    InputConfirmDialogComponent
   ]
 })
 export class SharedModule {}
