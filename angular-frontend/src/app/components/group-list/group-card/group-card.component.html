@@ -1,5 +1,5 @@
-<mat-card class="group-card">
-  <button mat-icon-button class="settings-btn" (click)="onSettingsClick()">
+<mat-card class="group-card" (click)="onCardClick()">
+  <button mat-icon-button class="settings-btn" (click)="onSettingsClick($event)">
     <mat-icon>settings</mat-icon>
   </button>
   <mat-card-title class="group-name">{{ group.name }}</mat-card-title>
@@ -11,6 +11,7 @@
            [src]="coin.image"
            [alt]="coin.name + 'logo'"
            [matTooltip]="coin.name"
+           (click)="onCoinClick(coin, $event)"
       />
     </div>
   </mat-card-content>

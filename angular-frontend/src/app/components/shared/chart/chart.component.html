@@ -1,6 +1,12 @@
-<div class="chart" echarts
-     style="height: 500px"
-     [options]="chartOptions"
-     [merge]="updateOptions"
-     [initOpts]="{height: 'auto', width: 'auto'}"
-></div>
+<div class="chart-container" >
+  <ngx-charts-line-chart
+    [results]="dataSeries"
+    [legend]="true"
+    [xAxis]="true"
+    [yAxis]="true"
+    [autoScale]="true"
+    [timeline]="true"
+    [animations]="false"
+    [legendPosition]="legendPosition"
+  ></ngx-charts-line-chart>
+</div>

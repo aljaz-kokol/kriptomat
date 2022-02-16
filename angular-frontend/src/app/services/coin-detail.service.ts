@@ -6,13 +6,16 @@ import {CoinService} from "./coin.service";
 import {PriceService} from "./price.service";
 import {PurchaseService} from "./purchase.service";
 import {GroupService} from "./group.service";
+import {Group} from "../models/group.model";
 
 @Injectable()
 export class CoinDetailService {
   constructor(private _coinService: CoinService,
               private _priceService: PriceService,
-              private _purchaseService: PurchaseService) {}
+              private _purchaseService: PurchaseService,
+              private _groupService: GroupService) {}
 
+  private _group: Group | null = null;
   private _coinChange = new Subject<Coin>()
   private _activeCoin: Coin | null = null;
   private _addedCoins: Coin[] = [];
@@ -63,14 +66,17 @@ export class CoinDetailService {
 
   addCoins(coins: Coin[]): void {
     this._addedCoins.push(...coins);
-    this.shouldSave = true;
+    if (!this._group)
+      this.shouldSave = true;
   }
 
   removeCoin(removeCoin: Coin): void {
     const index = this._addedCoins.findIndex(coin => coin.name == removeCoin.name);
     if (index >= 0) {
       this._addedCoins.splice(index, 1);
-      this.shouldSave = true;
+      if (!this._group) {
+        this.shouldSave = this._addedCoins.length > 0;
+      }
     }
   }
 
@@ -98,9 +104,22 @@ export class CoinDetailService {
     }
   }
 
+  updateGroup(group: Group): void {
+    this._group = group;
+    this._groupService.replaceGroup(this._group.id, this._group);
+  }
+
   // == SETTERS ==
-  setCoin(coinId: string) {
+  setCoin(coinId: string, groupId?: string) {
     this.fetchingData = true;
+
+    if (groupId && groupId != '' && groupId != this._group?.id) {
+      this._groupService.fetchGroupById(groupId).subscribe(group => {
+        this._addedCoins = group.coins.filter(coin => coin.id != coinId);
+        this._group = group;
+      });
+    }
+
     this._coinService.getCoinById(coinId).subscribe(coin => {
       this._purchaseService.coinIsBought(coinId).subscribe(isBought => {
         this.bought = isBought;
@@ -134,8 +153,29 @@ export class CoinDetailService {
   }
 
   // == GETTERS ==
+  get shouldUpdate(): boolean {
+    if (this._group) {
+      if (this.addedCoins.length != this._group.coins.length) return true;
+      for (const addedCoin of this._addedCoins) {
+        let matches = 0;
+        for (const groupCoin of this._group.coins) {
+          if (groupCoin.name == addedCoin.name) {
+            matches++;
+            break;
+          }
+        }
+        if (matches == 0) return true;
+      }
+    }
+    return false;
+  }
+
   get prices(): number[] {
     return this._prices.map(price => price.price);
+  }
+
+  get group(): Group | null {
+    return Object.assign({}, this._group);
   }
 
   get pricePercentagesChartDataset(): {data: number[], name: string}[] {

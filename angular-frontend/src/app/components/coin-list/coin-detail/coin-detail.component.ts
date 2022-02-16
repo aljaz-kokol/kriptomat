@@ -31,8 +31,9 @@ export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateCompone
 
   ngOnInit(): void {
     this._route.paramMap.subscribe(params => {
-      const coinId: string = params.get('id') ?? '';
-      this._coinDetailService.setCoin(coinId);
+      const coinId: string = params.get('coinId') ?? '';
+      const groupId: string = params.get('groupId') ?? '';
+      this._coinDetailService.setCoin(coinId, groupId);
       this._coinSubscription = this._coinDetailService.coinChangeListener
         .subscribe(coin => {
           this.coin = coin;

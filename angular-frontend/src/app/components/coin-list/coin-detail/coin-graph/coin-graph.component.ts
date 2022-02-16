@@ -7,7 +7,7 @@ import {CoinDetailService} from "../../../../services/coin-detail.service";
 @Component({
   selector: 'app-coin-graph',
   templateUrl: 'coin-graph.component.html',
-  styleUrls: ['coin-graph.component.html'],
+  styleUrls: ['coin-graph.component.css'],
 })
 export class CoinGraphComponent implements OnInit, OnDestroy {
   private _coinSubscription: Subscription | null = null;

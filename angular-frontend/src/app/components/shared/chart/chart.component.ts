@@ -1,12 +1,12 @@
 import {
-  Component,
-  Input,
+  Component, ElementRef,
+  Input, NgZone,
   OnDestroy,
-  OnInit
+  OnInit, ViewChild
 } from "@angular/core";
-import { EChartsOption } from 'echarts'
 import {Observable, Subscription} from "rxjs";
 import {ChartData} from "../../../shared/chart-data.model";
+import {LegendPosition, ViewDimensions} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-chart[data]',
@@ -15,59 +15,34 @@ import {ChartData} from "../../../shared/chart-data.model";
 })
 export class ChartComponent implements OnInit, OnDestroy {
   @Input() data!: Observable<ChartData>;
-
   private _updateSubscription!: Subscription;
 
-  updateOptions: EChartsOption = {}
-  chartOptions: EChartsOption = {}
+  dataSeries: any = [];
+  legendPosition = LegendPosition.Right;
 
   ngOnInit() {
-      this._updateSubscription = this.data
-        .subscribe(newData => {
-            const dataSeries: any[] = [];
-            newData.dataset.forEach(set => {
-              dataSeries.push({
-                data: set.data,
-                name: set.name ?? '',
-                type: 'line'
+    this._updateSubscription = this.data
+      .subscribe(newData => {
+        this.dataSeries = [];
+        for (const set of newData.dataset) {
+            const series: {name: Date, value: any}[] = [];
+
+            set.data.forEach((value, index) => {
+              const labelIndex = index < newData.labels.length ? index : newData.labels.length - 1;
+              series.push({
+                name: new Date(newData.labels[labelIndex]),
+                value: value ?? 0
               })
             })
 
-            this.chartOptions = {
-              legend: {
-                data: dataSeries.map(el => el.name),
-              },
-              xAxis: {
-                type: 'category',
-                data: newData.labels,
-              },
-              yAxis: {
-                type: 'value',
-              },
-              tooltip: {},
-              series: dataSeries,
-              dataZoom: [
-                {
-                  type: 'slider',
-                  xAxisIndex: 0,
-                },
-                {
-                  type: 'slider',
-                  yAxisIndex: 0,
-                },
-                {
-                  type: 'inside',
-                  xAxisIndex: 0,
-                },
-                {
-                  type: 'inside',
-                  yAxisIndex: 0,
-                },
-              ],
-            }
-
-        });
+            this.dataSeries.push({
+              name: set.name ?? '',
+              series: series
+            })
+        }
+      });
   }
+
 
   ngOnDestroy() {
     this._updateSubscription.unsubscribe();

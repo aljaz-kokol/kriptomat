@@ -6,7 +6,7 @@ import {Subscription} from "rxjs";
 import {DialogService} from "../../../../services/dialog.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {GroupService} from "../../../../services/group.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-coin-header',
@@ -22,7 +22,8 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
               public _dialogService: DialogService,
               private _snackBar: MatSnackBar,
               private _groupService: GroupService,
-              private _route: ActivatedRoute) {}
+              private _route: ActivatedRoute,
+              private _router: Router) {}
 
   ngOnInit() {
     this._coinSubscription = this._coinDetailService.coinChangeListener
@@ -59,11 +60,30 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
       if (result) {
         this._groupService.createGroup(result['name'], this._coinDetailService.addedCoins, result['note'])
           .subscribe({
-            next: data => this._groupService.addGroup(data.group),
+            next: data => {
+              this._groupService.addGroup(data.group);
+              this._router.navigate(['coin', data.group.id, this.coin?.id])
+            },
             error: err => this._snackBar.open(err.message, 'Close', { duration: 3000 })
           })
       }
     })
+  }
+
+  onUpdateGroup() {
+    this._dialogService.openChoiceDialog({
+      title: 'Update',
+      body: 'Are you sure you want to update and save changes made to group?'
+    }).subscribe(result => {
+      const group = this._coinDetailService.group;
+      if (result && group) {
+        const coinId = this._coinDetailService.addedCoins.map(coin => coin.id);
+        this._groupService.updateGroup(group.id, group.name, group.note, coinId).subscribe({
+          next: updatedGroup => this._coinDetailService.updateGroup(updatedGroup),
+          error: err => this._snackBar.open(err.message, 'Close', { duration: 3000 })
+        })
+      }
+    });
   }
 
   get bought(): boolean | null {
@@ -74,5 +94,13 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
     if (this.coin)
       return this._coinDetailService.addedCoins.filter(coin => coin.name != this.coin?.name)
     return []
+  }
+
+  get canSave(): boolean {
+    return this._coinDetailService.shouldSave;
+  }
+
+  get canUpdate(): boolean {
+    return this._coinDetailService.shouldUpdate;
   }
 }

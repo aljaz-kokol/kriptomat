@@ -14,6 +14,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatDialogModule} from "@angular/material/dialog";
 import { MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatSortModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxChartsModule
   ]
 })
 export class MaterialModule {}

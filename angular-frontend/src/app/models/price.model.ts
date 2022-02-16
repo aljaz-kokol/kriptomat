@@ -28,7 +28,8 @@ export class Price {
   public get date(): string {
     const date = new Date(this._date);
     const dateStr = date.toLocaleDateString().split('.').map(datePart => datePart.trim().padStart(2, '0')).join ('.');
-    return `${dateStr}`;
+    const timeStr = date.toLocaleTimeString();
+    return date.toString();
   }
 
   public get dateMonth(): string {

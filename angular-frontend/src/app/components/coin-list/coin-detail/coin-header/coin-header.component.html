@@ -10,7 +10,8 @@
     <app-coin-tab *ngFor="let tabCoin of tabCoins" [coin]="tabCoin" ></app-coin-tab>
   </div>
   <div class="action-container">
-    <button mat-stroked-button color="accent" class="save-group-btn" *ngIf="tabCoins.length > 0" (click)="onSaveGroup()">Save group</button>
+    <button mat-stroked-button color="accent" class="save-group-btn" *ngIf="canSave" (click)="onSaveGroup()">Save group</button>
+    <button mat-stroked-button color="accent" class="save-group-btn" *ngIf="canUpdate" (click)="onUpdateGroup()">Update group</button>
     <button mat-flat-button color="primary" (click)="onBuyCoin()"  *ngIf="bought === false">Buy</button>
     <button mat-flat-button color="accent" (click)="onSellCoin()" *ngIf="bought === true">Sell</button>
     <app-spinner *ngIf="bought === null" class="action-spinner" [diameter]="35"></app-spinner>
