@@ -3,7 +3,6 @@ import {ApiHttpService} from "./core/api-http.service";
 import {ApiEndpointService} from "./core/api-endpoint.service";
 import {map, Observable, Subject} from "rxjs";
 import {Injectable} from "@angular/core";
-import {Coin} from "../models/coin.model";
 
 @Injectable({providedIn: 'root'})
 export class PriceService {
@@ -44,8 +43,8 @@ export class PriceService {
         const coinIDList = [...new Set(prices.map(price => price.coin))];
         this._savedPrices = [];
         for (const coinID of coinIDList) {
-          const coinPrices = prices.filter(price => price.coin === coinID);
-          this._savedPrices.push({id: coinID, prices: prices});
+          const coinPrices = prices.filter(priceF => priceF.coin === coinID);
+          this._savedPrices.push({id: coinID, prices: coinPrices});
           const lastIndex = coinPrices.length - 1;
           if (lastIndex < 0) {
             this._allPercentages.push({coin: coinID, values: []});

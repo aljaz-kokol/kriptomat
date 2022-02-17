@@ -1,12 +1,12 @@
 import {
-  Component, ElementRef,
-  Input, NgZone,
+  Component,
+  Input,
   OnDestroy,
-  OnInit, ViewChild
+  OnInit
 } from "@angular/core";
 import {Observable, Subscription} from "rxjs";
 import {ChartData} from "../../../shared/chart-data.model";
-import {LegendPosition, ViewDimensions} from "@swimlane/ngx-charts";
+import {LegendPosition, ScaleType, ViewDimensions} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-chart[data]',
@@ -19,19 +19,24 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   dataSeries: any = [];
   legendPosition = LegendPosition.Right;
+  scaleType = ScaleType.Ordinal;
 
   ngOnInit() {
     this._updateSubscription = this.data
       .subscribe(newData => {
         this.dataSeries = [];
         for (const set of newData.dataset) {
-            const series: {name: Date, value: any}[] = [];
+            const series: any[] = [];
 
             set.data.forEach((value, index) => {
               const labelIndex = index < newData.labels.length ? index : newData.labels.length - 1;
+              const date = new Date(newData.labels[labelIndex]);
+              const dateStr = date.toLocaleDateString().split('.').map(datePart => datePart.trim().padStart(2, '0')).join ('.');
+              const timeStr = date.toLocaleTimeString();
               series.push({
-                name: new Date(newData.labels[labelIndex]),
-                value: value ?? 0
+                name: date,
+                value: value ?? 0,
+                tooltipText: `${dateStr} ${timeStr}`
               })
             })
 

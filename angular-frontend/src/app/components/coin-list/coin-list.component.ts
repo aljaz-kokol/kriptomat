@@ -29,9 +29,11 @@ export class CoinListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._title.setTitle('Coin List');
     this.coins = this._coinService.coins;
+    this.showSortBtn = this._priceService.sortReady;
     this._coinsSubscription = this._coinService.coinChangeListener
       .subscribe(coins => {
         this.coins = coins;
+        this.showSortBtn = this._priceService.sortReady;
       })
   }
 

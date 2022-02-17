@@ -1,12 +1,21 @@
 <div class="chart-container" >
-  <ngx-charts-line-chart
+  <ngx-charts-line-chart class="chart"
     [results]="dataSeries"
     [legend]="true"
     [xAxis]="true"
     [yAxis]="true"
     [autoScale]="true"
+    [schemeType]="scaleType"
     [timeline]="true"
     [animations]="false"
-    [legendPosition]="legendPosition"
-  ></ngx-charts-line-chart>
+    [xAxisTickFormatting]="null"
+    [legendPosition]="legendPosition">
+    <ng-template #seriesTooltipTemplate let-model="model">
+      {{ model[0].tooltipText }}
+      <div class="tooltip-text" *ngFor="let set of model">
+        <div class="color-box" [ngStyle]="{'background': set.color}"></div>
+        <p>{{ set.series }}: {{ set.value.toFixed(3) }}</p>
+      </div>
+    </ng-template>
+  </ngx-charts-line-chart>
 </div>

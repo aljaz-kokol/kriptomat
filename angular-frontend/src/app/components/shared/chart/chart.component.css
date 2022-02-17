@@ -4,3 +4,20 @@
   height: 500px;
   overflow: hidden;
 }
+
+.tooltip-text {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.tooltip-text p {
+  margin: 0;
+}
+
+.color-box {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
