@@ -9,6 +9,7 @@ import {InputConfirmDialog} from "../shared/dialog-data/input-confirm-dialog";
 import {
   InputConfirmDialogComponent
 } from "../components/shared/dialog/input-confirm-dialog/input-confirm-dialog.component";
+import {GroupAddDialogComponent} from "../components/shared/dialog/group-add-dialog/group-add-dialog.component";
 
 interface DialogConfig {
   disableClose?: boolean;
@@ -39,6 +40,14 @@ export class DialogService {
   public openInputConfirmDialog(data: InputConfirmDialog, config?:  DialogConfig): Observable<boolean> {
     const dialogRef = this._dialog.open(InputConfirmDialogComponent, {
       data: data,
+      disableClose: config?.disableClose,
+      width: config?.width
+    });
+    return dialogRef.afterClosed();
+  }
+
+  public openAddGroupDialog(config?:  DialogConfig): Observable<false | string> {
+    const dialogRef = this._dialog.open(GroupAddDialogComponent,  {
       disableClose: config?.disableClose,
       width: config?.width
     });

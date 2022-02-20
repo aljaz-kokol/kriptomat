@@ -1,7 +1,7 @@
 <app-coin-header></app-coin-header>
 <div class="container" *ngIf="!showSpinner">
   <app-coin-graph></app-coin-graph>
-  <app-add-coin-popup></app-add-coin-popup>
+  <app-coin-add-popup [alreadySelectedCoins]="tabCoins" (onCoinsAdded)="onAdd($event)"></app-coin-add-popup>
 </div>
 
 <div class="error-container" *ngIf="error">

@@ -1,0 +1,46 @@
+<div class="container">
+  <h2 mat-dialog-title>Add Group</h2>
+  <div mat-dialog-content *ngIf="groupAddForm" class="dialog-content">
+    <form [formGroup]="groupAddForm" (ngSubmit)="onSave()">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name"  />
+        <mat-error>Please enter a valid group name</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Note</mat-label>
+        <input matInput type="text" formControlName="note"  />
+      </mat-form-field>
+      <div class="coins-form-array">
+        <div class="coins-header">
+          <h3>Coins</h3>
+          <button mat-icon-button (click)="onAddCoin()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <div class="coin-list" formArrayName="coins">
+          <mat-card class="coin mat-elevation-z0" *ngFor="let coin of addedCoinsFormArray.controls; let i = index" [formArrayName]="i">
+            <div class="coin-header">
+              <img class="coin-logo" [src]="coin.get('image')?.value" [alt]="coin.get('name')?.value + ' logo'">
+              <span>{{coin.get('name')?.value}}</span>
+            </div>
+            <button type="button" mat-icon-button color="accent" (click)="onRemoveCoin(i)" >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card>
+        </div>
+      </div>
+      <hr />
+      <div class="save-container">
+        <button mat-button class="form-btn" type="submit" color="primary" [disabled]="!canSave" *ngIf="!savingData">Save</button>
+        <app-spinner [diameter]="35" *ngIf="savingData"></app-spinner>
+      </div>
+      <button mat-button class="form-btn" type="reset"  color="accent" (click)="onReset()" *ngIf="!savingData">Reset</button>
+    </form>
+    <app-coin-add-popup [alreadySelectedCoins]="addedCoins" (onCoinsAdded)="addCoins($event)"></app-coin-add-popup>
+    <button mat-icon-button class="close-btn" (click)="onDialogClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+

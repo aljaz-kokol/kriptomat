@@ -45,6 +45,6 @@
     <button type="button" mat-raised-button color="warn" *ngIf="!isDeleting" (click)="onDelete()">Delete</button>
     <app-spinner [diameter]="35" color="warn" class="delete-spinner" *ngIf="isDeleting"></app-spinner>
   </div>
-  <app-group-coin-add [alreadySelectedCoins]="coinsFromFormArray" (onCoinsAdded)="addCoinControls($event)"></app-group-coin-add>
+  <app-coin-add-popup [alreadySelectedCoins]="coinsFromFormArray" (onCoinsAdded)="addCoinControls($event)"></app-coin-add-popup>
 </div>
 <app-spinner *ngIf="!group || !groupSettingsForm"></app-spinner>

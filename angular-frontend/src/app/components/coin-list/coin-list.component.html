@@ -1,13 +1,16 @@
-<div class="container">
+<div class="coin-list-nav">
+  <button mat-stroked-button (click)="onAddGroup()">Add group</button>
   <app-search-bar (onSearch)="filterList($event)"></app-search-bar>
+  <button mat-stroked-button color="white" class="action-btn" *ngIf="showSortBtn" [disabled]="sortDisabled" (click)="toggleSortPopup()">Sort</button>
+  <button mat-stroked-button color="white" class="action-btn" *ngIf="!showSortBtn" (click)="onFetchSortData()">Fetch sort data</button>
+</div>
+<div class="container">
   <div class="grid-container">
     <app-coin-card *ngFor="let coin of coins" [coin]="coin"></app-coin-card>
   </div>
-  <button mat-stroked-button class="popup-btn" color="white" *ngIf="!showSortBtn" (click)="onFetchSortData()">Fetch sort data</button>
-  <button mat-stroked-button class="popup-btn" color="white" *ngIf="showSortBtn" [disabled]="sortDisabled" (click)="toggleSortPopup()">Sort</button>
   <app-sort-popup
+    *ngIf="!creatingGroup"
     (percentagePeriodChange)="onPercentChange($event)"
-    (timePeriodChange)="onPeriodChange($event)"
-  >
+    (timePeriodChange)="onPeriodChange($event)">
   </app-sort-popup>
 </div>

@@ -15,7 +15,9 @@ export class PopupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._changeSubscription = this._popupService.changeListener
       .subscribe(show => {
+        // if (this.constructor.name == show.component.name) {
           this.show = show;
+        // }
       });
   }
 
@@ -23,8 +25,8 @@ export class PopupComponent implements OnInit, OnDestroy {
     this._changeSubscription.unsubscribe();
   }
 
-  togglePopup(): void {
-    this._popupService.toggleShow();
+  closePopup(): void {
+    this._popupService.close();
   }
 
   onPopupClicked(event: Event): void {

@@ -1,5 +1,6 @@
-import {Injectable} from "@angular/core";
+import {Component, Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
+import {ComponentType} from "@angular/cdk/overlay";
 
 @Injectable({ providedIn: 'root' })
 export class PopupService {
@@ -8,6 +9,11 @@ export class PopupService {
 
   toggleShow(): void {
     this._show = !this._show;
+    this._showChange.next(this._show);
+  }
+
+  close(): void {
+    this._show = false;
     this._showChange.next(this._show);
   }
 

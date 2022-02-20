@@ -1,4 +1,4 @@
-<app-overlay *ngIf="show" (click)="togglePopup()">
+<app-overlay *ngIf="show" (click)="closePopup()">
   <div class="popup" (click)="onPopupClicked($event)">
     <ng-content></ng-content>
   </div>

@@ -6,6 +6,8 @@ import {PriceService} from "../../services/price.service";
 import {PopupService} from "../../services/popup.service";
 import {Subscription} from "rxjs";
 import {Title} from "@angular/platform-browser";
+import {DialogService} from "../../services/dialog.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-coin-list',
@@ -19,12 +21,15 @@ export class CoinListComponent implements OnInit, OnDestroy {
   percentPeriod = -1; // For sorting
   timePeriod = 1; // For sorting
   showSortBtn = false;
+  creatingGroup = false;
 
   constructor(private _coinService: CoinService,
               private _priceService: PriceService,
               private _router: Router,
               private _popupService: PopupService,
-              private _title: Title) {}
+              private _dialogService: DialogService,
+              private _title: Title,
+              private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this._title.setTitle('Coin List');
@@ -37,13 +42,27 @@ export class CoinListComponent implements OnInit, OnDestroy {
       })
   }
 
+  ngOnDestroy() {
+    this._coinsSubscription.unsubscribe();
+  }
+
   onFetchSortData() {
     this.showSortBtn = true;
     this._priceService.fetchAllPrices();
   }
 
-  ngOnDestroy() {
-    this._coinsSubscription.unsubscribe();
+  onAddGroup() {
+    this.creatingGroup = true;
+    this._dialogService.openAddGroupDialog({
+      disableClose: true
+    }).subscribe(result => {
+      this.creatingGroup = false;
+      if (result) {
+        this._snackBar.open(result, 'Close', {
+          duration: 3000
+        });
+      }
+    });
   }
 
   get sortDisabled(): boolean {

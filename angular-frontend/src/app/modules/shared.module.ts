@@ -14,6 +14,8 @@ import {ActionDialogComponent} from "../components/shared/dialog/action-dialog/a
 import {
   InputConfirmDialogComponent
 } from "../components/shared/dialog/input-confirm-dialog/input-confirm-dialog.component";
+import {CoinAddPopupComponent} from "../components/shared/popup/coin-add-popup/coin-add-popup.component";
+import {GroupAddDialogComponent} from "../components/shared/dialog/group-add-dialog/group-add-dialog.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import {
     PopupComponent,
     ChoiceDialogComponent,
     ActionDialogComponent,
-    InputConfirmDialogComponent
+    InputConfirmDialogComponent,
+    GroupAddDialogComponent,
+    CoinAddPopupComponent
   ],
   imports: [
     MaterialModule,
@@ -44,7 +48,9 @@ import {
     PopupComponent,
     ChoiceDialogComponent,
     ActionDialogComponent,
-    InputConfirmDialogComponent
+    InputConfirmDialogComponent,
+    GroupAddDialogComponent,
+    CoinAddPopupComponent
   ]
 })
 export class SharedModule {}

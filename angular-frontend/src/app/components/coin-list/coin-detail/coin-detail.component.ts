@@ -18,7 +18,6 @@ import {DialogService} from "../../../services/dialog.service";
 })
 export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateComponent {
   private _coinSubscription: Subscription | null = null;
-  tabCoins: Coin[] = [];
   error: Error | null = null;
   coin: Coin | null = null;
 
@@ -67,8 +66,11 @@ export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateCompone
     return !this.error && this.coin !== null;
   }
 
-  onCoinsAdded(coins: Coin[]): void {
-    this.tabCoins.push(...coins);
-    this._popupService.toggleShow();
+  get tabCoins(): string[] {
+    return this._coinDetailService.addedCoins.map(coin => coin.id);
+  }
+
+  onAdd(coins: Coin[]): void {
+    this._coinDetailService.addCoins(coins);
   }
 }

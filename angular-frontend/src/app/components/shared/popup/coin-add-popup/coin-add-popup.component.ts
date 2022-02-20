@@ -6,30 +6,31 @@ import {CoinDetailService} from "../../../../services/coin-detail.service";
 import {PopupService} from "../../../../services/popup.service";
 
 @Component({
-  selector: 'app-add-coin-popup',
+  selector: 'app-coin-add-popup',
   templateUrl: 'coin-add-popup.component.html',
   styleUrls: ['coin-add-popup.component.css']
 })
 export class CoinAddPopupComponent implements OnInit {
-  private _coinSubscription!: Subscription;
+  @Input() alreadySelectedCoins: string[] = [];
+  @Output() onCoinsAdded = new EventEmitter<Coin[]>()
 
+  private _coinSubscription!: Subscription;
   private _coins: Coin[] = [];
   private _selectedCoins: Coin[] = []
 
   constructor(private _coinService: CoinService,
-              private _coinDetailService: CoinDetailService,
               private _popupService: PopupService) {}
 
   ngOnInit() {
     this._coins = this._coinService.coins;
     this._coinSubscription = this._coinService.coinChangeListener
       .subscribe(coins => {
-        this._coins = coins.filter(coin => this._coinDetailService.addedCoins.findIndex(c => c.name == coin.name) < 0);
+        this._coins = coins.filter(coin => this.alreadySelectedCoins.indexOf(coin.id) < 0);
       })
   }
 
   get coins(): Coin[] {
-    return this._coins.filter(coin => this._coinDetailService.addedCoins.findIndex(sCoin => sCoin.name == coin.name) < 0);
+    return this._coins.filter(coin => this.alreadySelectedCoins.indexOf(coin.id) < 0);
   }
 
   get canAdd(): boolean {
@@ -54,8 +55,9 @@ export class CoinAddPopupComponent implements OnInit {
   }
 
   onAdd(): void {
-    this._coinDetailService.addCoins(this._selectedCoins);
+    this._popupService.close();
+    this.onCoinsAdded.emit(this._selectedCoins);
     this._selectedCoins = [];
-    this._popupService.toggleShow();
+    this._popupService.close();
   }
 }

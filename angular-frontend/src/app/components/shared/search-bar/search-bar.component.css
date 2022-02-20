@@ -8,7 +8,6 @@
   background: rgb(225, 225, 225);
   border-radius: 5px;
   padding: 5px;
-  margin-bottom: 20px;
   border: 2px solid rgb(225, 225, 225);
   transition: background-color 150ms, box-shadow 150ms, border 150ms;
 }
