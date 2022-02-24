@@ -27,6 +27,22 @@ export class PurchaseService {
         });
     }
 
+    public async updatePurchaseDiffLimit(purchaseId: string, limit: { maxDiff?: number; ogDiff?: number; }) {
+        const purchase = await this.purchaseById(purchaseId);
+        
+        if (!limit.maxDiff && !limit.ogDiff)
+            throw new InvalidParameterError('Warning limit for max. or original diff in % must be set');
+        if (limit.maxDiff && limit.maxDiff > 0)
+            throw new InvalidParameterError('Warning limit for max. diff. in % can only be negative');
+        if (limit.ogDiff && limit.ogDiff > 0)
+            throw new InvalidParameterError('Warning limit for original diff. in % can only be negative');
+        
+        purchase.originalDiffLimit = limit.maxDiff ?? purchase.originalDiffLimit;
+        purchase.maxDiffLimit = limit.maxDiff ?? purchase.maxDiffLimit;
+
+        await purchase.save();
+    }
+
     public async deletePurchase(coinId: string): Promise<void> {
         if (!Types.ObjectId.isValid(coinId))
             throw new InvalidParameterError(`The passed id: ${coinId} is invalid`);
@@ -48,6 +64,15 @@ export class PurchaseService {
         if (!purchase)
             throw new NotFoundError(`Can't find purchase of coin with id: ${coinId}`);
 
+        return purchase;
+    }
+
+    public async purchaseById(purchaseId: string): Promise<PurchaseDocument {
+        if (!Types.ObjectId.isValid(purchaseId))
+            throw new InvalidParameterError(`The passed id: ${purchaseId} is invalid`);
+        const purchase = await Purchase.findById(purchaseId);
+        if (!purchase)
+            throw new NotFoundError(`Can't find purchase with id: ${purchaseId}`);
         return purchase;
     }
 }

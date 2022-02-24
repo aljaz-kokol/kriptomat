@@ -30,3 +30,7 @@ export const getPurchaseByCoinId = async (req: Request, res: Response, next: Nex
         next(err);
     }
 }
+
+export const patchUpdatePurchase = async (req: Request, res: Response, next: NextFunction) => {
+    
+}

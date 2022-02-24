@@ -5,6 +5,8 @@ export interface PurchaseDocument extends Document {
     coin_id: string;
     price: number;
     date: Date;
+    originalDiffLimit?: number;
+    maxDiffLimit?: number;
 }
 
 const purchaseSchema = new Schema({
@@ -22,6 +24,14 @@ const purchaseSchema = new Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    originalDiffLimit: {
+        type: Number,
+        default: null
+    },
+    maxDiffLimit: {
+        type: Number,
+        default: null
     }
 });
 

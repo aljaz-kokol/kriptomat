@@ -49,7 +49,7 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
   }
 
   onSaveGroup() {
-    this._dialogService.openInputDialog({
+    this._dialogService.openActionDialog({
       title: 'Create group',
       body: 'Please type in the name of the group you wish to create. Optionally you can also create a note for the group',
       actions: [

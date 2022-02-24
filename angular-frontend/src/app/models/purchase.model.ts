@@ -6,13 +6,17 @@ export interface ApiPurchase {
   boughtPrice: number;
   prices: ApiPrice[];
   date: Date;
+  originalDiffLimit: number | null;
+  maxDiffLimit: number | null;
 }
 
 export class Purchase {
   constructor(public coin: Coin,
               public boughtPrice: number,
               private _prices: Price[],
-              public date: Date) {}
+              public date: Date,
+              public ogDiffLimit: number | null,
+              public maxDiffLimit: number | null) {}
 
   public get dateStr(): string {
     const dateStr = this.date.toLocaleDateString().split('.').map(datePart => datePart.trim().padStart(2, '0')).join ('.');
@@ -67,7 +71,9 @@ export class Purchase {
       Coin.fromApiCoin(apiPurchase.coin),
       apiPurchase.boughtPrice,
       Price.fromApiPriceList(apiPurchase.prices),
-      new Date(apiPurchase.date)
+      new Date(apiPurchase.date),
+      apiPurchase.originalDiffLimit,
+      apiPurchase.maxDiffLimit  
     );
   }
 

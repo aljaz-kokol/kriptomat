@@ -4,7 +4,11 @@
   <form [formGroup]="actionForm" (ngSubmit)="onSave()">
     <mat-form-field appearance="outline" *ngFor="let action of data.actions">
       <mat-label>{{action.action}}</mat-label>
-      <input [type]="action.type" [formControlName]="action.action" [placeholder]="action.placeholder ?? ''" matInput autocomplete="off" />
+      <input 
+        [type]="action.type"
+        [formControlName]="action.action"
+        [placeholder]="action.placeholder ?? ''" 
+        matInput autocomplete="off" />
       <mat-error>Please input a valid {{ action.action }}</mat-error>
     </mat-form-field>
     <button mat-button type="button" (click)="onCancel()" color="accent">Cancel</button>

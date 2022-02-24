@@ -104,6 +104,19 @@ export class PurchaseListComponent {
     this._purchaseService.sortByKey(event.active, directions.get(event.direction) ?? 0)
     this._purchaseTable.renderRows();
   }
+  
+  onMaxPercentDiffEdit(event: Event, purchase: Purchase) {
+    event.stopPropagation();
+    this._dialogService.openActionDialog({
+      title: 'Set limit',
+      body: 'Please enter the alarm limit',
+      actions: [
+        { action: 'limit', type: 'number', required: true, defaultValue: purchase.maxDiffLimit }
+      ]
+    }).subscribe(value => {
+      console.log(value);
+    });
+  }
 
   onSell(purchase: Purchase, event: Event) {
     event.stopPropagation();

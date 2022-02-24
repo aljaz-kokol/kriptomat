@@ -29,7 +29,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  public openInputDialog(data: ActionDialog, config?:  DialogConfig): Observable<false | {[s: string]: any}> {
+  public openActionDialog(data: ActionDialog, config?:  DialogConfig): Observable<false | {[s: string]: any}> {
     const dialogRef = this._dialog.open(ActionDialogComponent, {
       data: data,
       disableClose: config?.disableClose

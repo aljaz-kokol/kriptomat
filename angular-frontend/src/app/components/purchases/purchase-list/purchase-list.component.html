@@ -37,7 +37,12 @@
             *matCellDef="let element"
             [ngClass]="{'active-sort': isActiveSortHeader('percent-change')}"
             [ngStyle]="{'color': element.percentChangeColor}"
-        >{{ percentChange(element) }}&percnt;</td>
+        >
+        {{ percentChange(element) }}&percnt;
+        <button mat-icon-button matTooltip="Set limit" (click)="onMaxPercentDiffEdit($event, element)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        </td>
       </ng-container>
 
       <!-- MAX-PERCENT CONTAINER -->
@@ -47,7 +52,12 @@
             *matCellDef="let element"
             [ngClass]="{'active-sort': isActiveSortHeader('max-percent-change')}"
             [ngStyle]="{'color': element.maxPercentChangeColor}"
-        >{{ maxPercentChange(element) }}&percnt;</td>
+        >
+        {{ maxPercentChange(element) }}&percnt;
+        <button mat-icon-button matTooltip="Set limit" (click)="onMaxPercentDiffEdit($event, element)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        </td>
       </ng-container>
 
       <!-- ACTION CONTAINER -->

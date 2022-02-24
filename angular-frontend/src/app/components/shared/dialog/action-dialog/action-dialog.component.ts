@@ -39,7 +39,7 @@ export class ActionDialogComponent implements OnInit {
   private _initForm() {
     const controls: {[s: string]: AbstractControl}  = {};
     for (const action of this.data.actions) {
-      controls[action.action] = new FormControl(null, action.required ? [Validators.required] : []);
+      controls[action.action] = new FormControl(action.defaultValue ?? null, action.required ? [Validators.required] : []);
     }
     this.actionForm = new FormGroup(controls);
   }
