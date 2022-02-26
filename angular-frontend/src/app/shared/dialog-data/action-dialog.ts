@@ -7,5 +7,7 @@ export interface ActionDialog {
     required?: boolean;
     placeholder?: string;
     defaultValue?: any;
+    minValue?: number;
+    maxValue?: number
   }[]
 }

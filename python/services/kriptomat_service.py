@@ -73,7 +73,7 @@ class KriptomatService:
                 return Coin(
                     name=name.text,
                     price=price_val,
-                    connection=url_conn['href'],
+                    connection=f'https://kriptomat.io{url_conn["href"]}',
                     svg_link=f'https://kriptomat.io{svg_link["src"]}',
                     date=datetime.now()
                 )

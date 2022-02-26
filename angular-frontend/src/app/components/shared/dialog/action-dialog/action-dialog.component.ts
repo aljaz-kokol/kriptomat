@@ -39,7 +39,13 @@ export class ActionDialogComponent implements OnInit {
   private _initForm() {
     const controls: {[s: string]: AbstractControl}  = {};
     for (const action of this.data.actions) {
-      controls[action.action] = new FormControl(action.defaultValue ?? null, action.required ? [Validators.required] : []);
+      let validators: Validators = [];
+      // if (action.required) {
+      //   validators = [Validators.required, action.minValue ? Validators.min(action.minValue), action.maxValue ? Validators.max(action.maxValue) : Validators.max];
+      // } else {
+      //   validators = [action.minValue ? Validators.min(action.minValue) : Validators.min, action.maxValue ? Validators.max(action.maxValue) : Validators.max];
+      // }
+      controls[action.action] = new FormControl(action.defaultValue ?? null, validators);
     }
     this.actionForm = new FormGroup(controls);
   }

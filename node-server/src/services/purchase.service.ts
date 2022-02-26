@@ -27,7 +27,7 @@ export class PurchaseService {
         });
     }
 
-    public async updatePurchaseDiffLimit(purchaseId: string, limit: { maxDiff?: number; ogDiff?: number; }) {
+    public async updatePurchaseDiffLimit(purchaseId: string, limit: { maxDiff?: number; ogDiff?: number; }): Promise<PurchaseDocument> {
         const purchase = await this.purchaseById(purchaseId);
         
         if (!limit.maxDiff && !limit.ogDiff)
@@ -37,10 +37,10 @@ export class PurchaseService {
         if (limit.ogDiff && limit.ogDiff > 0)
             throw new InvalidParameterError('Warning limit for original diff. in % can only be negative');
         
-        purchase.originalDiffLimit = limit.maxDiff ?? purchase.originalDiffLimit;
+        purchase.originalDiffLimit = limit.ogDiff ?? purchase.originalDiffLimit;
         purchase.maxDiffLimit = limit.maxDiff ?? purchase.maxDiffLimit;
 
-        await purchase.save();
+        return await purchase.save();
     }
 
     public async deletePurchase(coinId: string): Promise<void> {
@@ -52,9 +52,7 @@ export class PurchaseService {
     }
 
     public async purchaseList(): Promise<PurchaseDocument[]> {
-        return await Purchase.find().populate({
-            path: 'coin_id'
-        });
+        return await Purchase.find().populate('coin_id');
     }
 
     public async purchaseByCoinId(coinId: string): Promise<PurchaseDocument> {
@@ -67,7 +65,7 @@ export class PurchaseService {
         return purchase;
     }
 
-    public async purchaseById(purchaseId: string): Promise<PurchaseDocument {
+    public async purchaseById(purchaseId: string): Promise<PurchaseDocument> {
         if (!Types.ObjectId.isValid(purchaseId))
             throw new InvalidParameterError(`The passed id: ${purchaseId} is invalid`);
         const purchase = await Purchase.findById(purchaseId);

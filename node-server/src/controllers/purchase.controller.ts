@@ -10,6 +10,7 @@ export const getPurchases = async (req: Request, res: Response, next: NextFuncti
         const purchasedCoins = [];
         for (const purchase of purchases) {
             purchasedCoins.push({
+                _id: purchase._id,
                 coin: purchase.coin_id,
                 boughtPrice: purchase.price,
                 date: purchase.date,
@@ -32,5 +33,16 @@ export const getPurchaseByCoinId = async (req: Request, res: Response, next: Nex
 }
 
 export const patchUpdatePurchase = async (req: Request, res: Response, next: NextFunction) => {
-    
+    try {
+        const updatedPurchase = await PurchaseService.get.updatePurchaseDiffLimit(req.params.purchaseId, {
+            maxDiff: req.body.maxDiff,
+            ogDiff: req.body.ogDiff
+        });
+        res.status(StatusCode.OK).json({
+            message: 'Purchase successfully updated',
+            purchase: updatedPurchase
+        });
+    } catch (err) {
+        next(err);
+    }
 }

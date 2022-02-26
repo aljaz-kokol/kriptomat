@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from "@angular/core";
+import {Component,ViewChild} from "@angular/core";
 import {Subscription} from "rxjs";
 import {MatTable} from "@angular/material/table";
 import {Purchase} from "../../../models/purchase.model";
@@ -104,14 +104,14 @@ export class PurchaseListComponent {
     this._purchaseService.sortByKey(event.active, directions.get(event.direction) ?? 0)
     this._purchaseTable.renderRows();
   }
-  
+
   onMaxPercentDiffEdit(event: Event, purchase: Purchase) {
     event.stopPropagation();
     this._dialogService.openActionDialog({
       title: 'Set limit',
-      body: 'Please enter the alarm limit',
+      body: 'Please enter the alarm limit (value in set in negative numbers).',
       actions: [
-        { action: 'limit', type: 'number', required: true, defaultValue: purchase.maxDiffLimit }
+        { action: 'limit', type: 'number', required: true, defaultValue: purchase.maxDiffLimit, minValue: 0 }
       ]
     }).subscribe(value => {
       console.log(value);
