@@ -23,8 +23,6 @@ export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateCompone
 
   constructor(private _route: ActivatedRoute,
               private _title: Title,
-              private _router: Router,
-              private _popupService: PopupService,
               private _dialogService: DialogService,
               private _coinDetailService: CoinDetailService) {}
 
@@ -36,6 +34,7 @@ export class CoinDetailComponent implements OnInit, OnDestroy, DeactivateCompone
       this._coinSubscription = this._coinDetailService.coinChangeListener
         .subscribe(coin => {
           this.coin = coin;
+          this._title.setTitle(this.coin.name)
         })
     });
   }

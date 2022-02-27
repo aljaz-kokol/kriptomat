@@ -8,6 +8,7 @@ import {PopupService} from "../../../services/popup.service";
 import {Coin} from "../../../models/coin.model";
 import {DeactivateComponent} from "../../../services/guards/deactivate/deactivate.guard";
 import {Observable} from "rxjs";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-group-settings',
@@ -24,7 +25,8 @@ export class GroupSettingsComponent implements OnInit, DeactivateComponent {
               private _route: ActivatedRoute,
               private _dialogService: DialogService,
               private _popupServe: PopupService,
-              private _router: Router) {}
+              private _router: Router,
+              private _title: Title) {}
 
   ngOnInit() {
     this._route.paramMap.subscribe(urlMap => {
@@ -32,6 +34,7 @@ export class GroupSettingsComponent implements OnInit, DeactivateComponent {
       if (groupId) {
         this._groupService.fetchGroupById(groupId).subscribe(group => {
           this.group = group;
+          this._title.setTitle(`${group.name} settings`);
           this._intiForm(this.group);
         });
       }
