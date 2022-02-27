@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import {GroupService} from "../../services/group.service";
 import {Subscription} from "rxjs";
 import {Group} from "../../models/group.model";
+import {DialogService} from "../../services/dialog.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-group-list',
@@ -13,7 +15,9 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   groups: Group[] = [];
 
-  constructor(private _groupService: GroupService) {}
+  constructor(private _groupService: GroupService,
+              private _dialogService: DialogService,
+              private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
      this.groups = this._groupService.groups;
@@ -25,6 +29,18 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._groupSubscription.unsubscribe();
+  }
+
+  onAddGroup() {
+    this._dialogService.openAddGroupDialog({
+      disableClose: true
+    }).subscribe(result => {
+      if (result) {
+        this._snackBar.open(result, 'Close', {
+          duration: 3000
+        });
+      }
+    });
   }
 
   search(searchStr: string) {

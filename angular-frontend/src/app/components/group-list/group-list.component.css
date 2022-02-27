@@ -5,8 +5,8 @@
   max-height: 90%;
   padding: 10px 15px;
   max-width: 100%;
-  overflow: hidden;
-  margin: auto;
+  overflow: auto;
+  margin: 50px auto auto;
   text-align: center;
 }
 
@@ -19,6 +19,27 @@
   color: #29434e;
   width: 100%;
   text-align: center;
+}
+
+.group-list-nav {
+  display: flex;
+  background-color: white;
+  align-items: center;
+  position: fixed;
+  top: 55px;
+  left: 0;
+  width: 100%;
+  padding :10px 5px  5px;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.group-list-nav span {
+}
+
+app-search-bar {
+  flex: 1;
+  margin: 0 10px;
 }
 
 @media only screen and (max-width: 1024px) {

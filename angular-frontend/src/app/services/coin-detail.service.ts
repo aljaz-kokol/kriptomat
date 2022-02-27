@@ -23,7 +23,7 @@ export class CoinDetailService {
 
   private _prices: Price[] = [];
   private _bitCoinPrices: Price[] = [];
-  private _selectedToggleOptions: string[] = [];
+  private _selectedToggleOptions: string[] = ['current'];
   private _percentChartToggleOptions = new Map<string, number>([
     ['current', 0],
     ['2h', 1],
@@ -115,7 +115,7 @@ export class CoinDetailService {
 
     if (groupId && groupId != '' && groupId != this._group?.id) {
       this._groupService.fetchGroupById(groupId).subscribe(group => {
-        this._addedCoins = group.coins.filter(coin => coin.id != coinId);
+        this._addedCoins = group.coins;
         this._group = group;
       });
     }
@@ -123,8 +123,9 @@ export class CoinDetailService {
     this._coinService.getCoinById(coinId).subscribe(coin => {
       this._purchaseService.coinIsBought(coinId).subscribe(isBought => {
         this.bought = isBought;
-        this._setupAddedCoinsOnSwitch(coin);
         this._activeCoin = coin;
+        this._addedCoins.push(this._activeCoin);
+        this._setupAddedCoinsOnSwitch();
         this._coinChange.next(this._activeCoin);
         this._purchaseService.coinIsBought(this._activeCoin.id);
 
@@ -178,9 +179,13 @@ export class CoinDetailService {
     return Object.assign({}, this._group);
   }
 
+  get activeCoin(): Coin {
+    return Object.assign({}, this._activeCoin);
+  }
+
   get pricePercentagesChartDataset(): {data: number[], name: string}[] {
-    if (this._selectedToggleOptions.length <= 0)
-      this._selectedToggleOptions.push(this.percentChartToggleOptions[0])
+    // if (this._selectedToggleOptions.length <= 0)
+    //   this._selectedToggleOptions.push(this.percentChartToggleOptions[0])
     const lastIndex = this._prices.length - 1;
     if (lastIndex < 0) return [];
 
@@ -204,8 +209,6 @@ export class CoinDetailService {
           values.push({data: data, name: `${this._activeCoin?.name} ${option}`});
         }
       }
-    } else {
-      values.push({data: percentages, name: this._selectedToggleOptions[0]})
     }
 
     for (const graphCoin of this._addedGraphCoins) {
@@ -240,7 +243,7 @@ export class CoinDetailService {
 
   get addedCoins(): Coin[] {
     if (this._activeCoin)
-      return [...this._addedCoins, this._activeCoin];
+      return [...this._addedCoins];
     return []
   }
 
@@ -253,15 +256,15 @@ export class CoinDetailService {
   }
 
   // == PRIVATE ==
-  private _setupAddedCoinsOnSwitch(newActiveCoin: Coin) {
-    if (this._activeCoin)
-      this._addedCoins.push(this._activeCoin)
-    const index = this._addedCoins.findIndex(coin => coin.name == newActiveCoin.name);
-    const graphIndex = this._addedGraphCoins.findIndex(coin => coin.name == newActiveCoin.name);
-
-    if (index >= 0)
-      this._addedCoins.splice(index, 1);
-
+  private _setupAddedCoinsOnSwitch() {
+    const addedCoins: Coin[] = [];
+    for (const coin of this._addedCoins) {
+      const index = addedCoins.findIndex(compareCoin => compareCoin.id == coin.id)
+      if (index < 0) {
+        addedCoins.push(coin);
+      }
+    }
+    this._addedCoins = addedCoins;
   }
 
   private static _pricesPercentages(prices: Price[]) {

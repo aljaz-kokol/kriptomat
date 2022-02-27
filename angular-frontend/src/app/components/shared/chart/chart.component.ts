@@ -21,10 +21,18 @@ export class ChartComponent implements OnInit, OnDestroy {
   legendPosition = LegendPosition.Right;
   scaleType = ScaleType.Ordinal;
 
+  colorScheme = [
+    {name: 'base', value: '#000000'}
+  ];
+
+
+
   ngOnInit() {
     this._updateSubscription = this.data
       .subscribe(newData => {
+        let baseCreated = false;
         this.dataSeries = [];
+        const baseSetSeries: any[] = [];
         for (const set of newData.dataset) {
             const series: any[] = [];
 
@@ -37,14 +45,24 @@ export class ChartComponent implements OnInit, OnDestroy {
                 name: date,
                 value: value ?? 0,
                 tooltipText: `${dateStr} ${timeStr}`
-              })
+              });
+              if (!baseCreated) {
+                baseSetSeries.push({
+                  name: date,
+                  value: 0
+                })
+              }
             })
-
+            baseCreated = true;
             this.dataSeries.push({
               name: set.name ?? '',
               series: series
-            })
+            });
         }
+        this.dataSeries.push({
+          name: 'base',
+          series: baseSetSeries,
+        })
       });
   }
 

@@ -35,6 +35,10 @@ export class CoinTabComponent {
     return this._coinDetailService.addedGraphCoins.findIndex(coin => this.coin.name == coin.name) >= 0;
   }
 
+  get isActive(): boolean {
+    return this._coinDetailService.activeCoin.id == this.coin.id;
+  }
+
   onShowTabCoinInGraph(event: Event) {
     event.stopPropagation();
     this._coinDetailService.toggleGraphCoin(this.coin);

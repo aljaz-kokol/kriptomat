@@ -30,6 +30,7 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
       .subscribe(coin => {
         this.coin = coin;
       });
+    console.log('HELLO');
   }
 
   ngOnDestroy() {
@@ -92,7 +93,7 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
 
   get tabCoins(): Coin[] {
     if (this.coin)
-      return this._coinDetailService.addedCoins.filter(coin => coin.name != this.coin?.name)
+      return this._coinDetailService.addedCoins;
     return []
   }
 

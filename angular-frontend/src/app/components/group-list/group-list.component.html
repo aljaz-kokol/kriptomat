@@ -1,4 +1,8 @@
-<app-search-bar (onSearch)="search($event)"></app-search-bar>
+<div class="group-list-nav">
+  <button mat-stroked-button (click)="onAddGroup()">Add group</button>
+  <app-search-bar (onSearch)="search($event)"></app-search-bar>
+  <span></span>
+</div>
 <div class="group-grid" *ngIf="groups.length > 0">
   <app-group-card *ngFor="let group of groups" [group]="group"></app-group-card>
 </div>
