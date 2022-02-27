@@ -7,7 +7,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 }
 /* Added custom scroll bar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 7px;
   height: 7px;
   border-radius: 5px;
   background-color: rgba(224, 224, 224, 0.67);
