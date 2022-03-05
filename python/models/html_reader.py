@@ -30,26 +30,26 @@ class HTMLReader:
             print('error when clicking button with id ' + buttonId)
 
     def fetch_html(self, buttonId=None):
-        try:
-            options = webdriver.ChromeOptions()
-            options.add_experimental_option('excludeSwitches', ['enable-logging'])
-            browser = webdriver.Chrome(executable_path=self.__chrome_driver_path, options=options)
-            browser.get(self.__page_url)
+        # try:
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        browser = webdriver.Chrome(executable_path=self.__chrome_driver_path, options=options)
+        browser.get(self.__page_url)
+        time.sleep(self.cookie_button_wait)
+        browser.find_element('id', self.__cookie_button_id).click()
+
+        if buttonId is not None:
+            browser.find_element('id', buttonId).click()
             time.sleep(self.cookie_button_wait)
-            browser.find_element('id', self.__cookie_button_id).click()
-
-            if buttonId is not None:
-                browser.find_element('id', buttonId).click()
-                time.sleep(self.cookie_button_wait)
 
 
-            time.sleep(self.html_wait)
-            self.__html = browser.page_source
-            browser.close()
-            browser.quit()
-        except:
-            print(f'There was an error while fetching data from: "{self.__page_url}"')
-            self.__html = ''
+        time.sleep(self.html_wait)
+        self.__html = browser.page_source
+        browser.close()
+        browser.quit()
+        # except:
+        #     print(f'There was an error while fetching data from: "{self.__page_url}"')
+        #     self.__html = ''
 
         return self.__html
 
