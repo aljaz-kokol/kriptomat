@@ -1,3 +1,8 @@
+button {
+  height: fit-content;
+  margin-left: 20px;
+}
+
 .coin-list {
   max-height: 80%;
   overflow: auto;
@@ -5,6 +10,18 @@
 
 .coin-item {
   border-bottom: 1px solid grey;
+}
+
+.coin-num {
+  background: #d81b60;
+  color: white;
+  font-weight: bold;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  margin-right: 25px;
+  border-radius: 25px;
+  text-align: center;
 }
 
 .coin-logo {
@@ -25,11 +42,8 @@
   display: flex;
 }
 
-button {
-  height: fit-content;
-  margin-left: 20px;
-}
-
 .coin-search {
   flex: 2;
 }
+
+

@@ -1,4 +1,4 @@
-<button mat-stroked-button class="added-coin-btn" (click)="onTabCoinClick()" [disabled]="isActive">
+<button mat-stroked-button class="added-coin-btn" (click)="onTabCoinClick()" [disabled]="isActive" [ngClass]="{'active-tab': isActive}">
   <mat-button-toggle class="toggle-coin-graph" (click)="onShowTabCoinInGraph($event)" [checked]="isGraphCoin" *ngIf="!isActive">
     <mat-icon class="show-chart-icon">show_chart</mat-icon>
   </mat-button-toggle>

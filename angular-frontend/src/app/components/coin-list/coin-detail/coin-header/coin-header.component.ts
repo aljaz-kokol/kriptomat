@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, HostListener, OnDestroy, OnInit} from "@angular/core";
 import {Coin} from "../../../../models/coin.model";
 import {CoinDetailService} from "../../../../services/coin-detail.service";
 import {PopupService} from "../../../../services/popup.service";
@@ -17,6 +17,19 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
   private _coinSubscription!: Subscription;
   coin: Coin | null = null;
 
+  @HostListener('document:keyup', ['$event'])
+  keyPressed(event: KeyboardEvent) {
+    const coins = this._coinDetailService.addedCoins;
+    const index = coins.findIndex(coin => coin.id == this.coin?.id);
+    if (event.key == 'ArrowLeft') {
+      const newIndex = index - 1 < 0 ? 0 : index - 1;
+      this._router.navigate(['..', coins[newIndex].id], {relativeTo: this._route});
+    } else if (event.key == 'ArrowRight') {
+      const newIndex = index + 1 >= coins.length ? coins.length - 1 : index + 1;
+      this._router.navigate(['..', coins[newIndex].id], {relativeTo: this._route});
+    }
+  }
+
   constructor(private _coinDetailService: CoinDetailService,
               private _popupService: PopupService,
               public _dialogService: DialogService,
@@ -30,7 +43,6 @@ export class CoinHeaderComponent implements OnInit, OnDestroy {
       .subscribe(coin => {
         this.coin = coin;
       });
-    console.log('HELLO');
   }
 
   ngOnDestroy() {

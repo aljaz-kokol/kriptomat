@@ -42,6 +42,11 @@ export class CoinAddPopupComponent implements OnInit {
     return index >= 0;
   }
 
+  selectedIndex(coin: Coin): number {
+    const index = this._selectedCoins.findIndex(c => c.name === coin.name);
+    return index;
+  }
+
   onCoinSelected(coin: Coin) {
     const index = this._selectedCoins.findIndex(c => c.name === coin.name);
     if (index >= 0)

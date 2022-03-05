@@ -31,11 +31,16 @@
   font-weight: bold;
 }
 
-
 .show-chart-icon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 5px;
+}
+
+.active-tab {
+  background: #43a047;
+  color: white !important;
+  padding: 0 10px;
 }
