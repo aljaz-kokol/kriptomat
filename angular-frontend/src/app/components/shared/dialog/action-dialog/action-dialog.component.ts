@@ -1,7 +1,12 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ActionDialog} from "../../../../shared/dialog-data/action-dialog";
-import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators
+} from "@angular/forms";
 
 @Component({
   selector: 'app-action-dialog',
@@ -40,11 +45,11 @@ export class ActionDialogComponent implements OnInit {
     const controls: {[s: string]: AbstractControl}  = {};
     for (const action of this.data.actions) {
       let validators: Validators = [];
-      // if (action.required) {
-      //   validators = [Validators.required, action.minValue ? Validators.min(action.minValue), action.maxValue ? Validators.max(action.maxValue) : Validators.max];
-      // } else {
-      //   validators = [action.minValue ? Validators.min(action.minValue) : Validators.min, action.maxValue ? Validators.max(action.maxValue) : Validators.max];
-      // }
+      if (action.required) {
+        validators = [Validators.required, action.minValue ? Validators.min(action.minValue) : Validators.min(Number.MIN_VALUE), action.maxValue ? Validators.max(action.maxValue) : Validators.max(Number.MAX_VALUE)];
+      } else {
+        validators = [action.minValue ? Validators.min(action.minValue) : Validators.min(Number.MIN_VALUE), action.maxValue ? Validators.max(action.maxValue) : Validators.max(Number.MAX_VALUE)];
+      }
       controls[action.action] = new FormControl(action.defaultValue ?? null, validators);
     }
     this.actionForm = new FormGroup(controls);

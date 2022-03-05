@@ -36,6 +36,10 @@ export class ApiEndpointService {
     return this._createUrl(['purchases', coinId]);
   }
 
+  public getLimitUpdateEndpoint(purchaseId: string): string {
+    return this._createUrl(['purchases', purchaseId]);
+  }
+
   // == GROUP ENDPOINTS ==
   public getGroupListEndpoint(): string {
     return this._createUrl(['groups']);

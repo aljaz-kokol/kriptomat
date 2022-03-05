@@ -14,6 +14,10 @@ export class ApiHttpService {
     return this._http.post<T>(url, data);
   }
 
+  public patch<T>(url: string, data: any): Observable<T> {
+    return this._http.patch<T>(url, data);
+  }
+
   public put<T>(url: string, data: any): Observable<T> {
     return this._http.put<T>(url, data);
   }

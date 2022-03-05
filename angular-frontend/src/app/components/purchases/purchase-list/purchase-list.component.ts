@@ -8,6 +8,7 @@ import {CoinService} from "../../../services/coin.service";
 import {Sort} from "@angular/material/sort";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-purchase-list',
@@ -30,9 +31,10 @@ export class PurchaseListComponent {
 
   constructor(private _purchaseService: PurchaseService,
               private _dialogService: DialogService,
-              private _coinServise: CoinService,
+              private _coinService: CoinService,
               private _breakPointObserver: BreakpointObserver,
-              private _router: Router) {}
+              private _router: Router,
+              private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.purchases = this._purchaseService.purchases;
@@ -111,10 +113,43 @@ export class PurchaseListComponent {
       title: 'Set limit',
       body: 'Please enter the alarm limit (value in set in negative numbers).',
       actions: [
-        { action: 'limit', type: 'number', required: true, defaultValue: purchase.maxDiffLimit, minValue: 0 }
+        { action: 'limit', type: 'number', required: true, defaultValue: purchase.maxDiffLimit ? -purchase.maxDiffLimit : null, minValue: 0 }
       ]
     }).subscribe(value => {
-      console.log(value);
+      if (value) {
+        this._purchaseService.updatePurchaseLimit(purchase.id, {
+          maxLimit: -value['limit']
+        }).subscribe({
+          next: () => {
+            this._snackBar.open(purchase.coin.name + ' max limit set', 'Close', {duration: 3000});
+            this._purchaseService.setPurchaseMaxLimit(purchase.id, -value['limit']);
+          },
+          error: err => this._snackBar.open('There was an error while setting max limit for ' + purchase.coin.name, 'Close', { duration: 3000 })
+        });
+      }
+    });
+  }
+
+  onOgPercentDiffEdit(event: Event, purchase: Purchase) {
+    event.stopPropagation();
+    this._dialogService.openActionDialog({
+      title: 'Set limit',
+      body: 'Please enter the alarm limit (value in set in negative numbers).',
+      actions: [
+        { action: 'limit', type: 'number', required: true, defaultValue: purchase.ogDiffLimit ? -purchase.ogDiffLimit : null, minValue: 0 }
+      ]
+    }).subscribe(value => {
+      if (value) {
+        this._purchaseService.updatePurchaseLimit(purchase.id, {
+          ogLimit: -value['limit']
+        }).subscribe({
+          next: () => {
+            this._snackBar.open(purchase.coin.name + ' og. limit set', 'Close', {duration: 3000});
+            this._purchaseService.setPurchaseOgLimit(purchase.id, -value['limit']);
+          },
+          error: err => this._snackBar.open('There was an error while setting og. limit for ' + purchase.coin.name, 'Close', { duration: 3000 })
+        });
+      }
     });
   }
 
@@ -129,7 +164,7 @@ export class PurchaseListComponent {
           show: true,
           element: purchase.coin.id
         };
-        this._coinServise.sellCoin(purchase.coin.id)
+        this._coinService.sellCoin(purchase.coin.id)
           .subscribe(() => {
             this._purchaseService.removePurchase(purchase.coin.id);
             this._purchaseTable.renderRows();

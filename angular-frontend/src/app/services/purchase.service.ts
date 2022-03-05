@@ -76,6 +76,29 @@ export class PurchaseService {
       .pipe(map(Purchase.fromApiPurchaseList));
   }
 
+  setPurchaseMaxLimit(purchaseId: string, maxLimit: number) {
+    const index = this._purchases.findIndex(p => p.id == purchaseId);
+    if (index >= 0) {
+      this._purchases[index].maxDiffLimit = maxLimit;
+      this._purchasesChange.next(this._purchases);
+    }
+  }
+
+  setPurchaseOgLimit(purchaseId: string, ogLimit: number) {
+    const index = this._purchases.findIndex(p => p.id == purchaseId);
+    if (index >= 0) {
+      this._purchases[index].ogDiffLimit = ogLimit;
+      this._purchasesChange.next(this._purchases);
+    }
+  }
+
+  updatePurchaseLimit(purchaseId: string, data: {ogLimit?: number; maxLimit?: number}): Observable<string> {
+    return this._apiHttp.patch<{message: string; purchase: ApiPurchase}>(this._apiEndpoint.getLimitUpdateEndpoint(purchaseId), {
+      ogDiff: data.ogLimit,
+      maxDiff: data.maxLimit
+    }).pipe(map(data => data.message));
+  }
+
   removePurchase(coinId: string): void {
     const index = this._purchases.findIndex(el => el.coin.id == coinId);
     if (index >= 0) {

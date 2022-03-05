@@ -14,6 +14,8 @@ export const getPurchases = async (req: Request, res: Response, next: NextFuncti
                 coin: purchase.coin_id,
                 boughtPrice: purchase.price,
                 date: purchase.date,
+                maxDiffLimit: purchase.maxDiffLimit,
+                originalDiffLimit: purchase.originalDiffLimit,
                 prices: await PriceService.get.coinPriceFromDate((purchase.coin_id as unknown as CoinDocument), purchase.date)
             });
         }

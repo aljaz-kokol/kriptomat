@@ -2,6 +2,7 @@ import {ApiCoin, Coin} from "./coin.model";
 import {ApiPrice, Price} from "./price.model";
 
 export interface ApiPurchase {
+  _id: string;
   coin: ApiCoin,
   boughtPrice: number;
   prices: ApiPrice[];
@@ -11,7 +12,8 @@ export interface ApiPurchase {
 }
 
 export class Purchase {
-  constructor(public coin: Coin,
+  constructor(public id: string,
+              public coin: Coin,
               public boughtPrice: number,
               private _prices: Price[],
               public date: Date,
@@ -68,12 +70,13 @@ export class Purchase {
 
   public static fromApiPurchase(apiPurchase: ApiPurchase): Purchase {
     return new Purchase(
+      apiPurchase._id,
       Coin.fromApiCoin(apiPurchase.coin),
       apiPurchase.boughtPrice,
       Price.fromApiPriceList(apiPurchase.prices),
       new Date(apiPurchase.date),
       apiPurchase.originalDiffLimit,
-      apiPurchase.maxDiffLimit  
+      apiPurchase.maxDiffLimit
     );
   }
 
