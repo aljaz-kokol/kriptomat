@@ -37,6 +37,7 @@ export const postBuyCoin = async (req: Request, res: Response, next: NextFunctio
         const coin = await CoinService.get.coinById(req.params.id);
         const purchase = await PurchaseService.get.createPurchase(coin._id, coin.lastPrice);
         const coinPurchase = {
+            _id: purchase._id,
             coin: coin,
             boughtPrice: purchase.price,
             date: purchase.date,

@@ -38,7 +38,7 @@
             [ngClass]="{'active-sort': isActiveSortHeader('percent-change')}"
             [ngStyle]="{'color': element.percentChangeColor}"
         >
-          <span>{{ percentChange(element) }}&percnt; / <span class="limit">{{ element.ogDiffLimit }}&percnt;</span></span>
+          <span>{{ percentChange(element) }}&percnt;<span class="limit" *ngIf="element.ogDiffLimit"> / {{ element.ogDiffLimit }}&percnt;</span></span>
           <button mat-icon-button matTooltip="Set limit" (click)="onOgPercentDiffEdit($event, element)">
               <mat-icon>edit</mat-icon>
           </button>
@@ -53,7 +53,7 @@
             [ngClass]="{'active-sort': isActiveSortHeader('max-percent-change')}"
             [ngStyle]="{'color': element.maxPercentChangeColor}"
         >
-          <span>{{ maxPercentChange(element) }}&percnt; / <span class="limit">{{ element.maxDiffLimit }}&percnt;</span></span>
+          <span>{{ maxPercentChange(element) }}&percnt;<span class="limit" *ngIf="element.maxDiffLimit"> / {{ element.maxDiffLimit }}&percnt;</span></span>
           <button mat-icon-button matTooltip="Set limit" (click)="onMaxPercentDiffEdit($event, element)">
               <mat-icon>edit</mat-icon>
           </button>

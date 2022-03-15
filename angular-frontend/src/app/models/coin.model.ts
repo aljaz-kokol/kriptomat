@@ -18,8 +18,7 @@ export class Coin {
               private _image: string) {}
 
   public get image(): string {
-    const urlBuilder = new UrlBuilder(API_ENDPOINT, ['images', this._image]);
-    return urlBuilder.toString();
+    return this._image;
   }
 
   public static fromApiCoin(apiCoin: ApiCoin): Coin {
