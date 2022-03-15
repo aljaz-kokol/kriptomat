@@ -36,7 +36,7 @@ class Coin {
   }
 
   String get image {
-    return UrlBuilder.buildApiUrl(['images', _image]);
+    return _image;
   }
 
 }
