@@ -8,7 +8,7 @@ class SideNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxWidth: 350),
+      constraints: const BoxConstraints(maxWidth: 250),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarColor,
@@ -19,7 +19,7 @@ class SideNav extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 15, top: 25),
               child: Text(
                 title,
-                textScaleFactor: 2,
+                textScaleFactor: 1.5,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

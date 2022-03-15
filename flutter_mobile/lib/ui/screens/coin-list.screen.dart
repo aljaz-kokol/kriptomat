@@ -36,7 +36,7 @@ class _CoinListScreenState extends State<CoinListScreen> {
               padding: const EdgeInsets.all(15),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: 5,
+                childAspectRatio: 3,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10
               ),
@@ -51,7 +51,6 @@ class _CoinListScreenState extends State<CoinListScreen> {
                     children: [
                       Text(
                         coin.name,
-                        textScaleFactor: 1.7,
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       SvgPicture.network(coin.image, width: 75, height: 75)

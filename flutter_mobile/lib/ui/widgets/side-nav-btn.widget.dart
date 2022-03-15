@@ -22,7 +22,6 @@ class SideNavButton extends StatelessWidget {
         children: <Widget>[
           Text(
               text,
-              textScaleFactor: 1.3,
               style: const TextStyle(
                   fontWeight: FontWeight.w600
               )
