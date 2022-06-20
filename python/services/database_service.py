@@ -18,21 +18,20 @@ class DatabaseService:
         price_collection = self.__database[price_table_name]
 
         for coin in coins:
-            coin_document = coin_collection.find_one({'name': coin.name})
+            coin_document = coin_collection.find_one({'shortName': coin.short_name})
             if not coin_document:
-                coin.download_svg()
                 result = coin_collection.insert_one({
                     'name': coin.name,
                     'connection': coin.connection,
                     'lastPrice': coin.price,
-                    'image': f'{coin.get_svg_name()}.svg'
+                    'shortName': coin.short_name,
+                    'image': f'{coin.image}'
                 })
                 coin_id = result.inserted_id
                 new_coin_counter = new_coin_counter + 1
             else:
                 coin_id = coin_document['_id']
-                coin_collection.update_one({'_id': coin_id}, {'$set': {'lastPrice': coin.price}})
+                coin_collection.update_one({'_id': coin_id}, {'$set': {'lastPrice': coin.price, 'name': coin.name, 'image': coin.image, 'connection': coin.connection}})
 
             price_collection.insert_one({'price': coin.price, 'date': coin.date, 'coin_id': coin_id})
-            print(f'"{coin.name}" data inserted')
-        print(f'Number of new coins: {new_coin_counter}')
+        return new_coin_counter

@@ -2,53 +2,52 @@ from datetime import datetime
 import re
 import time
 from models.html_reader import HTMLReader
+import re
 
 
 class Coin:
-    name_attr = 'name'
-    price_attr = 'price'
-    short_name_attr = 'short_name'
-    connection_attr = 'connection'
-    svg_link_attr = 'svg_link'
-    date_attr = 'date'
+    __base_image_link = 'https://kriptomat.io/wp-content/uploads/icons/'
+    __base_connection_link = 'https://kriptomat.io/cryptocurrency-prices/'
 
-    def __init__(self, name, price, connection, svg_link, date=datetime.now()):
+    name_attr = 'n'
+    price_attr = 'p'
+    short_name_attr = 't'
+
+    def __init__(self, name, price, short_name, date=datetime.now()):
         self.name = name
         self.price = price
-        self.connection = connection
-        self.svg_link = svg_link
+        self.short_name = short_name
         self.date = date
+
+    @staticmethod
+    def from_json(jsonObject):
+        return Coin(
+            name=jsonObject[Coin.name_attr],
+            price=jsonObject[Coin.price_attr],
+            short_name=jsonObject[Coin.short_name_attr],
+            date=datetime.now()
+        )
+
+    @property
+    def image(self):
+        return f'{self.__base_image_link}{self.short_name}.svg'
+
+    @property
+    def connection(self):
+        formattedName = f'{self.name}'
+        formattedName = re.sub('[^A-Za-z0-9]+', ' ', formattedName)
+        formattedName = formattedName.replace(' ', '-')
+        return f'{self.__base_connection_link}{formattedName}-{self.short_name}-price/'
 
     def __str__(self):
         return '\n{ ' + \
-               f'"{self.name_attr}": "{self.name}", ' \
-               f'"{self.price_attr}": "{self.price}", ' \
-               f'"{self.connection_attr}": "{self.connection}", ' \
-               f'"{self.connection_attr}": "{self.svg_link}", ' \
-               f'"{self.date_attr}": "{self.date}"' \
+               f'"name": "{self.name}", ' \
+               f'"lastPrice": {self.price}, ' \
+               f'"shortName": "{self.short_name}", ' \
+               f'"connection": "{self.connection}", ' \
+               f'"image": "{self.image}", ' \
+               f'"date": "{self.date}"' \
                '}'
 
     def __repr__(self):
         return str(self)
-
-    def to_json(self):
-        return {
-            self.name_attr: self.name,
-            self.price_attr: self.price,
-            self.connection_attr: self.connection,
-            self.svg_link_attr: self.svg_link,
-            self.date_attr: self.date
-        }
-
-    def get_svg_name(self):
-        short_name = re.sub(r'[#%&{}<>*?/$!\'"@+`|=:\\]', '_', self.name)
-        short_name = short_name.replace(' ', '_')
-        return short_name;
-
-    def download_svg(self):
-        try:
-            reader = HTMLReader(self.svg_link, cookie_button_wait=0, html_wait=1)
-            open(f'../node-server/files/images/{self.get_svg_name()}.svg', 'w').write(reader.get_html())
-            time.sleep(1)
-        except:
-            print(f'Error while trying to fetch svg for "{self.name}"')
